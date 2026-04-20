@@ -1381,8 +1381,15 @@ function drawHW(){
 }
 
 // ── QUESTION LOGIC ────────────────────────────────────────────────
+// ── WAITLIST CAPTURE ─────────────────────────────────────────────
+// Google Apps Script Web App URL — paste the /exec URL after deploying.
+const WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbwqNSUEXzsnIRlYbBbvat8ap8bLi5_xBxAClfgoLLVV7y2Qrrv0-hwzTfdPRr7os1PPNA/exec';
+const HW_ANSWERS={};
+const HW_QUESTION_KEYS=['q1_household','q2_nhs_app','q3_care_mix','q4_insurance','q5_wearables'];
+
 let hwCurrentQ=0;
 function selectOption(qIdx,label,icon){
+  HW_ANSWERS[HW_QUESTION_KEYS[qIdx]]=label;
   // Mark selected
   const q=document.getElementById('hwq-'+qIdx);
   q.querySelectorAll('.hw-opt').forEach(b=>b.classList.remove('selected'));
@@ -1411,8 +1418,24 @@ function selectOption(qIdx,label,icon){
 function submitHW(){
   const name=document.getElementById('hw-name').value.trim();
   const email=document.getElementById('hw-email').value.trim();
+  const phone=document.getElementById('hw-phone').value.trim();
   if(!name||!email){
     document.getElementById('hw-email').focus();return;
+  }
+  // Fire-and-forget POST to Google Apps Script. Uses form-urlencoded to
+  // avoid a CORS preflight (Apps Script doPost accepts e.parameter).
+  if(WAITLIST_ENDPOINT && WAITLIST_ENDPOINT.startsWith('http')){
+    const body=new URLSearchParams({
+      name,email,phone,
+      q1_household:HW_ANSWERS.q1_household||'',
+      q2_nhs_app:HW_ANSWERS.q2_nhs_app||'',
+      q3_care_mix:HW_ANSWERS.q3_care_mix||'',
+      q4_insurance:HW_ANSWERS.q4_insurance||'',
+      q5_wearables:HW_ANSWERS.q5_wearables||'',
+      user_agent:navigator.userAgent,
+      referrer:document.referrer||''
+    });
+    fetch(WAITLIST_ENDPOINT,{method:'POST',body}).catch(err=>console.error('waitlist submit failed',err));
   }
   // Hide capture
   document.getElementById('hw-capture').style.opacity='0';
