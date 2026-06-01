@@ -77,16 +77,74 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .nav-hamburger span{width:22px;height:1.5px;background:#1DDEC8;display:block;transition:all .3s}
 
 
-/* ── HERO ────────────────────────────────────────────── */
-#hero{height:100vh;min-height:700px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#060C14}
-#hero-cv{position:absolute;inset:0;width:100%;height:100%}
-.hero-content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;pointer-events:none;width:100%}
-.hero-phase-a{display:flex;flex-direction:column;align-items:center;gap:22px}
-.hero-h1{font-family:'Fraunces',serif;font-size:clamp(52px,9vw,96px);color:var(--cream);line-height:1.05;font-style:italic;font-weight:300}
-.hero-h1 em{font-style:italic;color:var(--teal-deck)}
-.hero-h1 .rules{color:var(--taupe)}
-.hero-sub-a{font-size:clamp(18px,2.4vw,26px);color:var(--text2);max-width:560px;line-height:1.6;font-weight:300;text-align:center}
-.hero-sovereignty{font-size:clamp(16px,2vw,22px);color:rgba(29,222,200,.85);max-width:560px;line-height:1.6;font-weight:400;text-align:center}
+/* ── HERO (Wave 2 redesign — vault card + trust pills) ─── */
+#hero{position:relative;display:flex;align-items:center;min-height:100svh;overflow:hidden;padding:126px 36px 72px;background:var(--navy)}
+#hero::before,#hero::after{content:"";position:absolute;border-radius:50%;background:var(--teal-deck);filter:blur(120px);opacity:.11;z-index:0;pointer-events:none}
+#hero::before{width:500px;height:500px;right:2%;top:20%}
+#hero::after{width:320px;height:320px;left:-12%;bottom:-14%}
+/* Existing orb canvas preserved as ambient under-layer — JS animates it unchanged */
+#hero-cv{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.6}
+
+.hero-layout{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(340px,.88fr);align-items:center;gap:clamp(50px,7vw,100px);width:min(1180px,100%);margin:0 auto}
+
+.hero-kicker{margin-bottom:20px;color:var(--teal-deck);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+
+#hero .hero-h1{color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(66px,7.3vw,104px);font-weight:300;font-style:normal;letter-spacing:-.065em;line-height:.93}
+#hero .hero-h1 em{color:var(--teal-deck);font-style:normal}
+#hero .hero-h1 .hero-rules{color:var(--taupe)}
+
+.hero-subtitle{max-width:670px;margin-top:28px;color:var(--cream);font-size:clamp(18px,1.8vw,22px);letter-spacing:-.025em;line-height:1.48}
+
+.hero-trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.hero-trust span{padding:8px 11px;border:1px solid color-mix(in srgb,var(--teal-deck) 29%,transparent);border-radius:100px;background:color-mix(in srgb,var(--teal-deck) 8%,transparent);color:color-mix(in srgb,var(--cream) 86%,transparent);font-size:12px;font-weight:700}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:31px;pointer-events:all}
+
+/* Right-hand cream vault card */
+.hero-vault{position:relative;padding:22px;border:1px solid var(--cream);border-radius:24px;background:var(--cream);box-shadow:0 28px 80px color-mix(in srgb,var(--navy) 70%,transparent)}
+
+.hv-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:color-mix(in srgb,var(--navy) 62%,transparent);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.hv-top span:last-child{border-radius:100px;background:var(--teal-deck);color:var(--navy);padding:6px 9px;letter-spacing:.05em}
+
+.hv-title{margin:20px 0 16px}
+.hv-title strong{color:var(--navy);font-family:'Fraunces',serif;font-size:31px;font-weight:300;line-height:1.12}
+
+.hv-sources{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.hv-source{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:61px;padding:6px 4px;border:1px solid color-mix(in srgb,var(--navy) 20%,transparent);border-radius:15px;background:var(--cream);color:var(--navy);font-family:'Fraunces',serif;font-size:11px;font-weight:500;line-height:1.25;text-align:center;box-shadow:0 2px 7px color-mix(in srgb,var(--navy) 6%,transparent)}
+.hv-icon{display:grid;width:23px;height:23px;flex:0 0 auto;place-items:center;color:var(--teal-deck)}
+.hv-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.7}
+.hv-nhs{display:inline-block;border-radius:2px;background:#005EB8;color:#fff;padding:4px 7px 3px;font-family:Arial,sans-serif;font-size:9px;font-style:normal;font-weight:700;letter-spacing:.04em}
+.hv-source-email .hv-icon{color:#0F948B}
+.hv-source-email .hv-icon svg path:last-child{stroke:#E28A00}
+
+.hv-mina{margin-top:14px;padding:11px;border:1px solid color-mix(in srgb,var(--teal-deck) 46%,transparent);border-radius:12px;background:color-mix(in srgb,var(--teal-deck) 15%,transparent)}
+.hv-mina-head{display:flex;align-items:center;gap:12px}
+.hv-mina-head canvas{width:46px;height:57px;flex:0 0 auto}
+.hv-mina-head strong{display:block;color:var(--navy);font-family:'Fraunces',serif;font-size:18px;font-weight:500}
+.hv-mina-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:9px}
+.hv-mina-actions span{border:1px solid color-mix(in srgb,var(--teal-deck) 30%,transparent);border-radius:9px;background:color-mix(in srgb,var(--cream) 64%,transparent);color:var(--navy);padding:7px 4px;font-size:10px;font-weight:700;letter-spacing:.1em;text-align:center;text-transform:uppercase}
+
+.hv-props{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px;padding-top:15px;border-top:1px solid color-mix(in srgb,var(--navy) 14%,transparent)}
+.hv-props div{min-height:68px;padding:12px 10px;border:1px solid color-mix(in srgb,var(--teal-deck) 44%,transparent);border-radius:12px;background:color-mix(in srgb,var(--teal-deck) 17%,transparent)}
+.hv-props span{color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+.hv-props small{display:block;margin-top:4px;color:color-mix(in srgb,var(--navy) 60%,transparent);font-size:11px;line-height:1.35}
+
+.hv-footer{margin-top:13px;color:color-mix(in srgb,var(--navy) 63%,transparent);font-size:11px;font-weight:700;text-align:center}
+
+@media (max-width:880px){
+  #hero{align-items:flex-start;padding:116px 22px 46px}
+  .hero-layout{grid-template-columns:1fr;gap:38px}
+  #hero .hero-h1{font-size:clamp(62px,14vw,92px)}
+  .hero-vault{max-width:620px;margin:0 auto}
+}
+
+@media (max-width:520px){
+  .hero-actions button{width:100%}
+  .hero-vault{padding:21px}
+  .hv-title strong{font-size:26px}
+  .hv-sources{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hv-props{grid-template-columns:1fr}
+}
 
 .btn-primary{
   background:#F0F4F8;color:#060C14;border:none;border-radius:100px;
@@ -109,9 +167,6 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 }
 .btn-secondary:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.38);transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 10px 28px rgba(0,0,0,.38)}
 .btn-secondary:active{transform:translateY(0) scale(.98)}
-.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.35;animation:bounce 2.4s 11s infinite}
-.hero-scroll span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.hero-scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--teal),transparent)}
 
 /* ── PROBLEM SECTION ──────────────────────────────────── */
 #problem{padding:80px 32px;background:var(--navy);position:relative}
@@ -769,19 +824,79 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
 <!-- HERO -->
 <section id="hero">
   <canvas id="hero-cv" width="1920" height="992"></canvas>
-  <div class="hero-content" style="position:relative;z-index:10">
-    <div class="hero-phase-a">
-      <h1 class="hero-h1 in">Your health.<br><em>Your data.</em><br><span class="rules">Your rules.</span></h1>
-      <p class="hero-sub-a in">All your health data: organised, private, and working for you.</p>
-      <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;pointer-events:all">
-        <button class="btn-primary" onclick="openWaitlist()">Join the waitlist →</button>
-        <button class="btn-secondary" onclick="scrollToSection(&#39;meet-mina&#39;)">Meet Mina</button>
+  <div class="hero-layout">
+    <div>
+      <p class="hero-kicker">Your personal health vault</p>
+      <h1 class="hero-h1">Your health.<br><em>Your data.</em><br><span class="hero-rules">Your rules.</span></h1>
+      <p class="hero-subtitle">All your health data: organised, private, and working for you.</p>
+      <div class="hero-trust">
+        <span>Local-first vault</span>
+        <span>No sharing without consent</span>
+        <span>Not a diagnosis service</span>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openWaitlist()">Join the closed beta</button>
+        <button class="btn-secondary" onclick="scrollToSection(&#39;meet-mina&#39;)">See how your data works</button>
       </div>
     </div>
 
-  <div class="hero-scroll">
-    <span>Scroll</span>
-    <div class="hero-scroll-line"></div>
+    <div class="hero-vault">
+      <div class="hv-top">
+        <span>Your private health space</span>
+        <span>Private by design</span>
+      </div>
+      <div class="hv-title">
+        <strong>Your personal health vault</strong>
+      </div>
+      <div class="hv-sources">
+        <div class="hv-source">
+          <span class="hv-nhs">NHS</span>
+          <span>NHS App records</span>
+        </div>
+        <div class="hv-source">
+          <span class="hv-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V4h10l3 3v12h-3"></path><path d="M4 7h10l3 3v11H4z"></path><path d="M7 12h7M7 16h7"></path></svg>
+          </span>
+          <span>Letters &amp; Docs</span>
+        </div>
+        <div class="hv-source hv-source-email">
+          <span class="hv-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"></path><path d="m4 8 8 6 8-6"></path><path d="M7 5h14v11"></path></svg>
+          </span>
+          <span>Health Emails</span>
+        </div>
+        <div class="hv-source">
+          <span class="hv-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-2h4l2 2h4v12H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+          </span>
+          <span>Snaps</span>
+        </div>
+        <div class="hv-source">
+          <span class="hv-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8l1 4-1 8-1 4H9l-1-4-1-8z"></path><path d="M9 12h2l1-2 2 4 1-2h1"></path></svg>
+          </span>
+          <span>Wearables</span>
+        </div>
+      </div>
+      <div class="hv-mina">
+        <div class="hv-mina-head">
+          <canvas id="hero-mina-canvas" width="100" height="124" aria-label="Mina mascot"></canvas>
+          <strong>Mina, your health companion</strong>
+        </div>
+        <div class="hv-mina-actions">
+          <span>Connect</span>
+          <span>Capture</span>
+          <span>Notice</span>
+          <span>Share</span>
+        </div>
+      </div>
+      <div class="hv-props">
+        <div><span>Organised</span><small>Everything in one place</small></div>
+        <div><span>Portable</span><small>Share only when you choose</small></div>
+        <div><span>Secure</span><small>Encrypted on your device</small></div>
+      </div>
+      <p class="hv-footer">Your vault stays private, portable and yours.</p>
+    </div>
   </div>
 </section>
 
@@ -2506,5 +2621,66 @@ window._ctaOpen = function(){
 })();
 </script>
 
+<!-- Hero vault-card Mina mascot (preview's drawMina, isolated to avoid colliding with the global drawMina used by the section animations) -->
+<script>
+(function(){
+  function drawHeroMina(c, cx, cy, sc) {
+    c.beginPath();
+    c.ellipse(cx, cy + 52 * sc, 30 * sc, 20 * sc, 0, 0, Math.PI * 2);
+    c.fillStyle = "rgba(29,222,200,.3)";
+    c.fill();
+    [-14 * sc, 14 * sc].forEach(function(dx){
+      c.beginPath();
+      c.ellipse(cx + dx, cy + 68 * sc, 11 * sc, 7 * sc, dx > 0 ? .15 : -.15, 0, Math.PI * 2);
+      c.fillStyle = "#1DDEC8";
+      c.fill();
+    });
+    [-1, 1].forEach(function(side){
+      c.beginPath();
+      c.ellipse(cx + side * 46 * sc, cy + 32 * sc, 10 * sc, 7 * sc, side * .1, 0, Math.PI * 2);
+      c.fillStyle = "#1DDEC8";
+      c.fill();
+    });
+    var fr = 48 * sc;
+    var rg = c.createLinearGradient(cx, cy - fr, cx, cy + fr);
+    rg.addColorStop(0, "#1DDEC8");
+    rg.addColorStop(1, "#4CD680");
+    c.beginPath();
+    c.arc(cx, cy, fr + 6 * sc, 0, Math.PI * 2);
+    c.strokeStyle = rg;
+    c.lineWidth = 6 * sc;
+    c.stroke();
+    var fg = c.createRadialGradient(cx, cy, 0, cx, cy, fr);
+    fg.addColorStop(0, "#5ADB9A");
+    fg.addColorStop(.6, "#2AAA70");
+    fg.addColorStop(1, "#1A7A4A");
+    c.beginPath();
+    c.arc(cx, cy, fr, 0, Math.PI * 2);
+    c.fillStyle = fg;
+    c.fill();
+    var eR = fr * .21, eY = cy - fr * .08, eX = fr * .34;
+    [cx - eX, cx + eX].forEach(function(ex){
+      c.beginPath();
+      c.arc(ex, eY, eR, 0, Math.PI * 2);
+      c.fillStyle = "white";
+      c.fill();
+      c.beginPath();
+      c.arc(ex + eR * .2, eY + eR * .2, eR * .58, 0, Math.PI * 2);
+      c.fillStyle = "#08101A";
+      c.fill();
+    });
+    c.beginPath();
+    c.arc(cx, cy + fr * .28, fr * .24, .18 * Math.PI, .82 * Math.PI);
+    c.strokeStyle = "white";
+    c.lineWidth = fr * .075;
+    c.lineCap = "round";
+    c.stroke();
+  }
+  var mc = document.getElementById("hero-mina-canvas");
+  if (mc) {
+    drawHeroMina(mc.getContext("2d"), mc.width / 2, mc.height * .42, mc.width / 168);
+  }
+})();
+</script>
 
 </body></html>
