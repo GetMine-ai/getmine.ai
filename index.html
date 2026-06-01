@@ -220,6 +220,34 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
   .promise-card p{font-size:15px}
 }
 
+/* ── EARLY ACCESS + PRODUCT PREVIEW (after What Becomes Possible) ── */
+#early-access-preview{padding:clamp(72px,8vw,120px) 32px;background:var(--navy)}
+.early-access-shell{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:35fr 65fr;gap:clamp(36px,4vw,64px);align-items:stretch;padding:clamp(36px,4vw,56px);border:1px solid color-mix(in srgb,var(--teal-deck) 32%,transparent);border-radius:24px;background:color-mix(in srgb,var(--teal-deck) 4%,var(--navy));box-shadow:0 24px 72px color-mix(in srgb,var(--navy) 70%,transparent)}
+.early-access-invite{display:flex;flex-direction:column;justify-content:center}
+.early-access-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.early-access-headline{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(32px,3.8vw,46px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.04}
+.early-access-copy{max-width:420px;margin-top:18px;color:var(--taupe);font-size:clamp(15px,1.4vw,17px);line-height:1.55}
+.early-access-proof{display:flex;flex-direction:column;gap:14px;margin-top:28px;padding-top:24px;border-top:1px solid color-mix(in srgb,var(--teal-deck) 22%,transparent)}
+.early-access-proof div{display:flex;flex-direction:column;gap:4px}
+.early-access-proof strong{color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.early-access-proof span{color:color-mix(in srgb,var(--cream) 84%,transparent);font-size:14px;line-height:1.45}
+.early-access-cta{align-self:flex-start;margin-top:28px;background:var(--cream);color:var(--navy);border:1px solid var(--cream);border-radius:100px;padding:14px 26px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2)}
+.early-access-cta:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 6px 20px rgba(0,0,0,.25)}
+.early-access-note{margin-top:14px;color:color-mix(in srgb,var(--taupe) 80%,transparent);font-size:12px;letter-spacing:.01em}
+
+.product-preview{display:flex;flex-direction:column;gap:16px}
+.product-preview-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.product-preview-frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid color-mix(in srgb,var(--teal-deck) 24%,transparent);border-radius:16px;overflow:hidden;background:color-mix(in srgb,var(--navy) 92%,#000);box-shadow:0 16px 48px color-mix(in srgb,var(--navy) 60%,transparent)}
+.product-preview-video{display:block;width:100%;height:100%;object-fit:cover}
+.product-preview-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:color-mix(in srgb,var(--cream) 56%,transparent);font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2vw,24px);font-weight:300;letter-spacing:-.02em;text-align:center;padding:24px;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--teal-deck) 6%,transparent) 0%,transparent 70%)}
+
+@media (max-width:880px){
+  #early-access-preview{padding:64px 20px}
+  .early-access-shell{grid-template-columns:1fr;gap:32px;padding:28px}
+  .early-access-headline{font-size:clamp(30px,7vw,38px)}
+  .early-access-copy{max-width:none}
+}
+
 /* ── WHY GETMINE (Oura-style) ─────────────────────────── */
 #why-getmine{padding:120px 0;background:#030810}
 .wg-inner{max-width:1100px;margin:0 auto;padding:0 32px}
@@ -1005,6 +1033,52 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
   <div class="cta-block" id="wg-cta">
     <div class="cta-whisper">This could be yours.</div>
     <button class="btn-primary" onclick="openWaitlist()">Join the waitlist →</button>
+  </div>
+</section>
+
+<!-- EARLY ACCESS + PRODUCT PREVIEW -->
+<section id="early-access-preview">
+  <div class="early-access-shell">
+    <div class="early-access-invite">
+      <p class="early-access-eyebrow">Early access</p>
+      <h2 class="early-access-headline">GetMine is live in closed beta.</h2>
+      <p class="early-access-copy">Join a small group helping us shape what comes next.</p>
+
+      <div class="early-access-proof">
+        <div>
+          <strong>Live beta</strong>
+          <span>Early users are already trying GetMine.</span>
+        </div>
+        <div>
+          <strong>Live ingestion</strong>
+          <span>NHS App records, letters, health emails, snaps and wearables.</span>
+        </div>
+        <div>
+          <strong>Mina is ready</strong>
+          <span>Capture, organise and retrieve your health information.</span>
+        </div>
+      </div>
+
+      <button class="early-access-cta" onclick="openWaitlist()">Join Early Access</button>
+      <p class="early-access-note">Limited places available during closed beta.</p>
+    </div>
+
+    <div class="product-preview">
+      <p class="product-preview-eyebrow">See GetMine in action</p>
+      <div class="product-preview-frame">
+        <!-- TODO: replace this placeholder with a <video> element once
+             assets/getmine-demo.mp4 and assets/getmine-demo-poster.jpg
+             land in /assets/. Reference markup (per handoff):
+             <video class="product-preview-video" controls playsinline
+                    preload="metadata"
+                    poster="assets/getmine-demo-poster.jpg">
+               <source src="assets/getmine-demo.mp4" type="video/mp4">
+               Your browser does not support the product preview video.
+             </video>
+        -->
+        <div class="product-preview-placeholder">Product preview coming soon</div>
+      </div>
+    </div>
   </div>
 </section>
 
