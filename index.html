@@ -200,6 +200,26 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
   .why-friction{min-width:178px;flex:0 0 178px}
 }
 
+/* ── OUR PROMISE (sits between Why It Matters and Why GetMine) ── */
+#our-promise{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
+.promise-inner{width:min(1100px,100%);margin:0 auto}
+.promise-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.promise-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(44px,6vw,76px);font-style:italic;font-weight:300;letter-spacing:-.05em;line-height:1.02}
+.promise-headline em{color:var(--teal-deck);font-style:italic}
+.promise-supporting{max-width:650px;margin-top:22px;color:var(--taupe);font-size:clamp(17px,1.8vw,21px);line-height:1.55}
+.promise-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:52px}
+.promise-card{min-height:188px;padding:28px;border:1px solid color-mix(in srgb,var(--teal-deck) 38%,transparent);border-radius:16px;background:color-mix(in srgb,var(--teal-deck) 4%,var(--navy))}
+.promise-card h3{color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(25px,2.6vw,34px);font-style:italic;font-weight:300;letter-spacing:-.035em;line-height:1.08}
+.promise-card p{max-width:430px;margin-top:15px;color:color-mix(in srgb,var(--taupe) 92%,transparent);font-size:16px;line-height:1.6}
+@media (max-width:680px){
+  #our-promise{padding:78px 20px}
+  .promise-headline{font-size:clamp(42px,12vw,58px)}
+  .promise-grid{grid-template-columns:1fr;gap:12px;margin-top:40px}
+  .promise-card{min-height:auto;padding:22px}
+  .promise-card h3{font-size:27px}
+  .promise-card p{font-size:15px}
+}
+
 /* ── WHY GETMINE (Oura-style) ─────────────────────────── */
 #why-getmine{padding:120px 0;background:#030810}
 .wg-inner{max-width:1100px;margin:0 auto;padding:0 32px}
@@ -947,6 +967,39 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
         <div class="why-friction"><strong>Share?</strong><span>What should I share?</span></div>
         <div class="why-friction"><strong>Access?</strong><span>How do I access my records?</span></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR PROMISE -->
+<section id="our-promise">
+  <div class="promise-inner">
+    <p class="promise-eyebrow">Our promise</p>
+    <h2 class="promise-headline">
+      Your vault stays with you.<br>
+      <em>You decide</em> what leaves.
+    </h2>
+    <p class="promise-supporting">
+      Built so your health data works for you &mdash; without giving up control.
+    </p>
+
+    <div class="promise-grid">
+      <article class="promise-card">
+        <h3>Your data. Your rules.</h3>
+        <p>You control what is shared, with whom, and for how long.</p>
+      </article>
+      <article class="promise-card">
+        <h3>Minimum necessary exposure.</h3>
+        <p>Only the context needed for a task leaves your vault. Never your entire record.</p>
+      </article>
+      <article class="promise-card">
+        <h3>Your vault lives with you.</h3>
+        <p>Your vault lives on your device. We are builders, not keepers.</p>
+      </article>
+      <article class="promise-card">
+        <h3>You stay in control.</h3>
+        <p>See what has been shared. Revoke access at any time.</p>
+      </article>
     </div>
   </div>
 </section>
