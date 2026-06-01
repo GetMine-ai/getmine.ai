@@ -501,51 +501,41 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 }
 
 /* ── ABOUT US (Oura-style footer) ────────────────────── */
-#about{padding:80px 36px 60px;background:#060C14;position:relative;border-top:1px solid rgba(255,255,255,.06)}
-.about-inner{max-width:1200px;margin:0 auto}
-.about-top{display:grid;grid-template-columns:280px 1fr;gap:80px;margin-bottom:64px}
+/* ── ABOUT (final trust layer — purpose + founders, matches Wave-2 rhythm) ── */
+#about{padding:clamp(88px,10vw,144px) 32px;background:var(--navy);border-top:1px solid color-mix(in srgb,var(--cream) 6%,transparent)}
+.about-inner{width:min(900px,100%);margin:0 auto}
+.about-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+.about-headline{max-width:760px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.6vw,54px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
+.about-body{margin-top:28px;display:flex;flex-direction:column;gap:18px;max-width:680px}
+.about-body p{margin:0;color:color-mix(in srgb,var(--cream) 78%,transparent);font-family:'DM Sans',sans-serif;font-size:clamp(15px,1.5vw,17px);font-weight:400;line-height:1.62}
+.about-team-intro{margin-top:48px;color:var(--taupe);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:.01em}
+.about-founders{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:560px}
+.about-founder{padding:22px 24px;border:1px solid color-mix(in srgb,var(--teal-deck) 22%,transparent);border-radius:14px;background:color-mix(in srgb,var(--teal-deck) 3%,var(--navy))}
+.about-founder-name{margin:0;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.about-founder-role{margin:6px 0 0;color:color-mix(in srgb,var(--taupe) 90%,transparent);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400}
+.about-founder-link{display:inline-block;margin-top:10px;color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--teal-deck) 38%,transparent);padding-bottom:1px;transition:color .2s,border-color .2s}
+.about-founder-link:hover{color:var(--cream);border-color:color-mix(in srgb,var(--cream) 60%,transparent)}
 
-/* Left — logo + email */
-.about-left{}
-.about-logo{font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:var(--cream);margin-bottom:4px;letter-spacing:-.01em}
-.about-logo .logo-mine{color:var(--teal-deck)}
-.about-logo .logo-ai{color:var(--cream)}
-.about-tagline{font-size:13px;color:rgba(240,244,248,.35);margin-bottom:28px;font-family:'DM Sans',sans-serif}
-.about-email-form{display:flex;gap:0;margin-bottom:16px;max-width:260px}
-.about-email-inp{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-right:none;border-radius:10px 0 0 10px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:#F0F4F8;outline:none;transition:border-color .2s}
-.about-email-inp::placeholder{color:rgba(255,255,255,.2)}
-.about-email-inp:focus{border-color:rgba(29,222,200,.4)}
-.about-email-btn{background:#1DDEC8;border:none;border-radius:0 10px 10px 0;padding:0 16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;color:#060C14}
-.about-email-btn:hover{background:#2EECD6}
-.about-email-btn svg{width:16px;height:16px;stroke:#060C14;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.about-privacy{font-size:11px;color:rgba(240,244,248,.22);line-height:1.6;max-width:240px;font-family:'DM Sans',sans-serif}
-.about-privacy a{color:rgba(29,222,200,.5);text-decoration:none}
-
-/* Right — nav columns */
-.about-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.about-nav-col{}
-.about-nav-head{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(240,244,248,.35);margin-bottom:16px;font-weight:600}
-.about-nav-link{display:block;font-family:'DM Sans',sans-serif;font-size:14px;color:rgba(240,244,248,.55);margin-bottom:11px;cursor:pointer;transition:color .2s;text-decoration:none}
-.about-nav-link:hover{color:#F0F4F8}
-
-/* Bottom legal bar */
-.about-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.about-legal{font-size:12px;color:rgba(240,244,248,.22);font-family:'DM Sans',sans-serif}
-.about-legal-links{display:flex;gap:24px}
-.about-legal-links a{font-size:12px;color:rgba(240,244,248,.28);font-family:'DM Sans',sans-serif;text-decoration:none;transition:color .2s}
-.about-legal-links a:hover{color:rgba(240,244,248,.6)}
-@media(max-width:900px){
-  .about-top{grid-template-columns:1fr;gap:48px}
-  .about-nav{grid-template-columns:repeat(2,1fr)}
+@media (max-width:680px){
+  #about{padding:78px 20px}
+  .about-headline{font-size:clamp(30px,8vw,42px)}
+  .about-founders{grid-template-columns:1fr}
 }
 
-/* ── FOOTER ───────────────────────────────────────────── */
-footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.foot-logo{font-family:'Fraunces',serif;font-size:17px;color:var(--teal)}
-.foot-links{display:flex;gap:24px;flex-wrap:wrap}
-.foot-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
-.foot-links a:hover{color:var(--text)}
-.foot-legal{font-size:11px;color:rgba(138,155,176,.35);width:100%}
+/* ── FOOTER (minimal legal bar) ─────────────────────────── */
+footer{padding:28px 32px;background:var(--navy);border-top:1px solid color-mix(in srgb,var(--cream) 5%,transparent)}
+.footer-inner{width:min(1100px,100%);margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px}
+.footer-logo{font-family:Georgia,'Times New Roman',serif;font-size:17px;color:var(--cream);font-weight:400;letter-spacing:-.01em;text-decoration:none}
+.footer-logo .logo-mine{color:var(--teal-deck)}
+.footer-legal{color:color-mix(in srgb,var(--cream) 36%,transparent);font-family:'DM Sans',sans-serif;font-size:12px}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-links a{color:color-mix(in srgb,var(--cream) 48%,transparent);font-family:'DM Sans',sans-serif;font-size:12px;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--cream)}
+
+@media (max-width:680px){
+  footer{padding:24px 20px}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:12px}
+}
 
 /* ── UTILITY ──────────────────────────────────────────── */
 .max-w{max-width:1100px;margin:0 auto}
@@ -1181,71 +1171,50 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
   </div>
 </section>
 
-<!-- ABOUT US -->
+<!-- ABOUT (final trust layer: why we're building this + who) -->
 <section id="about">
-  <div class="chapter-marker">About Us</div>
   <div class="about-inner">
+    <p class="about-eyebrow">About GetMine</p>
+    <h2 class="about-headline">We believe your health history should belong to you.</h2>
 
-    <div class="about-top">
-      <!-- Left: logo + email signup -->
-      <div class="about-left">
-        <div class="about-logo">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
-        <div class="about-tagline">Your personal health account.</div>
-        <div class="about-email-form">
-          <input class="about-email-inp" type="email" placeholder="Email address">
-          <button class="about-email-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button>
-        </div>
-        <div class="about-privacy">We care about your data. Read our <a href="file:///Users/sabineazancot/Downloads/getmine-combined_15.html#">Privacy Policy</a>.</div>
-      </div>
-
-      <!-- Right: nav columns -->
-      <div class="about-nav">
-        <div class="about-nav-col">
-          <div class="about-nav-head">Company</div>
-          <a class="about-nav-link">Our mission</a>
-          <a class="about-nav-link">How it works</a>
-          <a class="about-nav-link">Pricing</a>
-          <a class="about-nav-link">Newsroom</a>
-          <a class="about-nav-link">Careers</a>
-        </div>
-        <div class="about-nav-col">
-          <div class="about-nav-head">Product</div>
-          <a class="about-nav-link">Mina</a>
-          <a class="about-nav-link">Your Vault</a>
-          <a class="about-nav-link">Family Account</a>
-          <a class="about-nav-link">NHS Integration</a>
-          <a class="about-nav-link">Data Portability</a>
-        </div>
-        <div class="about-nav-col">
-          <div class="about-nav-head">Support</div>
-          <a class="about-nav-link">Help Centre</a>
-          <a class="about-nav-link">Contact Us</a>
-          <a class="about-nav-link">Security</a>
-          <a class="about-nav-link">Data Export</a>
-          <a class="about-nav-link">Accessibility</a>
-        </div>
-        <div class="about-nav-col">
-          <div class="about-nav-head">Partners</div>
-          <a class="about-nav-link">For Investors</a>
-          <a class="about-nav-link">For Clinicians</a>
-          <a class="about-nav-link">Press enquiries</a>
-          <a class="about-nav-link" href="mailto:hello@getmine.ai">hello@getmine.ai</a>
-        </div>
-      </div>
+    <div class="about-body">
+      <p>Today, your health story is fragmented &mdash; spread across hospital systems, GP portals, inboxes and apps that don&rsquo;t talk to each other.</p>
+      <p>We&rsquo;re building GetMine so you can bring it together, stay in control, and put it to work for you.</p>
     </div>
 
-    <div class="about-bottom">
-      <div class="about-legal">© 2026 GetMine Ltd · Company No. 17070331 · London</div>
-      <div class="about-legal-links">
-        <a href="file:///Users/sabineazancot/Downloads/getmine-combined_15.html#">Terms</a>
-        <a href="file:///Users/sabineazancot/Downloads/getmine-combined_15.html#">Privacy</a>
-        <a href="file:///Users/sabineazancot/Downloads/getmine-combined_15.html#">Security</a>
-        <a href="file:///Users/sabineazancot/Downloads/getmine-combined_15.html#">Cookie Policy</a>
+    <p class="about-team-intro">Built by a small team across healthcare, technology and AI.</p>
+
+    <div class="about-founders">
+      <div class="about-founder">
+        <p class="about-founder-name">Sabine Azancot</p>
+        <p class="about-founder-role">Founder &amp; CEO</p>
+        <!-- TODO: add LinkedIn URL when ready -->
+        <!-- <a class="about-founder-link" href="https://www.linkedin.com/in/…" target="_blank" rel="noopener">LinkedIn ↗</a> -->
+      </div>
+      <div class="about-founder">
+        <!-- TODO: update with Mike's surname when confirmed -->
+        <p class="about-founder-name">Mike</p>
+        <p class="about-founder-role">Co-Founder</p>
+        <!-- TODO: add LinkedIn URL when ready -->
+        <!-- <a class="about-founder-link" href="https://www.linkedin.com/in/…" target="_blank" rel="noopener">LinkedIn ↗</a> -->
       </div>
     </div>
-
   </div>
 </section>
+
+<!-- FOOTER (minimal legal bar) -->
+<footer>
+  <div class="footer-inner">
+    <a class="footer-logo" href="#" onclick="scrollTo({top:0,behavior:'smooth'});return false;">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
+    <div class="footer-legal">&copy; 2026 GetMine Ltd &middot; Company No. 17070331 &middot; London</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+      <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
+    </div>
+  </div>
+</footer>
 
 <!-- footer removed — About Us serves as footer -->
 
