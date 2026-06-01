@@ -4,12 +4,43 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GetMine.ai — Your health. Your data. Your rules.</title>
+
+<!-- ── SEO ──────────────────────────────────────────────────────── -->
+<meta name="description" content="Your health. Your data. Your rules. All your health data: organised, private, and working for you. Join the GetMine.ai waitlist.">
+<meta name="author" content="GetMine.ai">
+<meta name="theme-color" content="#060C14">
+<link rel="canonical" href="https://getmine.ai/">
+
+<!-- ── Open Graph (Facebook, LinkedIn, Slack, Discord, iMessage) ── -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetMine.ai">
+<meta property="og:title" content="GetMine.ai — Your health. Your data. Your rules.">
+<meta property="og:description" content="All your health data: organised, private, and working for you.">
+<meta property="og:url" content="https://getmine.ai/">
+<meta property="og:image" content="https://getmine.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GetMine.ai — your health, your data, your rules">
+<meta property="og:locale" content="en_GB">
+
+<!-- ── Twitter Card ───────────────────────────────────────────── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GetMine.ai — Your health. Your data. Your rules.">
+<meta name="twitter:description" content="All your health data: organised, private, and working for you.">
+<meta name="twitter:image" content="https://getmine.ai/og-image.png">
+<meta name="twitter:image:alt" content="GetMine.ai — your health, your data, your rules">
+
 <link href="./GetMine.ai — Your health. Your data. Your rules._files/css2" rel="stylesheet">
 <style>
 :root{
   --navy:#060C14;
   --navy2:#080F18;
   --teal:#1DDEC8;
+  --teal-deck:#1DBFB0;       /* deck-matched teal — Mine. + Your data. */
+  --taupe:#C7C2B6;           /* deck-matched taupe — Your rules. */
+  --cream:#E8FAF8;            /* deck-matched cream — Get + ai */
+  --orange:#FF8855;          /* Beta Users CTA */
+  --orange-hi:#FF9D6E;        /* Beta Users hover */
   --green:#4CD680;
   --muted:#F0F4F8;
   --text:#F0F4F8;
@@ -25,8 +56,9 @@ body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;o
 /* ── NAV ─────────────────────────────────────────────── */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 36px;height:80px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:border-color .4s,background .4s}
 nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:rgba(29,222,200,.08)}
-.nav-logo{font-family:'Fraunces',serif;font-size:27px;color:#1DDEC8;letter-spacing:-.03em;cursor:pointer;display:flex;align-items:baseline;gap:1px;font-weight:300}
-.nav-logo .ai{color:#A78BFA;font-style:italic}
+.nav-logo{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:var(--cream);letter-spacing:-.01em;cursor:pointer;display:flex;align-items:baseline;font-weight:400}
+.nav-logo .logo-mine{color:var(--teal-deck)}
+.nav-logo .logo-ai{color:var(--cream)}
 .nav-links{display:flex;align-items:center;gap:36px}
 .nav-links a{font-size:16px;color:#F0F4F8;text-decoration:none;transition:color .2s;cursor:pointer;font-weight:500;letter-spacing:-.01em}
 .nav-links a:hover{color:#1DDEC8}
@@ -42,8 +74,9 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 #hero-cv{position:absolute;inset:0;width:100%;height:100%}
 .hero-content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;pointer-events:none;width:100%}
 .hero-phase-a{display:flex;flex-direction:column;align-items:center;gap:22px}
-.hero-h1{font-family:'Fraunces',serif;font-size:clamp(52px,9vw,96px);color:var(--text);line-height:1.05;font-style:italic;font-weight:300}
-.hero-h1 em{font-style:normal;color:var(--teal)}
+.hero-h1{font-family:'Fraunces',serif;font-size:clamp(52px,9vw,96px);color:var(--cream);line-height:1.05;font-style:italic;font-weight:300}
+.hero-h1 em{font-style:italic;color:var(--teal-deck)}
+.hero-h1 .rules{color:var(--taupe)}
 .hero-sub-a{font-size:clamp(18px,2.4vw,26px);color:var(--text2);max-width:560px;line-height:1.6;font-weight:300;text-align:center}
 .hero-sovereignty{font-size:clamp(16px,2vw,22px);color:rgba(29,222,200,.85);max-width:560px;line-height:1.6;font-weight:400;text-align:center}
 
@@ -420,8 +453,9 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .wl-msg{font-size:12px;color:var(--muted);text-align:right;max-width:140px;line-height:1.58}
 
 /* ── BETA PORTAL ─────────────────────────────────────── */
-.nav-beta{color:rgba(29,222,200,.78)!important;border:1px solid rgba(29,222,200,.32);border-radius:100px;padding:7px 16px;font-size:13px!important;letter-spacing:-.005em;transition:all .22s cubic-bezier(.22,1,.36,1)}
-.nav-beta:hover{background:rgba(29,222,200,.08);border-color:rgba(29,222,200,.55);color:#1DDEC8!important}
+.nav-beta{background:var(--orange);color:#060C14!important;border:none;border-radius:100px;padding:11px 24px;font-family:'DM Sans',sans-serif;font-size:14px!important;font-weight:700;cursor:pointer;transition:all .22s cubic-bezier(.22,1,.36,1);letter-spacing:-.01em;box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 2px 8px rgba(0,0,0,.2);text-decoration:none;display:inline-block}
+.nav-beta:hover{background:var(--orange-hi)!important;color:#060C14!important;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
+.nav-beta:active{transform:translateY(0)}
 #beta-portal{position:fixed;inset:0;z-index:200;background:#060C14;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1);overflow-y:auto}
 #beta-portal.open{opacity:1;pointer-events:all}
 .bp-close{position:absolute;top:24px;right:28px;z-index:210;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#F0F4F8;font-size:18px;transition:background .2s}
@@ -482,8 +516,9 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 /* Left — logo + email */
 .about-left{}
-.about-logo{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:#F0F4F8;margin-bottom:4px;letter-spacing:-.02em}
-.about-logo span{color:#A78BFA;font-style:italic}
+.about-logo{font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:400;color:var(--cream);margin-bottom:4px;letter-spacing:-.01em}
+.about-logo .logo-mine{color:var(--teal-deck)}
+.about-logo .logo-ai{color:var(--cream)}
 .about-tagline{font-size:13px;color:rgba(240,244,248,.35);margin-bottom:28px;font-family:'DM Sans',sans-serif}
 .about-email-form{display:flex;gap:0;margin-bottom:16px;max-width:260px}
 .about-email-inp{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-right:none;border-radius:10px 0 0 10px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:#F0F4F8;outline:none;transition:border-color .2s}
@@ -708,7 +743,7 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo" onclick="scrollTo({top:0,behavior:&#39;smooth&#39;})">GetMine<span class="ai">.ai</span></div>
+  <div class="nav-logo" onclick="scrollTo({top:0,behavior:&#39;smooth&#39;})">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
   <div class="nav-links">
     <a onclick="scrollToSection(&#39;meet-mina&#39;)" style="color:#1DDEC8">Meet Mina</a>
     <a onclick="scrollToSection(&#39;mina-works&#39;)">How It Works</a>
@@ -728,9 +763,8 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
   <canvas id="hero-cv" width="1920" height="992"></canvas>
   <div class="hero-content" style="position:relative;z-index:10">
     <div class="hero-phase-a">
-      <h1 class="hero-h1 in">Your health.<br><em>Finally yours.</em></h1>
-      <p class="hero-sub-a in">But it's scattered, disconnected, and still not working for you. There's a better version of that story — one that's complete, connected, and built to grow with you.</p>
-      <p class="hero-sovereignty in">Your data is never shared with anyone you haven't chosen.</p>
+      <h1 class="hero-h1 in">Your health.<br><em>Your data.</em><br><span class="rules">Your rules.</span></h1>
+      <p class="hero-sub-a in">All your health data: organised, private, and working for you.</p>
       <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;pointer-events:all">
         <button class="btn-primary" onclick="openWaitlist()">Join the waitlist →</button>
         <button class="btn-secondary" onclick="scrollToSection(&#39;meet-mina&#39;)">Meet Mina</button>
@@ -1261,7 +1295,7 @@ footer{padding:48px 32px;border-top:1px solid var(--border);display:flex;align-i
     <div class="about-top">
       <!-- Left: logo + email signup -->
       <div class="about-left">
-        <div class="about-logo">GetMine<span>.ai</span></div>
+        <div class="about-logo">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
         <div class="about-tagline">Your personal health account.</div>
         <div class="about-email-form">
           <input class="about-email-inp" type="email" placeholder="Email address">
@@ -1985,7 +2019,7 @@ window.dispatchEvent(new Event('scroll'));
 <div id="cta-overlay">
 <!-- ══ NAV ══ -->
 <nav>
-  <div class="nav-logo" onclick="location.href=&#39;getmine-v2.html&#39;">GetMine<span class="ai">.ai</span></div>
+  <div class="nav-logo" onclick="location.href=&#39;getmine-v2.html&#39;">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
   <div class="nav-links">
     <a href="file:///Users/sabineazancot/Downloads/getmine-v2.html">Meet Mina</a>
     <a href="file:///Users/sabineazancot/Downloads/getmine-v2.html">How It Works</a>
