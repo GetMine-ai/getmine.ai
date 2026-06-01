@@ -1,7 +1,15 @@
-# Waitlist capture — Google Sheets + Apps Script
+# Waitlist + Beta gate — Google Sheets + Apps Script
 
-The landing page form at `index.html` POSTs sign-ups to a Google Apps Script
-web app, which appends them to a Google Sheet.
+The landing page form at `index.html` POSTs to a Google Apps Script web app
+which handles three modes against the same Google Sheet:
+
+| Mode | Triggered by | What it does |
+|---|---|---|
+| `waitlist` (default) | Hero / nav "Join the waitlist" form | Appends to `Waitlist` tab |
+| `check_beta` | "Beta Users" nav modal | Looks up email in `Beta_Allowlist`, returns `{allowed, name, cohort}`, logs attempt |
+| `log_download` | OS download buttons in unlocked install view | Appends to `Beta_Access_Log` |
+
+All three sheet tabs are created automatically on first use with the right headers.
 
 ## One-time setup
 
@@ -70,7 +78,9 @@ Fixes, easiest first:
    (admin.google.com → Apps → Google Workspace → Drive and Docs → Sharing settings).
 3. Use a different form backend (e.g. Formspree, Tally, Airtable).
 
-## Data captured
+## Sheet schemas
+
+### `Waitlist` tab — *auto-populated*
 
 | Column | Source |
 |---|---|
@@ -84,6 +94,37 @@ Fixes, easiest first:
 | `q4_insurance` | "Insured" / "No insurance" |
 | `q5_wearables` | "Fitness tracker" / "Sleep tracker" / "Smart watch" / "No wearables" |
 | `user_agent` | Browser UA string |
+| `referrer` | `document.referrer` |
+
+### `Beta_Allowlist` tab — *you populate this manually*
+
+Add one row per beta participant. The gate is case-insensitive and trims
+whitespace, so don't worry about exact capitalisation of the email.
+
+| Column | Required | Notes |
+|---|---|---|
+| `email` | yes | The address the participant signs in with on the gate |
+| `name` | optional | Greeted by name in the unlocked view ("Welcome, Sabine") |
+| `cohort` | optional | e.g. `wave-2`, `wave-3`. Shown in the unlocked view |
+| `status` | yes | `active` (gate opens) or `revoked` (gate refuses) |
+| `added_at` | optional | When you added them — for your own records |
+| `notes` | optional | Free text, your eyes only |
+
+To revoke access for a participant: change `status` from `active` to `revoked`.
+No code change or redeploy needed.
+
+### `Beta_Access_Log` tab — *auto-populated*
+
+Every gate attempt and every download click is logged here.
+
+| Column | Notes |
+|---|---|
+| `timestamp` | Server time |
+| `mode` | `check_beta` (gate attempt) or `download` (button click in unlocked view) |
+| `email` | What the visitor typed (for `check_beta`) or the verified email (for `download`) |
+| `allowed` | `yes` / `no` for `check_beta`; blank for `download` rows |
+| `os` | Set on `download` rows: `mac` / `windows` / `linux` |
+| `user_agent` | Browser UA |
 | `referrer` | `document.referrer` |
 
 ## Updating the script later
