@@ -245,12 +245,8 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .product-preview{display:flex;flex-direction:column;align-items:center;gap:14px}
 .product-preview-eyebrow{align-self:flex-start;color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 
-/* Phone-shaped video frame — portrait 9:16 demo */
-.phone-frame{position:relative;width:100%;max-width:320px;aspect-ratio:1276/2160;border:1px solid rgba(29,222,200,.32);border-radius:36px;overflow:hidden;background:#000;box-shadow:0 24px 64px rgba(6,12,20,.55),0 0 0 1px rgba(232,250,248,.04) inset}
-.phone-frame::after{content:"";position:absolute;inset:0;border-radius:32px;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(29,222,200,.08),transparent 70%);mix-blend-mode:screen}
-.phone-video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
-
-.product-preview-caption{margin-top:2px;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.5;text-align:center;max-width:300px;letter-spacing:.01em}
+/* Portrait video — the phone bezel is already baked into the video frames */
+.phone-video{display:block;width:100%;max-width:320px;aspect-ratio:1276/2160;object-fit:contain;background:transparent;border:none;outline:none}
 
 @media (max-width:880px){
   #early-access-preview{padding:78px 20px}
@@ -258,7 +254,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
   .early-access-headline{font-size:clamp(30px,7vw,40px)}
   .early-access-copy{max-width:none}
   .product-preview-eyebrow{align-self:center}
-  .phone-frame{max-width:280px;border-radius:32px}
+  .phone-video{max-width:280px}
 }
 
 /* ── WHAT BECOMES POSSIBLE (matches Why It Matters / Our Promise rhythm; photo + flip cards) ── */
@@ -1020,17 +1016,13 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
     </div>
 
     <div class="product-preview">
-      <p class="product-preview-eyebrow">See GetMine in action</p>
-      <div class="phone-frame">
-        <video class="phone-video"
-               controls playsinline
-               preload="metadata"
-               poster="assets/getmine-demo-poster.jpg">
-          <source src="assets/getmine-demo.mp4" type="video/mp4">
-          Your browser doesn&rsquo;t support the product preview video.
-        </video>
-      </div>
-      <p class="product-preview-caption">A glimpse of GetMine on mobile &middot; Beta available on Mac today.</p>
+      <video class="phone-video"
+             controls playsinline
+             preload="metadata"
+             poster="assets/getmine-demo-poster.jpg">
+        <source src="assets/getmine-demo.mp4" type="video/mp4">
+        Your browser doesn&rsquo;t support the product preview video.
+      </video>
     </div>
   </div>
 </section>
