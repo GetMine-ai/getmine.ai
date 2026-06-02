@@ -48,8 +48,8 @@
   --taupe:#C7C2B6;           /* deck-matched taupe — Your rules. (TEMPO beat 3) */
   --cream:#E8FAF8;            /* deck-matched cream — text (TEMPO beat 1) */
   --cream-warm:#F4EDDD;       /* warm surface cream — vault card, future card surfaces */
-  --orange:#FF8855;          /* Beta Users CTA */
-  --orange-hi:#FF9D6E;        /* Beta Users hover */
+  --orange:#FF8855;          /* Beta Sign-In CTA */
+  --orange-hi:#FF9D6E;        /* Beta Sign-In hover */
   --green:#4CD680;
   --muted:#F0F4F8;
   --text:#F0F4F8;
@@ -91,8 +91,8 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .hero-kicker{margin-bottom:20px;color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 
 #hero .hero-h1{color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(66px,7.3vw,104px);font-weight:300;font-style:normal;letter-spacing:-.065em;line-height:.93}
-#hero .hero-h1 em{color:var(--teal-deck);font-style:normal}
-#hero .hero-h1 .hero-rules{color:var(--taupe)}
+#hero .hero-h1 .hero-h1-data{color:var(--teal-deck)}
+#hero .hero-h1 .hero-h1-rules{color:var(--taupe)}
 
 .hero-subtitle{max-width:670px;margin-top:28px;color:var(--cream);font-size:clamp(19px,1.9vw,23px);letter-spacing:-.025em;line-height:1.48}
 
@@ -180,7 +180,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 #why-it-matters{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
 .why-inner{width:min(1100px,100%);margin:0 auto}
 .why-eyebrow,.why-card-label,.why-frictions-title,.why-friction strong{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.why-headline{max-width:900px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(40px,5.5vw,68px);font-style:italic;font-weight:300;letter-spacing:-.045em;line-height:1.04}
+.why-headline{max-width:900px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 .why-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:52px}
 .why-card{padding:24px;border:1px solid rgba(29,222,200,.22);border-radius:16px;background:rgba(29,222,200,.03);transition:border-color .3s,transform .3s}
 .why-card:hover{border-color:rgba(29,222,200,.34);transform:translateY(-2px)}
@@ -210,7 +210,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 #our-promise{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
 .promise-inner{width:min(1100px,100%);margin:0 auto}
 .promise-eyebrow{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.promise-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(40px,5.5vw,68px);font-style:italic;font-weight:300;letter-spacing:-.045em;line-height:1.04}
+.promise-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 .promise-headline em{color:var(--teal-deck);font-style:italic}
 .promise-supporting{max-width:680px;margin-top:22px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:clamp(18px,1.8vw,22px);line-height:1.55;font-weight:400}
 .promise-grid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:52px}
@@ -222,7 +222,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .promise-card p{max-width:430px;margin-top:14px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:17px;font-weight:400;letter-spacing:-.025em;line-height:1.48}
 @media (max-width:680px){
   #our-promise{padding:78px 20px}
-  .promise-headline{font-size:clamp(40px,11vw,54px)}
+  .promise-headline{font-size:clamp(32px,8vw,46px)}
   .promise-grid{grid-template-columns:1fr;gap:14px;margin-top:40px}
   .promise-card{min-height:auto;padding:22px}
   .promise-card h3{font-size:24px}
@@ -231,23 +231,26 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 /* ── EARLY ACCESS + PRODUCT PREVIEW (after What Becomes Possible) ── */
 #early-access-preview{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
-.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:1.45fr 1fr;gap:clamp(36px,4vw,64px);align-items:center;padding:clamp(36px,4vw,52px);border:1px solid rgba(29,222,200,.22);border-radius:20px;background:rgba(29,222,200,.03);box-shadow:0 24px 72px rgba(6,12,20,.4)}
-.early-access-invite{display:flex;flex-direction:column;justify-content:center}
+.early-access-intro{width:min(1100px,100%);margin:0 auto 52px}
+.early-access-copy{max-width:680px}
+.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.5vw,32px);align-items:stretch;padding:clamp(18px,2.5vw,28px);border:1px solid rgba(29,222,200,.22);border-radius:18px;background:rgba(29,222,200,.03);box-shadow:0 24px 72px rgba(6,12,20,.4)}
+.early-access-invite{display:flex;flex-direction:column;justify-content:space-evenly;gap:0;padding:8px 0}
 .early-access-eyebrow{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.early-access-headline{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(34px,4vw,48px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
-.early-access-copy{max-width:440px;margin-top:18px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:clamp(18px,1.8vw,22px);font-weight:400;letter-spacing:-.025em;line-height:1.48}
-.early-access-proof{display:flex;flex-direction:column;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(29,222,200,.18)}
-.early-access-proof div{display:flex;flex-direction:column;gap:4px}
-.early-access-proof strong{color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-.early-access-proof span{color:rgba(232,250,248,.78);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5}
-.early-access-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:32px}
+.early-access-headline{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
+.early-access-copy{margin-top:18px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:clamp(18px,1.8vw,22px);font-weight:400;letter-spacing:-.025em;line-height:1.48}
+.early-access-proof{display:flex;flex-direction:column;gap:14px}
+.early-access-proof div{display:flex;flex-direction:column;gap:4px;position:relative;padding-left:16px}
+.early-access-proof div::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--teal-deck)}
+.early-access-proof strong{color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.early-access-proof span{color:var(--cream);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.5;letter-spacing:-.015em}
+.early-access-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .early-access-cta{background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2)}
 .early-access-cta:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 6px 20px rgba(0,0,0,.25)}
 .early-access-beta{background:var(--orange);color:#060C14;border:none;border-radius:100px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 2px 10px rgba(0,0,0,.2)}
 .early-access-beta:hover{background:var(--orange-hi);transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
-.early-access-note{margin-top:14px;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.01em}
+.early-access-note{margin:0;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.01em;line-height:1.4}
 
-.product-preview{display:flex;flex-direction:column;align-items:center;gap:14px}
+.product-preview{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
 .product-preview-eyebrow{align-self:flex-start;color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 
 /* Portrait video — the phone bezel is already baked into the video frames */
@@ -255,9 +258,9 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 @media (max-width:880px){
   #early-access-preview{padding:78px 20px}
+  .early-access-intro{margin-bottom:40px}
   .early-access-shell{grid-template-columns:1fr;gap:36px;padding:24px}
-  .early-access-headline{font-size:clamp(30px,7vw,40px)}
-  .early-access-copy{max-width:none}
+  .early-access-headline{font-size:clamp(32px,8vw,46px)}
   .product-preview-eyebrow{align-self:center}
   .phone-video{max-width:280px}
 }
@@ -266,9 +269,9 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 #why-getmine{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
 .possible-inner{width:min(1100px,100%);margin:0 auto}
 .possible-eyebrow{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.possible-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(40px,5.5vw,68px);font-style:italic;font-weight:300;letter-spacing:-.045em;line-height:1.04}
+.possible-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 
-.possible-grid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:52px}
+.possible-grid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:44px}
 
 /* Constellation hub — shared across grids (Our Promise + What's Possible) */
 .constellation-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96px;height:96px;pointer-events:none;z-index:3;opacity:.5}
@@ -279,19 +282,19 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 @media (max-width:680px){.constellation-hub{display:none}}
 
 /* Card frame — cream-warm framing matching Promise cards */
-.possible-card{position:relative;display:flex;flex-direction:column;min-height:360px;padding-left:10px;border:1px solid rgba(239,230,206,.24);border-radius:16px;background:rgba(239,230,206,.03);overflow:hidden;transition:border-color .3s,transform .3s}
+.possible-card{position:relative;display:flex;flex-direction:column;min-height:300px;padding-left:10px;border:1px solid rgba(239,230,206,.24);border-radius:16px;background:rgba(239,230,206,.03);overflow:hidden;transition:border-color .3s,transform .3s}
 .possible-card::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:10px;border-radius:0 5px 5px 0;background:var(--cream-warm);opacity:.9;z-index:2}
 .possible-card:hover{border-color:rgba(239,230,206,.38);transform:translateY(-2px)}
 .possible-card:hover::before{opacity:1}
 
 /* Image area at top */
-.possible-card-img-wrap{position:relative;width:100%;aspect-ratio:21/9;overflow:hidden;flex-shrink:0}
+.possible-card-img-wrap{position:relative;width:100%;aspect-ratio:24/8;overflow:hidden;flex-shrink:0}
 .possible-card-img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:grayscale(100%) brightness(.6) contrast(.95);display:block}
 .possible-card-img-fade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,12,20,.15) 0%,transparent 40%,rgba(6,12,20,.55) 100%)}
 
 /* Text block below the image */
-.possible-card-text{padding:26px 28px 30px;display:flex;flex-direction:column;gap:12px}
-.possible-card-text h3{color:var(--taupe);font-family:'Fraunces',serif;font-size:clamp(22px,2.4vw,28px);font-style:italic;font-weight:300;letter-spacing:-.025em;line-height:1.15;margin:0}
+.possible-card-text{padding:20px 24px 22px;display:flex;flex-direction:column;gap:8px}
+.possible-card-text h3{color:var(--taupe);font-family:'Fraunces',serif;font-size:clamp(20px,2.1vw,25px);font-style:italic;font-weight:300;letter-spacing:-.025em;line-height:1.15;margin:0}
 .possible-card-text p{margin:0;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:17px;font-weight:400;letter-spacing:-.025em;line-height:1.48}
 
 /* Kept (used by About-Us footer chapter-marker) */
@@ -299,7 +302,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 @media (max-width:680px){
   #why-getmine{padding:78px 20px}
-  .possible-headline{font-size:clamp(36px,10vw,52px)}
+  .possible-headline{font-size:clamp(32px,8vw,46px)}
   .possible-grid{grid-template-columns:1fr;gap:14px;margin-top:40px}
   .possible-card{min-height:340px}
   .possible-card-text{padding:22px}
@@ -488,7 +491,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 #about{padding:clamp(88px,10vw,144px) 32px;background:var(--navy);border-top:1px solid rgba(232,250,248,.06)}
 .about-inner{width:min(900px,100%);margin:0 auto}
 .about-eyebrow{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.about-headline{max-width:760px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.6vw,54px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
+.about-headline{max-width:760px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 .about-body{margin-top:28px;display:flex;flex-direction:column;gap:18px;max-width:720px}
 .about-body p{margin:0;color:rgba(232,250,248,.80);font-family:'DM Sans',sans-serif;font-size:clamp(17px,1.6vw,19px);font-weight:400;line-height:1.62}
 .about-body p.about-lead{color:var(--teal-deck);font-family:'Fraunces',serif;font-size:clamp(22px,2.4vw,28px);font-style:normal;font-weight:300;letter-spacing:-.025em;line-height:1.3;margin-top:6px;margin-bottom:6px}
@@ -497,7 +500,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .about-lead-mark svg{width:100%;height:100%;display:block}
 @media (max-width:680px){
   #about{padding:78px 20px}
-  .about-headline{font-size:clamp(30px,8vw,42px)}
+  .about-headline{font-size:clamp(32px,8vw,46px)}
   .about-body p{font-size:16px}
 }
 
@@ -529,8 +532,48 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 .btn-p{background:#F0F4F8;border:none;border-radius:100px;padding:14px 34px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#060C14;cursor:pointer;letter-spacing:-.01em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 5px 18px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.25)}
 .btn-p:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 10px 28px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3)}
 .btn-p:active{transform:translateY(0) scale(.97)}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+/* ── REVEAL ON SCROLL (Tier-1 motion) ─────────────────── */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
 .reveal.in{opacity:1;transform:none}
+
+/* Stagger: direct children fade up one after the other when parent gets .in */
+.reveal-stagger>*{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.reveal-stagger.in>*{opacity:1;transform:none}
+.reveal-stagger.in>*:nth-child(1){transition-delay:0ms}
+.reveal-stagger.in>*:nth-child(2){transition-delay:90ms}
+.reveal-stagger.in>*:nth-child(3){transition-delay:180ms}
+.reveal-stagger.in>*:nth-child(4){transition-delay:270ms}
+.reveal-stagger.in>*:nth-child(5){transition-delay:360ms}
+.reveal-stagger.in>*:nth-child(6){transition-delay:450ms}
+
+/* Hero headline colour-tempo cascade — plays once on load (slower, more deliberate) */
+.hero-h1-line{display:block;opacity:0;transform:translateY(20px);animation:heroBeat 1.1s cubic-bezier(.22,1,.36,1) forwards}
+.hero-h1-line:nth-child(1){animation-delay:.30s}
+.hero-h1-line:nth-child(2){animation-delay:.80s}
+.hero-h1-line:nth-child(3){animation-delay:1.30s}
+@keyframes heroBeat{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* Constellation hub — draw the radial lines outward + scale in the dot/ring when grid enters viewport */
+.constellation-hub line{stroke-dasharray:60;stroke-dashoffset:60;transition:stroke-dashoffset .85s cubic-bezier(.22,1,.36,1)}
+.constellation-hub.in line{stroke-dashoffset:0}
+.constellation-hub.in line:nth-of-type(1){transition-delay:.30s}
+.constellation-hub.in line:nth-of-type(2){transition-delay:.42s}
+.constellation-hub.in line:nth-of-type(3){transition-delay:.54s}
+.constellation-hub.in line:nth-of-type(4){transition-delay:.66s}
+.constellation-hub circle.hub-dot{transform-origin:40px 40px;transform:scale(0);transition:transform .45s cubic-bezier(.22,1,.36,1) .12s}
+.constellation-hub.in circle.hub-dot{transform:scale(1)}
+.constellation-hub circle.hub-ring{transform-origin:40px 40px;transform:scale(.4);opacity:0;transition:transform .55s cubic-bezier(.22,1,.36,1) .25s,opacity .55s cubic-bezier(.22,1,.36,1) .25s}
+.constellation-hub.in circle.hub-ring{transform:scale(1);opacity:.45}
+
+/* Respect users who prefer reduced motion — instantly show everything, no animation */
+@media (prefers-reduced-motion: reduce){
+  .reveal,.reveal-stagger>*{opacity:1;transform:none;transition:none}
+  .hero-h1-line{opacity:1;transform:none;animation:none}
+  .constellation-hub line{stroke-dashoffset:0;transition:none}
+  .constellation-hub circle.hub-dot{transform:scale(1);transition:none}
+  .constellation-hub circle.hub-ring{transform:scale(1);opacity:.45;transition:none}
+}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes bounce{0%,60%,100%{transform:translateX(-50%) translateY(0)}30%{transform:translateX(-50%) translateY(-7px)}}
 
@@ -721,7 +764,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
   <div class="nav-links">
     <a onclick="scrollToSection(&#39;why-it-matters&#39;)" style="color:#1DDEC8">Why it matters</a>
     <a onclick="scrollToSection(&#39;our-promise&#39;)">Our promise</a>
-    <a onclick="scrollToSection(&#39;why-getmine&#39;)">What's possible</a>
+    <a onclick="scrollToSection(&#39;why-getmine&#39;)">What becomes possible</a>
     <a onclick="scrollToSection(&#39;about&#39;)">About us</a>
     <a onclick="openBetaPortal()" class="nav-beta">Beta Sign-In</a>
     <button class="nav-cta" onclick="openWaitlist()">Join Early Access</button>
@@ -737,7 +780,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
   <div class="hero-layout">
     <div>
       <p class="hero-kicker">Your personal health vault</p>
-      <h1 class="hero-h1">Your health.<br><em>Your data.</em><br><span class="hero-rules">Your rules.</span></h1>
+      <h1 class="hero-h1"><span class="hero-h1-line">Your health.</span><span class="hero-h1-line hero-h1-data">Your data.</span><span class="hero-h1-line hero-h1-rules">Your rules.</span></h1>
       <p class="hero-subtitle">All your health data: organised, private, and working for you.</p>
       <p class="hero-disclaimer">Not a doctor &middot; Not a diagnostic service</p>
       <div class="hero-actions">
@@ -806,7 +849,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- WHY IT MATTERS (was: Problem) -->
 <section id="why-it-matters">
-  <div class="why-inner">
+  <div class="why-inner reveal-stagger">
     <p class="why-eyebrow">Why it matters</p>
     <h2 class="why-headline">Life happens. <span class="beat-teal">Your health history</span> <span class="beat-taupe">fails you when you need it most.</span></h2>
 
@@ -848,7 +891,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- OUR PROMISE -->
 <section id="our-promise">
-  <div class="promise-inner">
+  <div class="promise-inner reveal-stagger">
     <p class="promise-eyebrow">Our promise</p>
     <h2 class="promise-headline">
       Your vault stays with you.<br>
@@ -891,7 +934,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- WHAT BECOMES POSSIBLE (refreshed Wave-2 styling + flippable photo cards) -->
 <section id="why-getmine">
-  <div class="possible-inner">
+  <div class="possible-inner reveal-stagger">
     <p class="possible-eyebrow">What becomes possible</p>
     <h2 class="possible-headline">Your health memory <span class="beat-teal">put to work</span> <span class="beat-taupe">for what matters and what&rsquo;s ahead.</span></h2>
 
@@ -952,16 +995,22 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- EARLY ACCESS + PRODUCT PREVIEW -->
 <section id="early-access-preview">
-  <div class="early-access-shell">
-    <div class="early-access-invite">
-      <p class="early-access-eyebrow">Early access</p>
-      <h2 class="early-access-headline">GetMine is live <span class="beat-teal">in closed beta.</span> <span class="beat-taupe">Putting your data to work.</span></h2>
-      <p class="early-access-copy">Join a small group helping us shape what comes next.</p>
+  <div class="early-access-intro reveal-stagger">
+    <p class="early-access-eyebrow">Early access</p>
+    <h2 class="early-access-headline">GetMine is live <span class="beat-teal">in closed beta.</span> <span class="beat-taupe">Putting your data to work.</span></h2>
+    <p class="early-access-copy">Join a small group helping us shape what comes next.</p>
+  </div>
 
+  <div class="early-access-shell reveal">
+    <div class="early-access-invite">
       <div class="early-access-proof">
         <div>
           <strong>Live beta</strong>
           <span>Early users are already engaging with Mina.</span>
+        </div>
+        <div>
+          <strong>Sovereign vault</strong>
+          <span>On-device, encrypted. The key stays with you.</span>
         </div>
         <div>
           <strong>Sources connected</strong>
@@ -1140,7 +1189,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- ABOUT (final trust layer: purpose, not people) -->
 <section id="about">
-  <div class="about-inner">
+  <div class="about-inner reveal-stagger">
     <p class="about-eyebrow">About GetMine</p>
     <h2 class="about-headline">We believe your health history <span class="beat-teal">should belong</span> <span class="beat-taupe">to you.</span></h2>
 
@@ -1643,6 +1692,17 @@ function closeCta(){
   const o=document.getElementById('cta-overlay');
   if(o) o.classList.remove('open');
   document.body.style.overflow='';
+  // Clear constellation: remove every dynamically-added child of #cosmo (the chip divs have no id)
+  const cosmo=document.getElementById('cosmo');
+  if(cosmo){
+    Array.from(cosmo.children).forEach(el=>{ if(!el.id) el.remove(); });
+  }
+  // Clear cosmo-svg contents (rings + lines)
+  const cosmoSvg=document.getElementById('cosmo-svg');
+  if(cosmoSvg){ while(cosmoSvg.firstChild) cosmoSvg.removeChild(cosmoSvg.firstChild); }
+  // Hide any NHS prompt that was shown at end-of-flow
+  const nhsP=document.getElementById('nhs-prompt');
+  if(nhsP){ nhsP.style.display='none'; nhsP.style.animation=''; }
 }
 function closeCtaAndScroll(id){
   closeCta();
@@ -1657,20 +1717,38 @@ window.addEventListener('keydown',e=>{
   closeCta();
 });
 
-// ── NAV SCROLL + REVEAL ───────────────────────────────────────────
+// ── NAV SCROLL (background-blur trigger only) ─────────────────────
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scroll',window.scrollY>40);
-  document.querySelectorAll('.reveal').forEach(el=>{
-    if(el.getBoundingClientRect().top<window.innerHeight*0.88)el.classList.add('in');
-  });
 });
+
+// ── REVEAL ON SCROLL (IntersectionObserver — Tier-1 motion) ───────
+if('IntersectionObserver' in window){
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  },{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal, .reveal-stagger, .constellation-hub').forEach(el=>revealObs.observe(el));
+}else{
+  // Fallback: show everything immediately
+  document.querySelectorAll('.reveal, .reveal-stagger, .constellation-hub').forEach(el=>el.classList.add('in'));
+}
 
 // ── SCROLL TO SECTION ─────────────────────────────────────────────
 function scrollToSection(id){
   const el=document.getElementById(id);
   if(!el)return;
   const navH=document.getElementById('nav')?.offsetHeight||80;
-  const top=el.getBoundingClientRect().top+window.scrollY-navH-16;
+  // Scroll INTO the section past most of its top-padding, so the eyebrow lands
+  // just below the nav with a small breathing gap (instead of section's outer edge
+  // landing there and the eyebrow being ~144px lower)
+  const sectionPadTop=parseFloat(getComputedStyle(el).paddingTop)||0;
+  const breathing=32;
+  const top=el.getBoundingClientRect().top+window.scrollY+sectionPadTop-navH-breathing;
   window.scrollTo({top,behavior:'smooth'});
 }
 
@@ -1686,7 +1764,7 @@ window.dispatchEvent(new Event('scroll'));
   <div class="nav-links">
     <a onclick="closeCtaAndScroll(&#39;why-it-matters&#39;)">Why it matters</a>
     <a onclick="closeCtaAndScroll(&#39;our-promise&#39;)">Our promise</a>
-    <a onclick="closeCtaAndScroll(&#39;why-getmine&#39;)">What's possible</a>
+    <a onclick="closeCtaAndScroll(&#39;why-getmine&#39;)">What becomes possible</a>
     <a onclick="closeCtaAndScroll(&#39;about&#39;)">About us</a>
   </div>
   <button class="cta-close" onclick="closeCta()" aria-label="Close">&times;</button>
@@ -1833,7 +1911,7 @@ window.dispatchEvent(new Event('scroll'));
   <p class="end-super">This is your health world</p>
   <div class="end-hl" style="margin-top:4px">All set, <em id="end-name">friend</em>.<br>Mina's got you.</div>
   <p class="end-sub">Everything you've shared is already taking shape. Mina will be in touch very soon — your health world is ready to come together.</p>
-  <a href="#" class="end-back" onclick="closeCta();return false;">&larr; Back to GetMine</a>
+  <a href="#" class="end-back" onclick="closeCta();window.scrollTo({top:0,behavior:'smooth'});return false;">&larr; Back to GetMine</a>
 
 </div>
 
