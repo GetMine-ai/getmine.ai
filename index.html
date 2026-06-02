@@ -226,7 +226,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 /* ── EARLY ACCESS + PRODUCT PREVIEW (after What Becomes Possible) ── */
 #early-access-preview{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
-.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:35fr 65fr;gap:clamp(36px,4vw,64px);align-items:stretch;padding:clamp(36px,4vw,52px);border:1px solid rgba(29,222,200,.22);border-radius:20px;background:rgba(29,222,200,.03);box-shadow:0 24px 72px rgba(6,12,20,.4)}
+.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:1.45fr 1fr;gap:clamp(36px,4vw,64px);align-items:center;padding:clamp(36px,4vw,52px);border:1px solid rgba(29,222,200,.22);border-radius:20px;background:rgba(29,222,200,.03);box-shadow:0 24px 72px rgba(6,12,20,.4)}
 .early-access-invite{display:flex;flex-direction:column;justify-content:center}
 .early-access-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 .early-access-headline{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(34px,4vw,48px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
@@ -242,17 +242,23 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .early-access-beta:hover{background:var(--orange-hi);transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
 .early-access-note{margin-top:14px;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.01em}
 
-.product-preview{display:flex;flex-direction:column;gap:16px}
-.product-preview-eyebrow{color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
-.product-preview-frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid rgba(29,222,200,.18);border-radius:16px;overflow:hidden;background:rgba(6,12,20,.96);box-shadow:0 16px 48px rgba(6,12,20,.5)}
-.product-preview-video{display:block;width:100%;height:100%;object-fit:cover}
-.product-preview-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(232,250,248,.56);font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2vw,24px);font-weight:300;letter-spacing:-.02em;text-align:center;padding:24px;background:radial-gradient(ellipse at center,rgba(29,222,200,.06) 0%,transparent 70%)}
+.product-preview{display:flex;flex-direction:column;align-items:center;gap:14px}
+.product-preview-eyebrow{align-self:flex-start;color:var(--teal-deck);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+
+/* Phone-shaped video frame — portrait 9:16 demo */
+.phone-frame{position:relative;width:100%;max-width:320px;aspect-ratio:1276/2160;border:1px solid rgba(29,222,200,.32);border-radius:36px;overflow:hidden;background:#000;box-shadow:0 24px 64px rgba(6,12,20,.55),0 0 0 1px rgba(232,250,248,.04) inset}
+.phone-frame::after{content:"";position:absolute;inset:0;border-radius:32px;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(29,222,200,.08),transparent 70%);mix-blend-mode:screen}
+.phone-video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+
+.product-preview-caption{margin-top:2px;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.5;text-align:center;max-width:300px;letter-spacing:.01em}
 
 @media (max-width:880px){
   #early-access-preview{padding:78px 20px}
-  .early-access-shell{grid-template-columns:1fr;gap:32px;padding:24px}
+  .early-access-shell{grid-template-columns:1fr;gap:36px;padding:24px}
   .early-access-headline{font-size:clamp(30px,7vw,40px)}
   .early-access-copy{max-width:none}
+  .product-preview-eyebrow{align-self:center}
+  .phone-frame{max-width:280px;border-radius:32px}
 }
 
 /* ── WHAT BECOMES POSSIBLE (matches Why It Matters / Our Promise rhythm; photo + flip cards) ── */
@@ -1015,19 +1021,16 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
     <div class="product-preview">
       <p class="product-preview-eyebrow">See GetMine in action</p>
-      <div class="product-preview-frame">
-        <!-- TODO: replace this placeholder with a <video> element once
-             assets/getmine-demo.mp4 and assets/getmine-demo-poster.jpg
-             land in /assets/. Reference markup (per handoff):
-             <video class="product-preview-video" controls playsinline
-                    preload="metadata"
-                    poster="assets/getmine-demo-poster.jpg">
-               <source src="assets/getmine-demo.mp4" type="video/mp4">
-               Your browser does not support the product preview video.
-             </video>
-        -->
-        <div class="product-preview-placeholder">Product preview coming soon</div>
+      <div class="phone-frame">
+        <video class="phone-video"
+               controls playsinline
+               preload="metadata"
+               poster="assets/getmine-demo-poster.jpg">
+          <source src="assets/getmine-demo.mp4" type="video/mp4">
+          Your browser doesn&rsquo;t support the product preview video.
+        </video>
       </div>
+      <p class="product-preview-caption">A glimpse of GetMine on mobile &middot; Beta available on Mac today.</p>
     </div>
   </div>
 </section>
