@@ -1,4 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="spark-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#00E5C2" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#00E5C2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#00E5C2" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
   <rect width="100" height="100" rx="22" fill="#060C14"/>
-  <text x="50" y="70" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="400" fill="#1DBFB0" text-anchor="middle">M</text>
+  <!-- M centered slightly left, baseline near canvas bottom -->
+  <text x="40" y="84" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="900" font-size="92" fill="#FFFFFF" text-anchor="middle">M</text>
+  <!-- Memory Spark — teal dot at the M's baseline with soft glow halo -->
+  <circle cx="86" cy="80" r="14" fill="url(#spark-glow)"/>
+  <circle cx="86" cy="80" r="6.5" fill="#00E5C2"/>
 </svg>
