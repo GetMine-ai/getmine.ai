@@ -514,18 +514,20 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 }
 
 /* ── FOOTER (minimal legal bar) ─────────────────────────── */
-footer{padding:28px 32px;background:var(--navy);border-top:1px solid color-mix(in srgb,var(--cream) 5%,transparent)}
-.footer-inner{width:min(1100px,100%);margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px}
-.footer-logo{font-family:Georgia,'Times New Roman',serif;font-size:17px;color:var(--cream);font-weight:400;letter-spacing:-.01em;text-decoration:none}
+footer{padding:48px 32px 36px;background:var(--navy);border-top:1px solid color-mix(in srgb,var(--cream) 5%,transparent)}
+.footer-inner{width:min(1100px,100%);margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.footer-brand{display:flex;flex-direction:column;align-items:center;gap:6px}
+.footer-logo{font-family:Georgia,'Times New Roman',serif;font-size:22px;color:var(--cream);font-weight:400;letter-spacing:-.01em;text-decoration:none}
 .footer-logo .logo-mine{color:var(--teal-deck)}
-.footer-legal{color:color-mix(in srgb,var(--cream) 36%,transparent);font-family:'DM Sans',sans-serif;font-size:12px}
-.footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.footer-links a{color:color-mix(in srgb,var(--cream) 48%,transparent);font-family:'DM Sans',sans-serif;font-size:12px;text-decoration:none;transition:color .2s}
+.footer-tagline{margin:0;color:color-mix(in srgb,var(--taupe) 80%,transparent);font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.01em}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.footer-links a{color:color-mix(in srgb,var(--cream) 56%,transparent);font-family:'DM Sans',sans-serif;font-size:13px;text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--cream)}
+.footer-legal{margin-top:4px;color:color-mix(in srgb,var(--cream) 30%,transparent);font-family:'DM Sans',sans-serif;font-size:12px}
 
 @media (max-width:680px){
-  footer{padding:24px 20px}
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:12px}
+  footer{padding:36px 20px 28px}
+  .footer-links{gap:18px}
 }
 
 /* ── UTILITY ──────────────────────────────────────────── */
@@ -1177,17 +1179,20 @@ footer{padding:28px 32px;background:var(--navy);border-top:1px solid color-mix(i
   </div>
 </section>
 
-<!-- FOOTER (minimal legal bar) -->
+<!-- FOOTER (minimal, calm) -->
 <footer>
   <div class="footer-inner">
-    <a class="footer-logo" href="#" onclick="scrollTo({top:0,behavior:'smooth'});return false;">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
-    <div class="footer-legal">&copy; 2026 GetMine Ltd &middot; Company No. 17070331 &middot; London</div>
-    <div class="footer-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Security</a>
-      <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
+    <div class="footer-brand">
+      <a class="footer-logo" href="#" onclick="scrollTo({top:0,behavior:'smooth'});return false;">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
+      <p class="footer-tagline">Your health. Your data. Your rules.</p>
     </div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="trust.html">Trust &amp; Security</a>
+      <a href="mailto:hello@getmine.ai">Contact</a>
+    </div>
+    <div class="footer-legal">&copy; 2026 GetMine. All rights reserved.</div>
   </div>
 </footer>
 
