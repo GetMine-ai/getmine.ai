@@ -235,8 +235,11 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .early-access-proof div{display:flex;flex-direction:column;gap:4px}
 .early-access-proof strong{color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
 .early-access-proof span{color:rgba(232,250,248,.78);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5}
-.early-access-cta{align-self:flex-start;margin-top:32px;background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2)}
+.early-access-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:32px}
+.early-access-cta{background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2)}
 .early-access-cta:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 6px 20px rgba(0,0,0,.25)}
+.early-access-beta{background:var(--orange);color:#060C14;border:none;border-radius:100px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 2px 10px rgba(0,0,0,.2)}
+.early-access-beta:hover{background:var(--orange-hi);transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
 .early-access-note{margin-top:14px;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.01em}
 
 .product-preview{display:flex;flex-direction:column;gap:16px}
@@ -1003,8 +1006,11 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
         </div>
       </div>
 
-      <button class="early-access-cta" onclick="openWaitlist()">Join Early Access</button>
-      <p class="early-access-note">Limited places available during closed beta.</p>
+      <div class="early-access-actions">
+        <button class="early-access-cta" onclick="openWaitlist()">Join Early Access</button>
+        <button class="early-access-beta" onclick="openBetaPortal()">Beta Sign-In</button>
+      </div>
+      <p class="early-access-note">Limited places available during closed beta. Already in? Sign in to download.</p>
     </div>
 
     <div class="product-preview">
