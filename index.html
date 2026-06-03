@@ -88,6 +88,10 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 .hero-layout{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(340px,.88fr);align-items:center;gap:clamp(50px,7vw,100px);width:min(1180px,100%);margin:0 auto}
 
+.hero-live-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border-radius:100px;background:rgba(29,191,176,.10);border:1px solid rgba(29,191,176,.38);color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px}
+.hero-live-dot{width:7px;height:7px;border-radius:50%;background:#00E5C2;box-shadow:0 0 10px rgba(0,229,194,.7);animation:heroLivePulse 1.8s ease-in-out infinite}
+@keyframes heroLivePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+@media (prefers-reduced-motion: reduce){.hero-live-dot{animation:none}}
 .hero-kicker{margin-bottom:20px;color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 
 #hero .hero-h1{color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(66px,7.3vw,104px);font-weight:300;font-style:normal;letter-spacing:-.065em;line-height:.93}
@@ -134,19 +138,75 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 
 .hv-footer{margin-top:13px;color:color-mix(in srgb,var(--navy) 63%,transparent);font-size:11px;font-weight:700;text-align:center}
 
+/* ── HERO PHONE VIDEO LOOP ── (video cropped of Screen Studio bezel; CSS adds a cream-warm bezel) */
+.hero-visual-wrap{position:relative;width:100%;display:grid;place-items:center;min-height:680px}
+.hero-phone-stage{position:relative;width:min(320px,100%);aspect-ratio:860/1838;transform:rotate(3deg) translateZ(0);backface-visibility:hidden;will-change:transform;z-index:1;filter:drop-shadow(0 32px 56px rgba(0,0,0,.55)) drop-shadow(0 14px 24px rgba(0,0,0,.35))}
+.hero-phone-stage::before{content:"";position:absolute;inset:-8px;border-radius:44px;background:linear-gradient(145deg,#56A89A 0%,#387E73 48%,#1F564F 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),inset 0 0 0 2px rgba(0,0,0,.30);z-index:-1}
+.hero-phone-video{display:block;width:100%;height:100%;object-fit:cover;background:#000;border-radius:36px;border:none;outline:none}
+.threads-container{position:absolute;right:100%;top:22%;width:180px;height:60%;pointer-events:none;z-index:0;overflow:visible}
+.threads-container.threads-right{right:auto;left:100%;top:58%;width:120px;height:34%;transform:scaleX(-1)}
+.threads-container.threads-right .thread{stroke:url(#threadGradR)}
+.threads-container svg{width:100%;height:100%;overflow:visible;display:block}
+.threads-container .thread{fill:none;stroke:url(#threadGrad);stroke-width:1.5;stroke-linecap:round;vector-effect:non-scaling-stroke;animation:threadPulse 6s ease-in-out infinite}
+.threads-container .thread:nth-of-type(2){animation-delay:1s}
+.threads-container .thread:nth-of-type(3){animation-delay:2s}
+.threads-container .node{fill:#00E6D6;filter:drop-shadow(0 0 8px #00E6D6) drop-shadow(0 0 16px rgba(0,230,214,.55));animation:nodePulse 4s ease-in-out infinite}
+.threads-container .node:nth-of-type(2){animation-delay:1.3s}
+.threads-container .node:nth-of-type(3){animation-delay:2.6s}
+.threads-container .particle{fill:#00E6D6;opacity:.6;filter:drop-shadow(0 0 4px #00E6D6);animation:particlePulse 5s ease-in-out infinite}
+.threads-container .particle:nth-of-type(2){animation-delay:.7s}
+.threads-container .particle:nth-of-type(3){animation-delay:1.4s}
+.threads-container .particle:nth-of-type(4){animation-delay:2.1s}
+.threads-container .particle:nth-of-type(5){animation-delay:2.8s}
+@keyframes threadPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes nodePulse{0%,100%{opacity:.65}50%{opacity:1}}
+@keyframes particlePulse{0%,100%{opacity:.35}50%{opacity:.75}}
+@media (prefers-reduced-motion:reduce){.threads-container .thread,.threads-container .node,.threads-container .particle{animation:none}}
+@media (max-width:520px){.threads-container{width:120px;top:26%;height:52%}}
+
+/* Timed memory cards — synced to the video's currentTime via JS (no CSS animation drift) */
+.hero-cue{position:absolute;left:calc(50% + 200px);width:240px;padding:16px 18px;border-radius:18px;background:rgba(232,250,248,.10);border:1px solid rgba(232,250,248,.24);box-shadow:0 24px 48px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);opacity:0;transform:translateX(24px);transition:opacity .5s ease-in-out,transform .5s ease-in-out;z-index:6}
+.hero-cue.is-visible{opacity:1;transform:translateX(0)}
+.hero-cue-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.hero-cue-label{font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,250,248,.6)}
+.hero-cue-status{font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-deck);background:rgba(29,191,176,.14);border:1px solid rgba(29,191,176,.32);padding:3px 8px;border-radius:100px}
+.hero-cue-big{font-family:'Fraunces',serif;font-size:30px;font-style:italic;font-weight:300;letter-spacing:-.025em;line-height:1.05;color:var(--cream);margin:0 0 6px}
+.hero-cue-big-italic{font-size:24px}
+.hero-cue-body{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:400;letter-spacing:-.01em;line-height:1.45;color:rgba(232,250,248,.78);margin:0}
+.hero-cue-body-lead{color:var(--cream);font-style:italic;font-family:'Fraunces',serif;font-size:18px;font-weight:300}
+
+.hero-cue-a{top:8%}
+.hero-cue-b{top:30%}
+.hero-cue-c{top:42%}
+.hero-cue-d{top:74%;text-align:center;width:260px;padding:22px 22px;background:rgba(29,191,176,.22);border:1px solid rgba(29,191,176,.55);box-shadow:0 28px 56px rgba(0,0,0,.55),0 0 48px rgba(29,191,176,.32),inset 0 1px 0 rgba(29,191,176,.4);transform:translateY(12px) scale(.96)}
+.hero-cue-d.is-visible{transform:translateY(0) scale(1)}
+.hero-cue-d .hero-cue-big{font-size:26px;color:#FFFFFF;font-weight:300}
+.hero-cue-d .hero-cue-body-lead{color:#00E5C2;font-size:20px;font-weight:300;margin-top:2px}
+@media (prefers-reduced-motion: reduce){.hero-cue{transition:none;opacity:0}}
+
+/* Floating annotation pills — "Mina in action" stats around the phone */
+.hero-pill{position:absolute;padding:14px 18px;border-radius:18px;background:rgba(244,237,221,.92);border:1px solid rgba(244,237,221,.6);box-shadow:0 18px 40px rgba(6,12,20,.45);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);min-width:170px;z-index:4;animation:heroPillFloat 5.5s ease-in-out infinite;color:var(--navy)}
+.hero-pill strong{display:block;font-family:'Fraunces',serif;font-size:26px;font-style:italic;font-weight:300;letter-spacing:-.025em;line-height:1;margin-bottom:4px;color:var(--navy)}
+.hero-pill span{display:block;font-family:'DM Sans',sans-serif;color:rgba(6,12,20,.7);font-size:13px;line-height:1.3;letter-spacing:-.01em}
+.hero-pill-a{top:8%;right:-12px;animation-delay:0s}
+.hero-pill-b{top:42%;left:-24px;background:rgba(232,250,248,.92);border-color:rgba(232,250,248,.6);animation-delay:.85s}
+.hero-pill-c{top:78%;right:-8px;animation-delay:1.55s}
+@keyframes heroPillFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion: reduce){.hero-pill{animation:none}}
+
 @media (max-width:880px){
   #hero{align-items:flex-start;padding:116px 22px 46px}
   .hero-layout{grid-template-columns:1fr;gap:38px}
   #hero .hero-h1{font-size:clamp(62px,14vw,92px)}
-  .hero-vault{max-width:620px;margin:0 auto}
+  .hero-visual-wrap{min-height:auto}
+  .hero-phone-stage{max-width:260px;transform:rotate(2deg)}
+  .hero-cue{display:none}
 }
 
 @media (max-width:520px){
   .hero-actions button{width:100%}
-  .hero-vault{padding:21px}
-  .hv-title strong{font-size:26px}
-  .hv-sources{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .hv-props{grid-template-columns:1fr}
+  .hero-phone-stage{max-width:220px;transform:rotate(0deg)}
+  .hero-phone-stage::before{inset:-6px;border-radius:36px}
 }
 
 .btn-primary{
@@ -188,16 +248,16 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .why-card img{display:block;width:100%;aspect-ratio:16/9;margin-top:14px;border-radius:12px;object-fit:cover;filter:grayscale(1) brightness(.78)}
 .why-card h3{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(24px,2.6vw,30px);font-style:italic;font-weight:300;letter-spacing:-.03em;line-height:1.1}
 .why-card-subtitle{margin-top:10px;color:var(--taupe);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;line-height:1.5}
-.why-frictions{position:relative;margin-top:68px;padding:22px 0 0;overflow:hidden;border:1px solid rgba(29,222,200,.22);border-radius:16px;background:rgba(29,222,200,.04)}
+.why-frictions{position:relative;margin-top:68px;padding:22px 0 0;border:1px solid rgba(29,222,200,.22);border-radius:16px;background:rgba(29,222,200,.04)}
 .why-frictions::after{content:"";position:absolute;top:0;right:0;bottom:0;width:48px;pointer-events:none;background:linear-gradient(to right,transparent,rgba(6,12,20,.85));opacity:0;border-radius:0 16px 16px 0;transition:opacity .2s}
 @media (max-width:780px){.why-frictions::after{opacity:1}}
 .why-frictions-title{padding:0 20px 18px}
 .why-frictions-scroll{display:flex;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(29,222,200,.16)}
 .why-frictions-scroll::-webkit-scrollbar{display:none}
 .why-friction{min-width:164px;flex:1 0 0;padding:18px 16px 20px;border-right:1px solid rgba(29,222,200,.14)}
-.why-friction:last-child{border-right:0}
+.why-friction:last-child{border-right:0;padding-right:24px}
 .why-friction strong{display:block}
-.why-friction span{display:block;margin-top:9px;color:var(--taupe);font-size:15px;line-height:1.5}
+.why-friction span{display:block;margin-top:9px;color:var(--taupe);font-size:15px;line-height:1.5;overflow-wrap:break-word;word-wrap:break-word}
 @media (max-width:780px){
   #why-it-matters{padding:78px 20px}
   .why-cards{grid-template-columns:1fr;gap:18px;margin-top:42px}
@@ -215,42 +275,52 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .promise-headline{max-width:880px;margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 .promise-headline em{color:var(--teal-deck);font-style:italic}
 .promise-supporting{max-width:680px;margin-top:22px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:clamp(18px,1.8vw,22px);line-height:1.55;font-weight:400}
-.promise-grid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:52px}
-.promise-card{position:relative;min-height:188px;padding:28px 28px 28px 40px;border:1px solid rgba(239,230,206,.24);border-radius:16px;background:rgba(239,230,206,.03);transition:border-color .3s,transform .3s}
-.promise-card::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:10px;border-radius:0 5px 5px 0;background:var(--cream-warm);opacity:.9}
-.promise-card:hover{border-color:rgba(239,230,206,.38);transform:translateY(-2px)}
+.promise-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,460px);gap:56px;align-items:stretch;margin-top:52px}
+.promise-grid{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.promise-grid .constellation-hub{display:none}
+.promise-vault.hero-vault{margin:0;width:100%;max-width:460px;justify-self:end;align-self:stretch}
+.promise-card{position:relative;min-height:auto;padding:18px 22px 20px 34px;border:1px solid rgba(239,230,206,.24);border-radius:14px;background:rgba(239,230,206,.03);transition:border-color .3s,transform .3s}
+.promise-card::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:8px;border-radius:0 4px 4px 0;background:var(--cream-warm);opacity:.9}
+.promise-card:hover{border-color:rgba(239,230,206,.38);transform:translateY(-1px)}
 .promise-card:hover::before{opacity:1}
-.promise-card h3{color:var(--taupe);font-family:'Fraunces',serif;font-size:clamp(24px,2.6vw,30px);font-style:italic;font-weight:300;letter-spacing:-.03em;line-height:1.1}
-.promise-card p{max-width:430px;margin-top:14px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:17px;font-weight:400;letter-spacing:-.025em;line-height:1.48}
+.promise-card h3{color:var(--taupe);font-family:'Fraunces',serif;font-size:clamp(20px,2.1vw,24px);font-style:italic;font-weight:300;letter-spacing:-.025em;line-height:1.15;margin:0}
+.promise-card p{max-width:none;margin-top:6px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;letter-spacing:-.02em;line-height:1.45}
+@media (max-width:980px){
+  .promise-layout{grid-template-columns:1fr;gap:36px;margin-top:40px}
+  .promise-vault.hero-vault{justify-self:center;max-width:520px}
+}
+
 @media (max-width:680px){
   #our-promise{padding:78px 20px}
   .promise-headline{font-size:clamp(32px,8vw,46px)}
-  .promise-grid{grid-template-columns:1fr;gap:14px;margin-top:40px}
-  .promise-card{min-height:auto;padding:22px}
-  .promise-card h3{font-size:24px}
-  .promise-card p{font-size:16px}
+  .promise-grid{gap:10px}
+  .promise-card{padding:16px 18px 18px 30px}
+  .promise-card h3{font-size:20px}
+  .promise-card p{font-size:14.5px}
 }
 
 /* ── EARLY ACCESS + PRODUCT PREVIEW (after What Becomes Possible) ── */
 #early-access-preview{padding:clamp(88px,10vw,144px) 32px;background:var(--navy)}
 .early-access-intro{width:min(1100px,100%);margin:0 auto 52px}
 .early-access-copy{max-width:680px}
-.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.5vw,32px);align-items:stretch;padding:clamp(18px,2.5vw,28px);border:1px solid rgba(29,222,200,.22);border-radius:18px;background:rgba(29,222,200,.03);box-shadow:0 24px 72px rgba(6,12,20,.4)}
-.early-access-invite{display:flex;flex-direction:column;justify-content:space-evenly;gap:0;padding:8px 0}
+.early-access-shell{width:min(1100px,100%);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,44px);align-items:stretch;padding:0}
+.early-access-invite{display:flex;flex-direction:column;justify-content:flex-start;gap:0;padding:0 0 32px;height:100%}
 .early-access-eyebrow{color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
 .early-access-headline{margin-top:18px;color:var(--cream);font-family:'Fraunces',serif;font-size:clamp(36px,4.8vw,58px);font-style:italic;font-weight:300;letter-spacing:-.04em;line-height:1.06}
 .early-access-copy{margin-top:18px;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:clamp(18px,1.8vw,22px);font-weight:400;letter-spacing:-.025em;line-height:1.48}
-.early-access-proof{display:flex;flex-direction:column;gap:14px}
-.early-access-proof div{display:flex;flex-direction:column;gap:4px;position:relative;padding-left:16px}
-.early-access-proof div::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--teal-deck)}
+.early-access-proof{display:flex;flex-direction:column;gap:22px}
+.early-access-proof div{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 22px 18px 30px;border:1px solid rgba(29,222,200,.22);border-radius:14px;background:rgba(29,222,200,.04);transition:border-color .3s,transform .3s}
+.early-access-proof div::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:6px;border-radius:0 4px 4px 0;background:var(--teal-deck);opacity:.85}
+.early-access-proof div:hover{border-color:rgba(29,222,200,.4);transform:translateY(-1px)}
+.early-access-proof div:hover::before{opacity:1}
 .early-access-proof strong{color:var(--teal-deck);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-.early-access-proof span{color:var(--cream);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.5;letter-spacing:-.015em}
-.early-access-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.early-access-proof span{color:var(--cream);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;letter-spacing:-.015em}
+.early-access-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:auto;padding-top:32px}
 .early-access-cta{background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2)}
 .early-access-cta:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 6px 20px rgba(0,0,0,.25)}
 .early-access-beta{background:var(--orange);color:#060C14;border:none;border-radius:100px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.015em;transition:all .22s cubic-bezier(.22,1,.36,1);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 2px 10px rgba(0,0,0,.2)}
 .early-access-beta:hover{background:var(--orange-hi);transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
-.early-access-note{margin:0;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.01em;line-height:1.4}
+.early-access-note{margin:14px 0 0;color:rgba(232,250,248,.56);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.01em;line-height:1.4}
 
 .product-preview{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
 .product-preview-eyebrow{align-self:flex-start;color:var(--teal-deck);font-size:15px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
@@ -261,7 +331,7 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 @media (max-width:880px){
   #early-access-preview{padding:78px 20px}
   .early-access-intro{margin-bottom:40px}
-  .early-access-shell{grid-template-columns:1fr;gap:24px;padding:22px}
+  .early-access-shell{grid-template-columns:1fr;gap:32px;padding:0}
   .early-access-invite{justify-content:flex-start;gap:0;padding:0}
   .early-access-actions{margin-top:28px;flex-direction:column;align-items:stretch;gap:12px}
   .early-access-cta,.early-access-beta{width:100%;text-align:center}
@@ -766,11 +836,12 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo" onclick="scrollTo({top:0,behavior:&#39;smooth&#39;})">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
+  <div class="nav-logo" role="link" tabindex="0" onclick="window.scrollTo({top:0,behavior:&#39;smooth&#39;})">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
   <div class="nav-links">
     <a onclick="scrollToSection(&#39;why-it-matters&#39;)" style="color:#1DDEC8">Why it matters</a>
     <a onclick="scrollToSection(&#39;our-promise&#39;)">Our promise</a>
     <a onclick="scrollToSection(&#39;why-getmine&#39;)">What becomes possible</a>
+    <a onclick="scrollToSection(&#39;early-access-preview&#39;)">Early access</a>
     <a onclick="scrollToSection(&#39;about&#39;)">About us</a>
     <a onclick="openBetaPortal()" class="nav-beta">Beta Sign-In</a>
     <button class="nav-cta" onclick="openWaitlist()">Join Early Access</button>
@@ -785,6 +856,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
   <canvas id="hero-cv" width="1920" height="992"></canvas>
   <div class="hero-layout">
     <div>
+      <span class="hero-live-badge"><span class="hero-live-dot" aria-hidden="true"></span>Live Beta</span>
       <p class="hero-kicker">Your personal health vault</p>
       <h1 class="hero-h1"><span class="hero-h1-line">Your health.</span><span class="hero-h1-line hero-h1-data">Your data.</span><span class="hero-h1-line hero-h1-rules">Your rules.</span></h1>
       <p class="hero-subtitle">All your health data: organised, private, and working for you.</p>
@@ -794,61 +866,85 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
       </div>
     </div>
 
-    <div class="hero-vault">
-      <div class="hv-top">
-        <span>Private by design</span>
+    <div class="hero-visual-wrap">
+      <div class="hero-phone-stage" aria-label="Mina product demo loop">
+        <video class="hero-phone-video"
+               autoplay muted loop playsinline
+               preload="auto"
+               poster="assets/getmine-hero-poster.jpg"
+               aria-label="GetMine product loop">
+          <source src="assets/getmine-hero-loop.mp4" type="video/mp4">
+        </video>
+        <div class="threads-container" aria-hidden="true">
+          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <path class="thread" d="M200,50 C120,80 80,120 200,160"/>
+            <path class="thread" d="M200,90 C100,120 60,160 200,200"/>
+            <path class="thread" d="M200,130 C110,160 70,200 200,240"/>
+            <circle class="node" cx="110" cy="120" r="2.5"/>
+            <circle class="node" cx="85" cy="150" r="2.5"/>
+            <circle class="node" cx="105" cy="180" r="2.5"/>
+            <circle class="particle" cx="140" cy="110" r="1.2"/>
+            <circle class="particle" cx="90" cy="135" r="1"/>
+            <circle class="particle" cx="130" cy="170" r="1"/>
+            <circle class="particle" cx="160" cy="220" r="1"/>
+            <circle class="particle" cx="120" cy="200" r="1.2"/>
+          </svg>
+        </div>
+        <div class="threads-container threads-right" aria-hidden="true">
+          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="threadGradR" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <path class="thread" d="M200,80 C120,110 80,150 200,190"/>
+            <path class="thread" d="M200,140 C110,170 70,210 200,240"/>
+            <circle class="node" cx="105" cy="145" r="2.5"/>
+            <circle class="node" cx="100" cy="200" r="2.5"/>
+            <circle class="particle" cx="135" cy="125" r="1.1"/>
+            <circle class="particle" cx="90" cy="175" r="1"/>
+            <circle class="particle" cx="130" cy="225" r="1"/>
+          </svg>
+        </div>
       </div>
-      <div class="hv-title">
-        <strong>Your personal health vault</strong>
-      </div>
-      <div class="hv-sources">
-        <div class="hv-source">
-          <span class="hv-nhs">NHS</span>
-          <span>NHS App records</span>
-        </div>
-        <div class="hv-source">
-          <span class="hv-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V4h10l3 3v12h-3"></path><path d="M4 7h10l3 3v11H4z"></path><path d="M7 12h7M7 16h7"></path></svg>
-          </span>
-          <span>Letters &amp; Docs</span>
-        </div>
-        <div class="hv-source hv-source-email">
-          <span class="hv-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"></path><path d="m4 8 8 6 8-6"></path><path d="M7 5h14v11"></path></svg>
-          </span>
-          <span>Health Emails</span>
-        </div>
-        <div class="hv-source">
-          <span class="hv-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-2h4l2 2h4v12H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
-          </span>
-          <span>Snaps</span>
-        </div>
-        <div class="hv-source">
-          <span class="hv-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="12" rx="2.4"></rect><path d="M10 6V4h4v2M10 18v2h4v-2"></path><path d="M19 10v3"></path><path d="M9.6 12.4h1.5l.9-1.8 1.4 3 .8-1.6h2.2"></path></svg>
-          </span>
-          <span>Wearables</span>
-        </div>
-      </div>
-      <div class="hv-mina">
-        <div class="hv-mina-head">
-          <canvas id="hero-mina-canvas" width="100" height="124" aria-label="Mina mascot"></canvas>
-          <strong>Mina, your health companion</strong>
-        </div>
-        <div class="hv-mina-actions">
-          <span>Connect</span>
-          <span>Capture</span>
-          <span>Notice</span>
-          <span>Share</span>
-        </div>
-      </div>
-      <div class="hv-props">
-        <div><span>Organised</span><small>Everything in one place</small></div>
-        <div><span>Portable</span><small>Share only when you choose</small></div>
-        <div><span>Secure</span><small>Encrypted on your device</small></div>
-      </div>
-      <p class="hv-footer">A folder on your device: organised, summarised, always with you.</p>
+
+      <article class="hero-cue hero-cue-a" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">NHS Records</span>
+          <span class="hero-cue-status">Imported</span>
+        </header>
+        <p class="hero-cue-big">509 GP records</p>
+        <p class="hero-cue-body">17 years of memory</p>
+      </article>
+      <article class="hero-cue hero-cue-b" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">Health Vault</span>
+          <span class="hero-cue-status">Connected</span>
+        </header>
+        <p class="hero-cue-big">4 sources</p>
+        <p class="hero-cue-body">NHS &middot; Letters &middot; Emails &middot; Snaps</p>
+      </article>
+      <article class="hero-cue hero-cue-c" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">Memory Found</span>
+          <span class="hero-cue-status">Longitudinal</span>
+        </header>
+        <p class="hero-cue-big">ACL reconstruction 2020</p>
+        <p class="hero-cue-body">Connected to knee question today</p>
+      </article>
+      <article class="hero-cue hero-cue-d" aria-hidden="true">
+        <p class="hero-cue-big hero-cue-big-italic">Your health memory</p>
+        <p class="hero-cue-body hero-cue-body-lead">working for you</p>
+      </article>
     </div>
   </div>
 </section>
@@ -889,7 +985,6 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
         <div class="why-friction"><strong>Who?</strong><span>Who did I see for this?</span></div>
         <div class="why-friction"><strong>Where?</strong><span>Where is that report?</span></div>
         <div class="why-friction"><strong>Share?</strong><span>What should I share?</span></div>
-        <div class="why-friction"><strong>Access?</strong><span>How do I access my records?</span></div>
       </div>
     </div>
   </div>
@@ -907,33 +1002,92 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
       Built so your health data works for you, without giving up control.
     </p>
 
-    <div class="promise-grid">
-      <div class="constellation-hub" aria-hidden="true">
-        <svg viewBox="0 0 80 80">
-          <circle class="hub-dot" cx="40" cy="40" r="2.6"/>
-          <circle class="hub-ring" cx="40" cy="40" r="9" opacity=".45"/>
-          <line x1="40" y1="40" x2="12" y2="12" opacity=".55"/>
-          <line x1="40" y1="40" x2="68" y2="12" opacity=".55"/>
-          <line x1="40" y1="40" x2="12" y2="68" opacity=".55"/>
-          <line x1="40" y1="40" x2="68" y2="68" opacity=".55"/>
-        </svg>
+    <div class="promise-layout">
+      <div class="promise-grid">
+        <div class="constellation-hub" aria-hidden="true">
+          <svg viewBox="0 0 80 80">
+            <circle class="hub-dot" cx="40" cy="40" r="2.6"/>
+            <circle class="hub-ring" cx="40" cy="40" r="9" opacity=".45"/>
+            <line x1="40" y1="40" x2="12" y2="12" opacity=".55"/>
+            <line x1="40" y1="40" x2="68" y2="12" opacity=".55"/>
+            <line x1="40" y1="40" x2="12" y2="68" opacity=".55"/>
+            <line x1="40" y1="40" x2="68" y2="68" opacity=".55"/>
+          </svg>
+        </div>
+        <article class="promise-card">
+          <h3>Your data. Your rules.</h3>
+          <p>You control what is shared, with whom, and for how long.</p>
+        </article>
+        <article class="promise-card">
+          <h3>Minimum necessary exposure.</h3>
+          <p>Only the context needed for a task leaves your vault. Never your entire record.</p>
+        </article>
+        <article class="promise-card">
+          <h3>Your vault lives with you.</h3>
+          <p>Your vault lives on your device. We are builders, not keepers.</p>
+        </article>
+        <article class="promise-card">
+          <h3>You stay in control.</h3>
+          <p>See what has been shared. Revoke access at any time.</p>
+        </article>
       </div>
-      <article class="promise-card">
-        <h3>Your data. Your rules.</h3>
-        <p>You control what is shared, with whom, and for how long.</p>
-      </article>
-      <article class="promise-card">
-        <h3>Minimum necessary exposure.</h3>
-        <p>Only the context needed for a task leaves your vault. Never your entire record.</p>
-      </article>
-      <article class="promise-card">
-        <h3>Your vault lives with you.</h3>
-        <p>Your vault lives on your device. We are builders, not keepers.</p>
-      </article>
-      <article class="promise-card">
-        <h3>You stay in control.</h3>
-        <p>See what has been shared. Revoke access at any time.</p>
-      </article>
+
+      <aside class="promise-vault hero-vault" aria-label="What your vault looks like">
+        <div class="hv-top">
+          <span>Private by design</span>
+        </div>
+        <div class="hv-title">
+          <strong>Your personal health vault</strong>
+        </div>
+        <div class="hv-sources">
+          <div class="hv-source">
+            <span class="hv-nhs">NHS</span>
+            <span>NHS App records</span>
+          </div>
+          <div class="hv-source">
+            <span class="hv-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V4h10l3 3v12h-3"></path><path d="M4 7h10l3 3v11H4z"></path><path d="M7 12h7M7 16h7"></path></svg>
+            </span>
+            <span>Letters &amp; Docs</span>
+          </div>
+          <div class="hv-source hv-source-email">
+            <span class="hv-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"></path><path d="m4 8 8 6 8-6"></path><path d="M7 5h14v11"></path></svg>
+            </span>
+            <span>Health Emails</span>
+          </div>
+          <div class="hv-source">
+            <span class="hv-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-2h4l2 2h4v12H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+            </span>
+            <span>Snaps</span>
+          </div>
+          <div class="hv-source">
+            <span class="hv-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="12" rx="2.4"></rect><path d="M10 6V4h4v2M10 18v2h4v-2"></path><path d="M19 10v3"></path><path d="M9.6 12.4h1.5l.9-1.8 1.4 3 .8-1.6h2.2"></path></svg>
+            </span>
+            <span>Wearables</span>
+          </div>
+        </div>
+        <div class="hv-mina">
+          <div class="hv-mina-head">
+            <canvas id="hero-mina-canvas" width="100" height="124" aria-label="Mina mascot"></canvas>
+            <strong>Mina, your health companion</strong>
+          </div>
+          <div class="hv-mina-actions">
+            <span>Connect</span>
+            <span>Capture</span>
+            <span>Notice</span>
+            <span>Share</span>
+          </div>
+        </div>
+        <div class="hv-props">
+          <div><span>Organised</span><small>Everything in one place</small></div>
+          <div><span>Portable</span><small>Share only when you choose</small></div>
+          <div><span>Secure</span><small>Encrypted on your device</small></div>
+        </div>
+        <p class="hv-footer">A folder on your device: organised, summarised, always with you.</p>
+      </aside>
     </div>
   </div>
 </section>
@@ -962,7 +1116,7 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
           </div>
           <div class="possible-card-text">
             <h3>Never go in cold.</h3>
-            <p>Before every clinician appointment, Mina gives you and your clinician the context that matters: latest results, what&rsquo;s changed, the questions to ask.</p>
+            <p>Before your appointment, Mina gives you and your clinician the context that matters: latest results, what&rsquo;s changed, the questions to ask.</p>
           </div>
       </article>
       <article class="possible-card" id="pc1">
@@ -1723,6 +1877,28 @@ window.addEventListener('keydown',e=>{
   closeCta();
 });
 
+// ── HERO MEMORY CARDS — sync to the video's actual currentTime, no drift ──
+(function(){
+  const video=document.querySelector('.hero-phone-video');
+  if(!video) return;
+  // Each card's visibility window (in seconds, matching video beats)
+  const schedule=[
+    {sel:'.hero-cue-a', from:1.8,  to:7.0},
+    {sel:'.hero-cue-b', from:8.0,  to:13.5},
+    {sel:'.hero-cue-c', from:16.0, to:24.0},
+    {sel:'.hero-cue-d', from:25.0, to:29.0},
+  ];
+  const els=schedule.map(s=>({...s, el:document.querySelector(s.sel)})).filter(s=>s.el);
+  function tick(){
+    const t=video.currentTime;
+    els.forEach(s=>s.el.classList.toggle('is-visible', t>=s.from && t<=s.to));
+  }
+  video.addEventListener('timeupdate', tick);
+  video.addEventListener('seeking', tick);
+  video.addEventListener('play', tick);
+  tick();
+})();
+
 // ── NAV SCROLL (background-blur trigger only) ─────────────────────
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scroll',window.scrollY>40);
@@ -1771,6 +1947,7 @@ window.dispatchEvent(new Event('scroll'));
     <a onclick="closeCtaAndScroll(&#39;why-it-matters&#39;)">Why it matters</a>
     <a onclick="closeCtaAndScroll(&#39;our-promise&#39;)">Our promise</a>
     <a onclick="closeCtaAndScroll(&#39;why-getmine&#39;)">What becomes possible</a>
+    <a onclick="closeCtaAndScroll(&#39;early-access-preview&#39;)">Early access</a>
     <a onclick="closeCtaAndScroll(&#39;about&#39;)">About us</a>
   </div>
   <button class="cta-close" onclick="closeCta()" aria-label="Close">&times;</button>
