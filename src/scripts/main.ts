@@ -169,7 +169,7 @@ function drawHW(){
 // ── QUESTION LOGIC ────────────────────────────────────────────────
 // ── WAITLIST CAPTURE ─────────────────────────────────────────────
 // Google Apps Script Web App URL — paste the /exec URL after deploying.
-const WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbzof5UVY-caIj2YmXpH3kJCXpuO_GfWWazZ21l5_xeXIhh0IzjjCPuiNx4-GxthB_Q/exec';
+const WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbx9H97Mv1t9HgSs4fn-vdiecye3PgmV_mIc5h7gZD4QALH3q87Ukg2tbjd9KOZZuP3Z/exec';
 const HW_ANSWERS={};
 const HW_QUESTION_KEYS=['q1_household','q2_nhs_app','q3_care_mix','q4_insurance','q5_wearables'];
 
@@ -620,6 +620,40 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
+// ── CTA-OVERLAY WAITLIST POST ────────────────────────────────────
+// Fire-and-forget POST of the user's captured CTA-flow data to the Apps
+// Script Waitlist tab. Triggered once when the user transitions w3 → w4
+// (i.e. clicks "See my health world" or "Skip this step" at the end of
+// the chip-questionnaire — strong intent signal, all data we'll get).
+// Fixes #1 on GetMine-ai/getmine.ai: the CTA flow used to collect into
+// JS state and never send anything.
+function submitCtaWaitlist(){
+  const name =(document.getElementById('in0') as HTMLInputElement|null)?.value.trim() || '';
+  const email=(document.getElementById('in1') as HTMLInputElement|null)?.value.trim() || '';
+  const phone=(document.getElementById('in2') as HTMLInputElement|null)?.value.trim() || '';
+  if(!email) return;                                            // need at least an email
+  if(!WAITLIST_ENDPOINT || !WAITLIST_ENDPOINT.startsWith('http')) return;
+
+  // Selected chips per group → comma-joined string (one or many).
+  const chipsIn=(groupId:string)=>Array.from(document.querySelectorAll('#'+groupId+' .chip.sel'))
+    .map(c=>(c as HTMLElement).dataset.v||'').filter(Boolean).join(', ');
+
+  const body=new URLSearchParams({
+    name,email,phone,
+    q1_household: chipsIn('g-household'),
+    q2_nhs_app:   chipsIn('g-nhs'),
+    q3_care_mix:  chipsIn('g-coverage'),
+    q4_insurance: '',                                           // not currently asked in CTA flow
+    q5_wearables: chipsIn('g-wear'),
+    // Extra chip groups the current sheet schema doesn't have columns for —
+    // bundled into a single field so we don't lose the signal.
+    extra:        [chipsIn('g-tests'),chipsIn('g-clinical'),chipsIn('g-pharma')].filter(Boolean).join(' | '),
+    user_agent:   navigator.userAgent,
+    referrer:     document.referrer||''
+  });
+  fetch(WAITLIST_ENDPOINT,{method:'POST',body}).catch(err=>console.error('cta waitlist submit failed',err));
+}
+
 // ══ NAVIGATION ══
 function go(next){
   const curEl=document.getElementById(cur);
@@ -630,7 +664,10 @@ function go(next){
     nxtEl.classList.add('active');
     cur=next;
     document.getElementById('prog-bar').style.width=(progMap[next]||0)+'%';
-    if(next==='w4') requestAnimationFrame(()=>buildConstellation());
+    if(next==='w4'){
+      submitCtaWaitlist();                                      // POST captured data once on entering final stage
+      requestAnimationFrame(()=>buildConstellation());
+    }
   },440);
 }
 
