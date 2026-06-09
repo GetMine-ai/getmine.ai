@@ -9,4 +9,6 @@ export default defineConfig({
   // Emit `privacy.html` (not `privacy/index.html`) so the existing URLs and the
   // footer's `./privacy.html` links keep working unchanged.
   build: { format: 'file' },
+  // Default dev/preview port (matches the sibling getmine app).
+  server: { port: 3000 },
 });
