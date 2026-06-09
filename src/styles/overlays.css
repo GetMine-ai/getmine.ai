@@ -78,7 +78,9 @@
 
 /* ══ SEQUENTIAL FIELDS ══ */
 .sf{overflow:hidden;max-height:0;opacity:0;transition:max-height .5s cubic-bezier(.22,1,.36,1),opacity .35s}
-.sf.vis{max-height:130px;opacity:1}
+/* When the field is visible, allow overflow so the absolute-positioned
+   floating label (.fl, top:-10px) isn't clipped by the box. */
+.sf.vis{max-height:none;opacity:1;overflow:visible;margin-bottom:6px}
 .field-hint{font-size:17px;color:#F0F4F8;margin-bottom:6px;font-weight:600}
 .enter-hint{font-size:12px;color:rgba(29,222,200,.6);margin-bottom:12px;letter-spacing:.06em;font-weight:500}
 

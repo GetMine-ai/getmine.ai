@@ -354,16 +354,18 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 .footer-logo{font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#E8FAF8;font-weight:400;letter-spacing:-.01em;text-decoration:none}
 .footer-logo .logo-mine{color:#1DBFB0}
 .footer-tagline{margin:0;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.01em}
-.footer-links{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px;padding:0;list-style:none;align-items:center}
+.footer-links{display:flex;gap:0;flex-wrap:wrap;justify-content:center;margin-top:8px;padding:0;list-style:none;align-items:center;position:relative;z-index:5}
+/* Ensure the logo's <a href="#"> doesn't expand and overlap the link row
+   below it (centered anchor was eating clicks on the middle links). */
+.footer-logo{display:inline-block;position:relative;z-index:1}
+.footer-brand{position:relative;z-index:1}
 .footer-links a{
-  /* Bulletproof tap target: each link is a solid pill-shaped hit-zone
-     with generous padding, no layout shift on hover (background-color
-     change instead of size/position change), explicit cursor + tap
-     highlight, and a permanent underline so they're recognisable as
-     links even before interaction. */
+  /* Wide pills that butt up against each other — no dead zones between
+     links. Spacing comes from each pill's horizontal padding, not from a
+     container gap, so EVERY pixel in the footer-links row is clickable. */
   color:#E8FAF8 !important;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
   display:inline-flex;align-items:center;justify-content:center;
-  min-height:44px;padding:10px 14px;line-height:1;border-radius:8px;
+  min-height:44px;padding:14px 22px;line-height:1;border-radius:8px;
   text-decoration:underline;text-decoration-color:rgba(232,250,248,.32);
   text-underline-offset:4px;text-decoration-thickness:1px;
   background-color:transparent;
@@ -384,8 +386,8 @@ footer{padding:56px 32px 40px;background:#060C14;border-top:1px solid rgba(232,2
 
 @media (max-width:680px){
   footer{padding:40px 20px 30px}
-  .footer-links{gap:4px;margin-top:4px}
-  .footer-links a{font-size:14px;padding:12px 12px;min-height:44px}      /* preserve 44px+ tap target on phones */
+  .footer-links{margin-top:4px}
+  .footer-links a{font-size:14px;padding:14px 16px;min-height:44px}
 }
 
 /* ── HEADLINE TEMPO COLOURS (cream → teal → taupe; in order, like the hero) ── */

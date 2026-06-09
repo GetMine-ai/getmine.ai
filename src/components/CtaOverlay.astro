@@ -25,23 +25,21 @@
   <p class="wave-sub" id="w1sub">We'll reach out personally when we're ready for you.</p>
   <div class="done-list" id="done-list"></div>
   <div style="width:100%;max-width:400px">
+    <!-- All three fields visible at once + always-visible Continue button.
+         The original sequential-reveal-via-Enter UX was confusing — users
+         expected a button. New flow: type all three fields, click Continue. -->
     <div class="sf vis" id="sf0">
-      <p class="field-hint">What's your full name?</p>
-      <p class="enter-hint">Press Enter to continue</p>
       <div class="fw" id="fw0"><span class="fl">Full name</span><input id="in0" type="text" placeholder="Your full name" autocomplete="name"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter your name</div></div>
     </div>
-    <div class="sf" id="sf1">
-      <p class="field-hint">And your email address?</p>
-      <p class="enter-hint">Press Enter to continue</p>
+    <div class="sf vis" id="sf1">
       <div class="fw" id="fw1"><span class="fl">Email address</span><input id="in1" type="email" placeholder="your@email.com" autocomplete="email"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter a valid email</div></div>
     </div>
-    <div class="sf" id="sf2">
-      <p class="field-hint">Finally, your mobile number.</p>
-      <p class="enter-hint">Press Enter to continue</p>
+    <div class="sf vis" id="sf2">
       <div class="fw" id="fw2"><span class="fl">Mobile number</span><input id="in2" type="tel" placeholder="+44 7700 000000" autocomplete="tel"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter your mobile</div></div>
     </div>
   </div>
-  <button class="btn" id="btn1" style="display:none;margin-top:8px">Continue</button>
+  <button class="btn" id="btn1" style="display:block;margin-top:20px">Reserve my spot →</button>
+  <button class="btn-skip" id="btn1-more" style="margin-top:12px">Tell us a bit more (optional) →</button>
 </div>
 
 <!-- ══ W2 — WHO YOU ARE ══ -->
@@ -138,13 +136,13 @@
   </div>
   <div id="tag-row3" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;min-height:44px;margin-bottom:12px;width:100%;max-width:700px"></div>
   <div class="mina-wrap" id="mw3" style="margin-top:0;margin-bottom:8px"><canvas id="cv3" width="480" height="560"></canvas></div>
-  <button class="btn" onclick="window.ctaGo(&#39;w4&#39;)">See my health world</button>
-  <button class="btn-skip" onclick="window.ctaGo(&#39;w4&#39;)">Skip this step</button>
+  <button class="btn" onclick="window.submitCtaWaitlist&amp;&amp;window.submitCtaWaitlist();window.ctaGo(&#39;w4&#39;)">See my health world</button>
+  <button class="btn-skip" onclick="window.submitCtaWaitlist&amp;&amp;window.submitCtaWaitlist();window.ctaGo(&#39;w4&#39;)">Skip this step</button>
 </div>
 
 <!-- ══ W4 — END ══ -->
 <div class="wave" id="w4">
-  <button class="wave-back" onclick="window.ctaGo(&#39;w3&#39;)" aria-label="Back to previous step">&larr; Back</button>
+  <button class="wave-back" onclick="closeCta();window.scrollTo({top:0,behavior:&#39;smooth&#39;})" aria-label="Back to homepage">&larr; Back to GetMine</button>
   <div id="cosmo" style="position:relative;width:500px;height:500px;flex-shrink:0">
     <svg id="cosmo-svg" style="position:absolute;inset:0;width:500px;height:500px;overflow:visible;pointer-events:none"></svg>
     <div id="cosmo-mina" style="position:absolute;left:130px;top:110px;width:240px;height:280px">

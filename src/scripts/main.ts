@@ -795,7 +795,9 @@ function go(next){
     cur=next;
     document.getElementById('prog-bar').style.width=(progMap[next]||0)+'%';
     if(next==='w4'){
-      submitCtaWaitlist();                                      // POST captured data once on entering final stage
+      // POST is now triggered at the actual submit point (btn1 click for
+      // the short path, "See my health world" for the questionnaire path)
+      // — no longer at w4 entry, so we don't double-post.
       requestAnimationFrame(()=>buildConstellation());
     }
   },440);
@@ -858,7 +860,46 @@ fields.forEach((f,i)=>{
     inp.addEventListener('blur',()=>{if(seqIdx===i)document.getElementById('mw1').classList.remove('bouncing');});
   },200);
 });
-document.getElementById('btn1').addEventListener('click',()=>go('w2'));
+// btn1 = "Reserve my spot" — validate, POST, then skip straight to w4
+// (success). The chip questionnaire is now opt-in via btn1-more.
+function _validateAllFields(){
+  for(let i=0;i<fields.length;i++){
+    const val=document.getElementById(fields[i].inp).value.trim();
+    const fe=document.querySelector('#'+fields[i].fw+' .fe');
+    // Mobile is optional — skip empty check for i===2.
+    if(i===2 && !val){ if(fe) fe.style.display='none'; continue; }
+    if(!val){ if(fe) fe.style.display='block'; document.getElementById(fields[i].inp).focus(); return false; }
+    if(i===1 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){
+      if(fe) fe.style.display='block'; document.getElementById(fields[i].inp).focus(); return false;
+    }
+    if(fe) fe.style.display='none';
+    S[fields[i].key]=val;
+  }
+  return true;
+}
+// Set the success-page first-name immediately on validation pass, so the
+// "All set, [name]" copy is ready before the w4 transition / constellation
+// finishes (avoids a race where the original code's name-inject ran late).
+function _setEndName(){
+  const fn=(document.getElementById('in0').value||'').trim().split(/\s+/)[0];
+  const el=document.getElementById('end-name');
+  if(fn && el) el.textContent=fn;
+}
+document.getElementById('btn1').addEventListener('click',()=>{
+  if(!_validateAllFields()) return;
+  _setEndName();
+  submitCtaWaitlist();
+  go('w4');
+});
+// btn1-more = "Tell us a bit more (optional)" — still validate basic fields,
+// then continue into the chip questionnaire path. POST happens at the end
+// of w3 ("See my health world") with the full data.
+const btn1more=document.getElementById('btn1-more');
+if(btn1more) btn1more.addEventListener('click',()=>{
+  if(!_validateAllFields()) return;
+  _setEndName();
+  go('w2');
+});
 
 // ══ W2 CHIP LOGIC ══
 const nhsNo={val:false};
@@ -1035,6 +1076,10 @@ window._ctaOpen = function(){
   document.getElementById('cta-overlay').classList.add('open');
   document.body.style.overflow='hidden';
 };
+// Expose from inside the IIFE so inline onclick handlers in CtaOverlay.astro
+// (e.g. "See my health world") can call submitCtaWaitlist. Cannot live in the
+// module-level Object.assign below — submitCtaWaitlist is scoped here.
+window.submitCtaWaitlist = submitCtaWaitlist;
 })();
 
 (function(){
