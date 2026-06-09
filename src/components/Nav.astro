@@ -9,7 +9,29 @@
     <a onclick="openBetaPortal()" class="nav-beta">Beta Sign-In</a>
     <button class="nav-cta" onclick="openWaitlist()">Join Early Access</button>
   </div>
-  <div class="nav-hamburger" onclick="openWaitlist()">
+  <button class="nav-hamburger" onclick="openMobileMenu()" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
+
+<!-- ── MOBILE MENU DRAWER ─────────────────────────────────────────
+  Full-screen overlay shown when the hamburger is tapped on mobile.
+  Only the sections that exist on mobile (i.e. not "Why it matters" or
+  "What becomes possible", which are hidden ≤880px) appear here. -->
+<div id="mobile-menu" aria-hidden="true" role="dialog" aria-label="Site menu">
+  <header class="mm-nav">
+    <div class="nav-logo" onclick="closeMobileMenu();window.scrollTo({top:0,behavior:'smooth'})">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
+    <button class="mm-close" onclick="closeMobileMenu()" aria-label="Close menu">×</button>
+  </header>
+  <nav class="mm-body">
+    <ul class="mm-links">
+      <li><a onclick="closeMobileMenu();scrollToSection('our-promise')">Our promise</a></li>
+      <li><a onclick="closeMobileMenu();scrollToSection('early-access-preview')">Early access</a></li>
+      <li><a onclick="closeMobileMenu();scrollToSection('about')">About us</a></li>
+    </ul>
+    <div class="mm-actions">
+      <button class="mm-btn mm-btn-ghost" onclick="closeMobileMenu();openBetaPortal()">Beta Sign-In</button>
+      <button class="mm-btn mm-btn-primary" onclick="closeMobileMenu();openWaitlist()">Join Early Access →</button>
+    </div>
+  </nav>
+</div>

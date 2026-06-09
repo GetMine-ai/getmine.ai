@@ -254,7 +254,137 @@ function startHW(){
   setTimeout(()=>document.getElementById('hw-label').classList.add('on'),600);
 }
 
-function openWaitlist(){ window._ctaOpen && window._ctaOpen(); }
+// Route based on viewport: mobile gets the lightweight single-screen form,
+// desktop gets the elaborate canvas-animated CTA overlay.
+const MOBILE_MQ = '(max-width: 880px)';
+function openWaitlist(){
+  if(typeof window!=='undefined' && window.matchMedia && window.matchMedia(MOBILE_MQ).matches){
+    openMobileWaitlist();
+  } else {
+    window._ctaOpen && window._ctaOpen();
+  }
+}
+
+// ── MOBILE WAITLIST ──────────────────────────────────────────────
+// Simple, animation-free, single-screen form. Posts to the same Apps
+// Script endpoint as submitCtaWaitlist (and submitHW). Used in place of
+// cta-overlay on ≤880px viewports — see openWaitlist() above.
+function _mwShowStage(id){
+  document.querySelectorAll('#mobile-waitlist .mw-stage').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+// Pause/resume the hero video — even though the overlay covers it visually,
+// browsers keep decoding video frames in hidden elements, which burns mobile
+// CPU/battery while the user is in the waitlist form.
+function _pauseBackgroundMedia(pause:boolean){
+  document.querySelectorAll<HTMLVideoElement>('video').forEach(v=>{
+    if(pause){
+      // Remember whether it was playing so we can resume only those that were.
+      (v as any)._wasPlaying = !v.paused;
+      v.pause();
+    } else if((v as any)._wasPlaying){
+      v.play().catch(()=>{ /* autoplay rules may block — ignore */ });
+      (v as any)._wasPlaying = false;
+    }
+  });
+}
+
+function openMobileWaitlist(){
+  _mwShowStage('mw-stage-form');
+  const ov=document.getElementById('mobile-waitlist');
+  if(!ov) return;
+  ov.classList.add('open');
+  ov.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  _pauseBackgroundMedia(true);
+  // Reset any previous error + button label + focus the first field.
+  const err=document.getElementById('mw-error'); if(err) err.textContent='';
+  const btn=document.getElementById('mw-submit') as HTMLButtonElement|null;
+  if(btn){ btn.disabled=false; btn.textContent='Reserve my spot →'; }
+  setTimeout(()=>{const i=document.getElementById('mw-name') as HTMLInputElement|null;if(i)i.focus();},250);
+}
+function closeMobileWaitlist(){
+  const ov=document.getElementById('mobile-waitlist');
+  if(!ov) return;
+  ov.classList.remove('open');
+  ov.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  _pauseBackgroundMedia(false);
+}
+
+// ── MOBILE MENU DRAWER ──────────────────────────────────────────
+function openMobileMenu(){
+  const mm=document.getElementById('mobile-menu');
+  const hamburger=document.querySelector('.nav-hamburger');
+  if(!mm) return;
+  mm.classList.add('open');
+  mm.setAttribute('aria-hidden','false');
+  if(hamburger) hamburger.setAttribute('aria-expanded','true');
+  document.body.style.overflow='hidden';
+}
+function closeMobileMenu(){
+  const mm=document.getElementById('mobile-menu');
+  const hamburger=document.querySelector('.nav-hamburger');
+  if(!mm) return;
+  mm.classList.remove('open');
+  mm.setAttribute('aria-hidden','true');
+  if(hamburger) hamburger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}
+async function submitMobileWaitlist(){
+  const nameEl =document.getElementById('mw-name')  as HTMLInputElement|null;
+  const emailEl=document.getElementById('mw-email') as HTMLInputElement|null;
+  const phoneEl=document.getElementById('mw-phone') as HTMLInputElement|null;
+  const errEl  =document.getElementById('mw-error');
+  const btn    =document.getElementById('mw-submit') as HTMLButtonElement|null;
+  if(!nameEl||!emailEl||!errEl||!btn) return;
+
+  const name =nameEl.value.trim();
+  const email=emailEl.value.trim();
+  const phone=(phoneEl?.value||'').trim();
+  errEl.textContent='';
+
+  if(!name){ errEl.textContent='Please enter your first name.'; nameEl.focus(); return; }
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    errEl.textContent='Please enter a valid email address.';
+    emailEl.focus(); return;
+  }
+  if(!WAITLIST_ENDPOINT||!WAITLIST_ENDPOINT.startsWith('http')){
+    errEl.textContent='Waitlist endpoint not configured.'; return;
+  }
+
+  btn.disabled=true;
+  const originalLabel=btn.textContent;
+  btn.textContent='Saving…';
+
+  const body=new URLSearchParams({
+    name,email,phone,
+    q1_household:'',q2_nhs_app:'',q3_care_mix:'',q4_insurance:'',q5_wearables:'',
+    source:'mobile-waitlist',
+    user_agent:navigator.userAgent,
+    referrer:document.referrer||''
+  });
+  try{
+    await fetch(WAITLIST_ENDPOINT,{method:'POST',body});
+    // Apps Script no-cors returns opaque — we treat any non-thrown response as success.
+    const nameDot=document.getElementById('mw-done-name');
+    if(nameDot){
+      const first=name.split(/\s+/)[0];
+      nameDot.textContent=', '+first+'.';
+    }
+    _mwShowStage('mw-stage-done');
+    // Scroll the done stage into view in case the success message is below
+    // the fold (the form may have been scrolled up by the iOS keyboard).
+    const ov=document.getElementById('mobile-waitlist');
+    if(ov) ov.scrollTop=0;
+  } catch(err){
+    console.error('mobile waitlist submit failed',err);
+    errEl.textContent='Sorry, something went wrong. Try again in a moment.';
+    btn.disabled=false;
+    btn.textContent=originalLabel;
+  }
+}
 
 // ── BETA PORTAL ───────────────────────────────────────────────────
 // Email-gated access for beta cohorts. Hits the same Apps Script endpoint
@@ -967,4 +1097,4 @@ window._ctaOpen = function(){
 })();
 
 // ── Re-expose inline on* handler entry points on window ──
-Object.assign(window, { openWaitlist, closeWaitlist, scrollToSection, selectOption, submitHW, openBetaPortal, closeBetaPortal, submitBetaCheck, resetBetaPortal });
+Object.assign(window, { openWaitlist, closeWaitlist, scrollToSection, selectOption, submitHW, openBetaPortal, closeBetaPortal, submitBetaCheck, resetBetaPortal, openMobileWaitlist, closeMobileWaitlist, submitMobileWaitlist, openMobileMenu, closeMobileMenu });

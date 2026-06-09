@@ -160,3 +160,67 @@
   .wave,.mina-wrap.bouncing canvas,.mina-wrap.spinning canvas,.w2tag,.end-back{transition:none;animation:none}
 }
 
+/* ── MOBILE: scrollable overlay + hidden nav-link bar ─────────────
+   On narrow screens the cta-overlay's centered nav-links overflow and
+   overlap the logo + close button (same root cause as nav.css fix).
+   The wave content is absolutely-positioned and centered, so when it
+   is taller than the viewport (especially with mobile keyboard open)
+   it gets clipped with no way to scroll. Mobile fix: hide nav-links,
+   let the wave scroll inside the overlay. */
+@media (max-width:880px){
+  #cta-overlay nav{padding:14px 18px;height:64px}
+  #cta-overlay .nav-links{display:none}
+  #cta-overlay .cta-close{width:34px;height:34px}
+  #cta-app{padding-top:64px;align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #cta-overlay .wave{position:relative;inset:auto;width:100%;min-height:calc(100vh - 64px);padding:24px 18px 64px;overflow-y:visible}
+  #cta-overlay .wave-back{top:auto;left:18px;position:relative;margin-bottom:14px}
+  #cta-overlay .btn,#cta-overlay .btn-teal{padding:14px 28px;font-size:15px;width:100%;max-width:340px}
+  #cta-overlay .btn-ghost{width:100%;max-width:340px}
+  .mina-wrap canvas{max-width:300px;height:auto}
+}
+@media (max-width:560px){
+  .wave-hl{font-size:clamp(22px,6vw,30px);padding:0 8px}
+  .wave-sub{font-size:15px;padding:0 8px}
+  #cta-overlay .chip{padding:12px 18px;font-size:14px}
+}
+
+/* ── MOBILE WAITLIST ─────────────────────────────────────────────
+   Simple, full-screen form shown on ≤880px viewports instead of the
+   canvas-heavy cta-overlay. Hidden on desktop by default — only the
+   `openMobileWaitlist()` JS adds .open. */
+#mobile-waitlist{position:fixed;inset:0;z-index:9999;background:#060C14;visibility:hidden;pointer-events:none;opacity:0;transition:opacity .25s cubic-bezier(.22,1,.36,1);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#mobile-waitlist.open{visibility:visible;pointer-events:all;opacity:1}
+#mobile-waitlist .mw-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;height:64px;border-bottom:1px solid rgba(29,222,200,.08);background:rgba(6,12,20,.97);backdrop-filter:blur(20px);position:sticky;top:0;z-index:2}
+#mobile-waitlist .nav-logo{font-family:Georgia,'Times New Roman',serif;font-size:24px;color:var(--cream);letter-spacing:-.01em;font-weight:400;display:flex;align-items:baseline}
+#mobile-waitlist .nav-logo .logo-mine{color:var(--teal-deck)}
+#mobile-waitlist .nav-logo .logo-ai{color:var(--cream)}
+#mobile-waitlist .mw-close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#F0F4F8;font-size:20px;line-height:1;padding:0}
+.mw-stage{display:none;flex-direction:column;align-items:center;padding:36px 22px 64px;max-width:440px;margin:0 auto;text-align:center}
+.mw-stage.active{display:flex}
+.mw-eyebrow{color:var(--teal-deck);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'DM Sans',sans-serif;margin-bottom:14px}
+.mw-h{font-family:'Fraunces',serif;font-size:clamp(28px,7vw,40px);font-weight:300;font-style:italic;color:#F0F4F8;line-height:1.12;margin:0 0 12px;letter-spacing:-.02em}
+.mw-h em{font-style:normal;color:var(--teal-deck);font-weight:400}
+.mw-sub{font-family:'DM Sans',sans-serif;font-size:15px;color:rgba(240,244,248,.78);line-height:1.55;margin:0 0 28px;letter-spacing:-.01em}
+.mw-form{display:flex;flex-direction:column;gap:14px;width:100%}
+.mw-field{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left}
+.mw-label{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(240,244,248,.55)}
+.mw-opt{text-transform:none;letter-spacing:0;color:rgba(240,244,248,.4);font-weight:400}
+.mw-inp{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:16px;color:#F0F4F8;transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none}
+.mw-inp:focus{outline:none;border-color:var(--teal-deck);background:rgba(29,222,200,.06)}
+.mw-inp::placeholder{color:rgba(240,244,248,.32)}
+.mw-error{min-height:18px;color:#FF6B7A;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-align:left;padding-left:2px}
+.mw-error:empty{min-height:0}
+.mw-submit{background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:16px 28px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:-.01em;width:100%;margin-top:6px;box-shadow:0 2px 12px rgba(0,0,0,.25);transition:transform .2s,opacity .2s}
+.mw-submit:disabled{opacity:.55;cursor:not-allowed}
+.mw-submit:not(:disabled):active{transform:translateY(1px)}
+.mw-submit-ghost{background:rgba(255,255,255,.06);color:#F0F4F8;border:1px solid rgba(255,255,255,.16);margin-top:24px;box-shadow:none}
+.mw-trust{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(240,244,248,.42);line-height:1.45;margin:14px 0 0;text-align:center}
+.mw-tick{width:64px;height:64px;margin-bottom:18px}
+.mw-tick svg{width:100%;height:100%;display:block}
+
+/* Lock cta-overlay nav-links bar — already hidden on mobile via earlier
+   rule, but stop the cta-overlay from opening at all on mobile sizes;
+   openWaitlist() routes to MobileWaitlist instead. */
+@media (max-width:880px){
+  #cta-overlay{display:none !important}
+}

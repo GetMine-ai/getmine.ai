@@ -13,4 +13,40 @@ nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
 .nav-hamburger span{width:22px;height:1.5px;background:#1DDEC8;display:block;transition:all .3s}
 
+/* ── MOBILE NAV ──────────────────────────────────────── */
+/* Hide the desktop link bar and surface the hamburger on narrow screens.
+   Without this, the seven nav items overflow horizontally and overlap the
+   logo + CTA button (regression introduced during the Astro refactor). */
+@media (max-width:880px){
+  nav{padding:18px 20px;height:72px}
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+}
 
+
+/* ── MOBILE MENU DRAWER ─────────────────────────────────────────
+   Full-screen overlay that slides down when the hamburger is tapped.
+   Replaces the previous "hamburger goes straight to waitlist" stub.
+   Hidden on desktop — only the hamburger is the trigger and that's
+   already display:none on ≥881px. */
+#mobile-menu{position:fixed;inset:0;z-index:9998;background:#060C14;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .25s cubic-bezier(.22,1,.36,1);overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+#mobile-menu.open{visibility:visible;opacity:1;pointer-events:all}
+#mobile-menu .mm-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;height:64px;border-bottom:1px solid rgba(29,222,200,.08);background:rgba(6,12,20,.97);backdrop-filter:blur(20px);flex-shrink:0}
+#mobile-menu .nav-logo{font-family:Georgia,'Times New Roman',serif;font-size:24px;color:var(--cream);letter-spacing:-.01em;font-weight:400;display:flex;align-items:baseline;cursor:pointer}
+#mobile-menu .nav-logo .logo-mine{color:var(--teal-deck)}
+#mobile-menu .nav-logo .logo-ai{color:var(--cream)}
+#mobile-menu .mm-close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#F0F4F8;font-size:20px;line-height:1;padding:0}
+#mobile-menu .mm-body{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:32px 22px 40px;max-width:440px;width:100%;margin:0 auto}
+#mobile-menu .mm-links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+#mobile-menu .mm-links li{border-bottom:1px solid rgba(255,255,255,.06)}
+#mobile-menu .mm-links a{display:block;padding:22px 4px;font-family:'Fraunces',serif;font-size:24px;font-weight:300;font-style:italic;color:#F0F4F8;text-decoration:none;letter-spacing:-.015em;cursor:pointer;transition:color .15s}
+#mobile-menu .mm-links a:hover,#mobile-menu .mm-links a:active{color:var(--teal-deck)}
+#mobile-menu .mm-actions{display:flex;flex-direction:column;gap:12px;margin-top:36px}
+#mobile-menu .mm-btn{border:none;border-radius:100px;padding:16px 28px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:-.01em;text-align:center;transition:transform .15s,opacity .15s}
+#mobile-menu .mm-btn:active{transform:translateY(1px)}
+#mobile-menu .mm-btn-ghost{background:rgba(255,255,255,.06);color:#F0F4F8;border:1px solid rgba(255,255,255,.16)}
+#mobile-menu .mm-btn-primary{background:var(--orange);color:#060C14;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+
+/* Ensure the hamburger button itself looks like the existing trio of
+   lines — it's now a <button> so reset native chrome. */
+.nav-hamburger{background:none;border:none;padding:6px;cursor:pointer;align-items:center;justify-content:center}
