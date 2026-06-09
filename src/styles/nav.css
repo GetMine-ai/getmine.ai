@@ -1,0 +1,16 @@
+/* ── NAV ─────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 36px;height:80px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:border-color .4s,background .4s}
+nav.scroll{background:rgba(6,12,20,.96);backdrop-filter:blur(24px);border-color:rgba(29,222,200,.08)}
+.nav-logo{font-family:Georgia,'Times New Roman',serif;font-size:26px;color:var(--cream);letter-spacing:-.01em;cursor:pointer;display:flex;align-items:baseline;font-weight:400}
+.nav-logo .logo-mine{color:var(--teal-deck)}
+.nav-logo .logo-ai{color:var(--cream)}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-links a{font-size:16px;color:#F0F4F8;text-decoration:none;transition:color .2s;cursor:pointer;font-weight:500;letter-spacing:-.01em}
+.nav-links a:hover{color:#1DDEC8}
+.nav-cta{background:#F0F4F8;color:#060C14;border:none;border-radius:100px;padding:11px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .22s cubic-bezier(.22,1,.36,1);letter-spacing:-.01em;box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 2px 8px rgba(0,0,0,.2)}
+.nav-cta:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 20px rgba(0,0,0,.25)}
+.nav-cta:active{transform:translateY(0)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-hamburger span{width:22px;height:1.5px;background:#1DDEC8;display:block;transition:all .3s}
+
+

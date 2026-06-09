@@ -1,0 +1,76 @@
+---
+// Document shell for the main marketing site. Head/meta ported from the original
+// index.html, parameterised so other pages can reuse it. CSS is imported here in
+// the original source order so the global cascade is preserved exactly.
+import '../styles/global.css';
+import '../styles/nav.css';
+import '../styles/hero.css';
+import '../styles/sections.css';
+import '../styles/overlays.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogDescription?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  locale?: string;
+}
+
+const {
+  title = 'GetMine.ai | Your health. Your data. Your rules.',
+  description = 'Your health. Your data. Your rules. All your health data: organised, private, and working for you. Join the GetMine.ai waitlist.',
+  ogDescription = 'All your health data: organised, private, and working for you.',
+  canonical = 'https://getmine.ai/',
+  ogImage = 'https://getmine.ai/og-image.png',
+  ogType = 'website',
+  locale = 'en_GB',
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+
+<!-- ── SEO ──────────────────────────────────────────────────────── -->
+<meta name="description" content={description}>
+<meta name="author" content="GetMine.ai">
+<meta name="theme-color" content="#060C14">
+<link rel="canonical" href={canonical}>
+
+<!-- ── Open Graph (Facebook, LinkedIn, Slack, Discord, iMessage) ── -->
+<meta property="og:type" content={ogType}>
+<meta property="og:site_name" content="GetMine.ai">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={ogDescription}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GetMine.ai | your health, your data, your rules">
+<meta property="og:locale" content={locale}>
+
+<!-- ── Twitter Card ───────────────────────────────────────────── -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={ogDescription}>
+<meta name="twitter:image" content={ogImage}>
+<meta name="twitter:image:alt" content="GetMine.ai | your health, your data, your rules">
+
+<!-- ── Fonts (Google Fonts: Fraunces for display, DM Sans for body) ── -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
+
+<!-- ── Favicons + Apple touch icon ─────────────────────────────── -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body>
+<slot />
+</body>
+</html>

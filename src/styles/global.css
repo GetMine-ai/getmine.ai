@@ -1,0 +1,22 @@
+:root{
+  --navy:#060C14;
+  --navy2:#080F18;
+  --teal:#1DDEC8;
+  --teal-deck:#1DBFB0;       /* deck-matched teal — Mine. + Your data. (TEMPO beat 2) */
+  --taupe:#C7C2B6;           /* deck-matched taupe — Your rules. (TEMPO beat 3) */
+  --cream:#E8FAF8;            /* deck-matched cream — text (TEMPO beat 1) */
+  --cream-warm:#F4EDDD;       /* warm surface cream — vault card, future card surfaces */
+  --orange:#FF8855;          /* Beta Sign-In CTA */
+  --orange-hi:#FF9D6E;        /* Beta Sign-In hover */
+  --green:#4CD680;
+  --muted:#F0F4F8;
+  --text:#F0F4F8;
+  --text2:rgba(240,244,248,.88);
+  --border:rgba(255,255,255,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+::selection{background:rgba(29,222,200,.22);color:#fff}
+::-webkit-scrollbar{width:0}
+

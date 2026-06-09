@@ -1,0 +1,97 @@
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-cv" width="1920" height="992"></canvas>
+  <div class="hero-layout">
+    <div>
+      <span class="hero-live-badge"><span class="hero-live-dot" aria-hidden="true"></span>Live Beta</span>
+      <p class="hero-kicker">Your personal health vault</p>
+      <h1 class="hero-h1"><span class="hero-h1-line">Your health.</span><span class="hero-h1-line hero-h1-data">Your data.</span><span class="hero-h1-line hero-h1-rules">Your rules.</span></h1>
+      <p class="hero-subtitle">All your health data: organised, private, and working for you.</p>
+      <p class="hero-disclaimer">Not a doctor &middot; Not a diagnostic service</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openWaitlist()">Join Early Access</button>
+      </div>
+    </div>
+
+    <div class="hero-visual-wrap">
+      <div class="hero-phone-stage" aria-label="Mina product demo loop">
+        <video class="hero-phone-video"
+               autoplay muted loop playsinline
+               preload="auto"
+               poster="/assets/getmine-hero-poster.jpg"
+               aria-label="GetMine product loop">
+          <source src="/assets/getmine-hero-loop.mp4" type="video/mp4">
+        </video>
+        <div class="threads-container" aria-hidden="true">
+          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <path class="thread" d="M200,50 C120,80 80,120 200,160"/>
+            <path class="thread" d="M200,90 C100,120 60,160 200,200"/>
+            <path class="thread" d="M200,130 C110,160 70,200 200,240"/>
+            <circle class="node" cx="110" cy="120" r="2.5"/>
+            <circle class="node" cx="85" cy="150" r="2.5"/>
+            <circle class="node" cx="105" cy="180" r="2.5"/>
+            <circle class="particle" cx="140" cy="110" r="1.2"/>
+            <circle class="particle" cx="90" cy="135" r="1"/>
+            <circle class="particle" cx="130" cy="170" r="1"/>
+            <circle class="particle" cx="160" cy="220" r="1"/>
+            <circle class="particle" cx="120" cy="200" r="1.2"/>
+          </svg>
+        </div>
+        <div class="threads-container threads-right" aria-hidden="true">
+          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="threadGradR" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+            <path class="thread" d="M200,80 C120,110 80,150 200,190"/>
+            <path class="thread" d="M200,140 C110,170 70,210 200,240"/>
+            <circle class="node" cx="105" cy="145" r="2.5"/>
+            <circle class="node" cx="100" cy="200" r="2.5"/>
+            <circle class="particle" cx="135" cy="125" r="1.1"/>
+            <circle class="particle" cx="90" cy="175" r="1"/>
+            <circle class="particle" cx="130" cy="225" r="1"/>
+          </svg>
+        </div>
+      </div>
+
+      <article class="hero-cue hero-cue-a" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">NHS Records</span>
+          <span class="hero-cue-status">Imported</span>
+        </header>
+        <p class="hero-cue-big">509 GP records</p>
+        <p class="hero-cue-body">17 years of memory</p>
+      </article>
+      <article class="hero-cue hero-cue-b" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">Health Vault</span>
+          <span class="hero-cue-status">Connected</span>
+        </header>
+        <p class="hero-cue-big">4 sources</p>
+        <p class="hero-cue-body">NHS &middot; Letters &middot; Emails &middot; Snaps</p>
+      </article>
+      <article class="hero-cue hero-cue-c" aria-hidden="true">
+        <header class="hero-cue-head">
+          <span class="hero-cue-label">Memory Found</span>
+          <span class="hero-cue-status">Longitudinal</span>
+        </header>
+        <p class="hero-cue-big">ACL reconstruction 2020</p>
+        <p class="hero-cue-body">Connected to knee question today</p>
+      </article>
+      <article class="hero-cue hero-cue-d" aria-hidden="true">
+        <p class="hero-cue-big hero-cue-big-italic">Your health memory</p>
+        <p class="hero-cue-body hero-cue-body-lead">working for you</p>
+      </article>
+    </div>
+  </div>
+</section>

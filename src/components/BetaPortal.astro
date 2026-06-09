@@ -1,0 +1,73 @@
+<!-- BETA PORTAL — email-gated install access for beta cohorts -->
+<section id="beta-portal">
+  <button class="bp-close" onclick="closeBetaPortal()">×</button>
+  <div class="bp-wrap">
+
+    <!-- STAGE 1: Email gate -->
+    <div class="bp-stage active" id="bp-stage-gate">
+      <div class="bp-eye">Beta Access</div>
+      <h2 class="bp-h">Welcome back, <em>beta tester</em></h2>
+      <p class="bp-sub">Enter the email you used to sign up for the beta. We'll unlock your download.</p>
+      <div class="bp-form">
+        <input class="bp-inp" id="bp-email" type="email" placeholder="your@email.com" autocomplete="email" onkeydown="if(event.key==='Enter'){submitBetaCheck()}">
+        <button class="bp-submit" id="bp-submit" onclick="submitBetaCheck()">Unlock my download →</button>
+        <div class="bp-error" id="bp-error"></div>
+      </div>
+      <div class="bp-link">Not on the list? <a onclick="closeBetaPortal();setTimeout(openWaitlist,400)">Join Early Access</a></div>
+    </div>
+
+    <!-- STAGE 2: Checking spinner -->
+    <div class="bp-stage" id="bp-stage-checking">
+      <div class="bp-eye">Checking…</div>
+      <div class="bp-spinner"></div>
+      <p class="bp-sub">One moment.</p>
+    </div>
+
+    <!-- STAGE 3: Allowed — install view -->
+    <div class="bp-stage bp-stage-install" id="bp-stage-install">
+      <h2 class="bp-greet">Welcome, <em id="bp-greet-name">beta tester</em>.</h2>
+      <div class="bp-pill" id="bp-cohort-pill">Wave 2</div>
+      <p class="bp-sub" style="max-width:520px;margin-top:6px">Pick your operating system below. We'll send you onboarding instructions and your consent form by email.</p>
+
+      <div class="bp-section-h">Download GetMine</div>
+      <div class="bp-os-grid">
+        <div class="bp-os bp-os-disabled" onclick="event.preventDefault()" title="Available shortly: Apple signing in progress">
+          <div class="bp-os-icon">🍎</div>
+          <div class="bp-os-name">macOS</div>
+          <div class="bp-os-note">Coming shortly</div>
+        </div>
+        <div class="bp-os bp-os-disabled" onclick="event.preventDefault()" title="Available shortly">
+          <div class="bp-os-icon">🪟</div>
+          <div class="bp-os-name">Windows</div>
+          <div class="bp-os-note">Coming shortly</div>
+        </div>
+        <div class="bp-os bp-os-disabled" onclick="event.preventDefault()" title="Available shortly">
+          <div class="bp-os-icon">🐧</div>
+          <div class="bp-os-name">Linux</div>
+          <div class="bp-os-note">Coming shortly</div>
+        </div>
+      </div>
+
+      <div class="bp-helper">
+        <h4>What to do next</h4>
+        <ul>
+          <li>Check your inbox. We've sent you the <a href="#" id="bp-consent-link">consent form</a> and onboarding details.</li>
+          <li>Once your installer download is ready you'll receive a follow-up note with the link.</li>
+          <li>Need help or have a question? Reach us at <a href="mailto:beta@getmine.ai">beta@getmine.ai</a>.</li>
+        </ul>
+      </div>
+
+      <div class="bp-signout" onclick="resetBetaPortal()">Use a different email</div>
+    </div>
+
+    <!-- STAGE 4: Denied -->
+    <div class="bp-stage" id="bp-stage-denied">
+      <div class="bp-eye">Not yet</div>
+      <h2 class="bp-h">This email isn't on the <em>beta list</em>.</h2>
+      <p class="bp-sub">If you think this is a mistake, double-check the address you signed up with, or get in touch at <a href="mailto:beta@getmine.ai" style="color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(29,222,200,.3)">beta@getmine.ai</a>.</p>
+      <button class="bp-submit" onclick="resetBetaPortal()" style="background:rgba(255,255,255,.07);color:#F0F4F8;border:1px solid rgba(255,255,255,.18)">Try a different email</button>
+      <div class="bp-link" style="margin-top:14px">Want to join the next wave? <a onclick="closeBetaPortal();setTimeout(openWaitlist,400)">Join Early Access</a></div>
+    </div>
+
+  </div>
+</section>

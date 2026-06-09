@@ -1,0 +1,171 @@
+<!-- ══ CTA OVERLAY ══ -->
+<div id="cta-overlay">
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo" onclick="closeCta()">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
+  <div class="nav-links">
+    <a onclick="closeCtaAndScroll(&#39;why-it-matters&#39;)">Why it matters</a>
+    <a onclick="closeCtaAndScroll(&#39;our-promise&#39;)">Our promise</a>
+    <a onclick="closeCtaAndScroll(&#39;why-getmine&#39;)">What becomes possible</a>
+    <a onclick="closeCtaAndScroll(&#39;early-access-preview&#39;)">Early access</a>
+    <a onclick="closeCtaAndScroll(&#39;about&#39;)">About us</a>
+  </div>
+  <button class="cta-close" onclick="closeCta()" aria-label="Close">&times;</button>
+</nav>
+<div id="prog"><div id="prog-bar"></div></div>
+
+<div id="cta-app">
+<div class="bg-glow"></div>
+
+<!-- ══ W1 — CONTACT ══ -->
+<div class="wave active" id="w1">
+  <div class="mina-wrap bouncing" id="mw1"><canvas id="cv1" width="480" height="560"></canvas></div>
+  <div class="wave-step">Step 1 of 3</div>
+  <h1 class="wave-hl" id="w1hl">Let's get you <em>on the list</em></h1>
+  <p class="wave-sub" id="w1sub">We'll reach out personally when we're ready for you.</p>
+  <div class="done-list" id="done-list"></div>
+  <div style="width:100%;max-width:400px">
+    <div class="sf vis" id="sf0">
+      <p class="field-hint">What's your full name?</p>
+      <p class="enter-hint">Press Enter to continue</p>
+      <div class="fw" id="fw0"><span class="fl">Full name</span><input id="in0" type="text" placeholder="Your full name" autocomplete="name"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter your name</div></div>
+    </div>
+    <div class="sf" id="sf1">
+      <p class="field-hint">And your email address?</p>
+      <p class="enter-hint">Press Enter to continue</p>
+      <div class="fw" id="fw1"><span class="fl">Email address</span><input id="in1" type="email" placeholder="your@email.com" autocomplete="email"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter a valid email</div></div>
+    </div>
+    <div class="sf" id="sf2">
+      <p class="field-hint">Finally, your mobile number.</p>
+      <p class="enter-hint">Press Enter to continue</p>
+      <div class="fw" id="fw2"><span class="fl">Mobile number</span><input id="in2" type="tel" placeholder="+44 7700 000000" autocomplete="tel"><div class="fe" style="font-size:13px;color:#FF6B7A;margin-top:4px;padding-left:2px;display:none;font-weight:600">Please enter your mobile</div></div>
+    </div>
+  </div>
+  <button class="btn" id="btn1" style="display:none;margin-top:8px">Continue</button>
+</div>
+
+<!-- ══ W2 — WHO YOU ARE ══ -->
+<div class="wave" id="w2">
+  <button class="wave-back" onclick="window.ctaGo(&#39;w1&#39;)" aria-label="Back to previous step">&larr; Back</button>
+  <div class="mina-wrap" id="mw2"><canvas id="cv2" width="480" height="560"></canvas></div>
+  <div id="tag-row"></div>
+  <div class="wave-step">Step 2 of 3</div>
+  <h1 class="wave-hl">Tell Mina how your <em>health world</em> is set up</h1>
+  <p class="wave-sub">This helps Mina personalise your health picture. Tap to select — tap again to deselect.</p>
+  <div style="display:flex;gap:32px;width:100%;max-width:680px;justify-content:center">
+    <div style="flex:1">
+      <div class="chip-group">
+        <div class="group-label" style="color:#1DDEC8">Your household</div>
+        <div class="chips" id="g-household">
+          <div class="chip c-teal" tabindex="0" role="button" data-v="Just me" data-excl="household" data-bg="#1DDEC8" data-c="#060C14">Just me</div>
+          <div class="chip c-teal" tabindex="0" role="button" data-v="Me + family" data-excl="household" data-bg="#1DDEC8" data-c="#060C14">Me + family</div>
+        </div>
+      </div>
+      <div class="chip-group">
+        <div class="group-label" style="color:var(--blue)">NHS access</div>
+        <div class="chips" id="g-nhs">
+          <div class="chip c-blue" tabindex="0" role="button" data-v="NHS App" data-excl="nhs" data-nhs="yes" data-bg="#4B8FE8" data-c="#fff">I use the NHS App</div>
+          <div class="chip c-blue" tabindex="0" role="button" data-v="Not yet" data-excl="nhs" data-nhs="no" data-bg="#4B8FE8" data-c="#fff">Not yet</div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="chip-group">
+        <div class="group-label" style="color:var(--amber)">Your coverage</div>
+        <div class="chips" style="flex-direction:column;gap:9px" id="g-coverage">
+          <div class="chip c-amber" tabindex="0" role="button" data-v="GP registered" data-bg="#F0A030" data-c="#060C14">Registered with a GP</div>
+          <div class="chip c-amber" tabindex="0" role="button" data-v="Private healthcare" data-bg="#F0A030" data-c="#060C14">Private healthcare</div>
+          <div class="chip c-amber" tabindex="0" role="button" data-v="Health insurance" data-bg="#F0A030" data-c="#060C14">Health insurance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn" id="btn2" style="margin-top:16px">Continue</button>
+  <button class="btn-skip" onclick="window.ctaGo(&#39;w3&#39;)">Skip this step</button>
+</div>
+
+<!-- ══ NHS INTERSTITIAL ══ -->
+<div class="wave" id="w-nhs">
+  <div class="nhs-box">
+    <div class="nhs-icon">📱</div>
+    <div class="nhs-hl">Before you go — one important step.</div>
+    <div class="nhs-body">The NHS App gives you free, permanent access to your GP records, test results, and appointments. Two minutes to set up — yours forever.<br><br><a href="https://www.nhs.uk/nhs-app/" target="_blank" class="nhs-link">Download the NHS App →</a></div>
+    <button class="btn-teal" onclick="window.ctaGo(&#39;w3&#39;)" style="display:block;margin:0 auto 12px">I'll set it up</button>
+    <button class="btn-ghost" onclick="window.ctaGo(&#39;w3&#39;)">Continue without it</button>
+  </div>
+</div>
+
+<!-- ══ W3 — HEALTH DATA ══ -->
+<div class="wave" id="w3">
+  <button class="wave-back" onclick="window.ctaGo(&#39;w2&#39;)" aria-label="Back to previous step">&larr; Back</button>
+  <div class="wave-step">Step 3 of 3</div>
+  <h1 class="wave-hl">What health data do <em>you</em> already have?</h1>
+  <p class="wave-sub" style="margin-bottom:14px">Select all that apply — nothing is too small. Mina will start building your picture.</p>
+  <div class="w3-cols">
+    <div class="w3-col">
+      <div class="group-label" style="color:var(--purple)">Wearables</div>
+      <div class="chips" id="g-wear">
+        <div class="chip c-purple" tabindex="0" role="button" data-v="Sleep tracker" data-bg="#9B6DFF" data-c="#fff">Sleep tracker</div>
+        <div class="chip c-purple" tabindex="0" role="button" data-v="Fitness tracker" data-bg="#9B6DFF" data-c="#fff">Fitness tracker</div>
+        <div class="chip c-purple" tabindex="0" role="button" data-v="Heart &amp; HRV" data-bg="#9B6DFF" data-c="#fff">Heart &amp; HRV</div>
+        <div class="chip c-purple" tabindex="0" role="button" data-v="Glucose monitor" data-bg="#9B6DFF" data-c="#fff">Glucose monitor</div>
+      </div>
+    </div>
+    <div class="w3-col">
+      <div class="group-label" style="color:var(--coral)">Tests &amp; results</div>
+      <div class="chips" id="g-tests">
+        <div class="chip c-coral" tabindex="0" role="button" data-v="Blood tests" data-bg="#FF6B6B" data-c="#fff">Blood tests</div>
+        <div class="chip c-coral" tabindex="0" role="button" data-v="Scans &amp; imaging" data-bg="#FF6B6B" data-c="#fff">Scans &amp; imaging</div>
+        <div class="chip c-coral" tabindex="0" role="button" data-v="Allergy tests" data-bg="#FF6B6B" data-c="#fff">Allergy tests</div>
+      </div>
+    </div>
+    <div class="w3-col">
+      <div class="group-label" style="color:var(--green)">Clinical records</div>
+      <div class="chips" id="g-clinical">
+        <div class="chip c-green" tabindex="0" role="button" data-v="GP letters" data-bg="#3DD68C" data-c="#060C14">GP letters</div>
+        <div class="chip c-green" tabindex="0" role="button" data-v="Specialist letters" data-bg="#3DD68C" data-c="#060C14">Specialist letters</div>
+        <div class="chip c-green" tabindex="0" role="button" data-v="Discharge notes" data-bg="#3DD68C" data-c="#060C14">Discharge notes</div>
+      </div>
+    </div>
+    <div class="w3-col">
+      <div class="group-label" style="color:var(--amber)">Pharmacy</div>
+      <div class="chips" id="g-pharma">
+        <div class="chip c-amber" tabindex="0" role="button" data-v="Prescriptions" data-bg="#F0A030" data-c="#060C14">Prescriptions</div>
+        <div class="chip c-amber" tabindex="0" role="button" data-v="Medication list" data-bg="#F0A030" data-c="#060C14">Medication list</div>
+        <div class="chip c-gray" tabindex="0" role="button" data-v="Other" data-bg="rgba(240,244,248,.25)" data-c="#F0F4F8">Other</div>
+      </div>
+    </div>
+  </div>
+  <div id="tag-row3" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;min-height:44px;margin-bottom:12px;width:100%;max-width:700px"></div>
+  <div class="mina-wrap" id="mw3" style="margin-top:0;margin-bottom:8px"><canvas id="cv3" width="480" height="560"></canvas></div>
+  <button class="btn" onclick="window.ctaGo(&#39;w4&#39;)">See my health world</button>
+  <button class="btn-skip" onclick="window.ctaGo(&#39;w4&#39;)">Skip this step</button>
+</div>
+
+<!-- ══ W4 — END ══ -->
+<div class="wave" id="w4">
+  <button class="wave-back" onclick="window.ctaGo(&#39;w3&#39;)" aria-label="Back to previous step">&larr; Back</button>
+  <div id="cosmo" style="position:relative;width:500px;height:500px;flex-shrink:0">
+    <svg id="cosmo-svg" style="position:absolute;inset:0;width:500px;height:500px;overflow:visible;pointer-events:none"></svg>
+    <div id="cosmo-mina" style="position:absolute;left:130px;top:110px;width:240px;height:280px">
+      <canvas id="cv4" width="480" height="560" style="width:240px;height:280px;display:block"></canvas>
+    </div>
+  </div>
+  <p class="end-super">This is your health world</p>
+  <div class="end-hl" style="margin-top:4px">All set, <em id="end-name">friend</em>.<br>Mina's got you.</div>
+  <p class="end-sub">Everything you've shared is already taking shape. Mina will be in touch very soon — your health world is ready to come together.</p>
+  <a href="#" class="end-back" onclick="closeCta();window.scrollTo({top:0,behavior:'smooth'});return false;">&larr; Back to GetMine</a>
+
+</div>
+
+
+<!-- ══ NHS PROMPT — fixed bottom bar ══ -->
+<div id="nhs-prompt" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(6,12,20,.96);border-top:1.5px solid rgba(29,222,200,.3);backdrop-filter:blur(16px);padding:16px 32px;display:none;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0">
+    <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#1DDEC8;font-weight:700;white-space:nowrap">One thing worth doing</div>
+    <div style="font-size:15px;color:rgba(240,244,248,.85);line-height:1.5">The NHS App gives you free access to your GP records and test results — two minutes to set up, yours forever.</div>
+  </div>
+  <a href="https://www.nhs.uk/nhs-app/" target="_blank" style="flex-shrink:0;background:#1DDEC8;color:#060C14;border-radius:100px;padding:12px 28px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap">Download the NHS App →</a>
+</div>
+</div>
+</div>

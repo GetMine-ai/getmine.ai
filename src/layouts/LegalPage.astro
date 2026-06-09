@@ -1,0 +1,50 @@
+---
+// Shared chrome for the plain-text legal pages (privacy / terms / trust).
+// Collapses the head + page-nav + footer that the three standalone HTML files
+// each duplicated. Page-specific copy goes in the <slot/>.
+import '../styles/legal.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+}
+
+const { title, description, canonical } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="theme-color" content="#060C14">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href={canonical}>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body>
+
+<header class="page-nav">
+  <a class="page-logo" href="index.html">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
+  <a class="page-back" href="index.html">&larr; Back to home</a>
+</header>
+
+<main>
+  <article class="page-inner">
+    <slot />
+  </article>
+</main>
+
+<footer>&copy; 2026 GetMine. All rights reserved.</footer>
+
+</body>
+</html>
