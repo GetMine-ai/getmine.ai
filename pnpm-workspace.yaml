@@ -1,0 +1,7 @@
+# pnpm 11 asks which dependency postinstall build scripts may run.
+# This is a fully static site, so both are skipped:
+#   - esbuild ships its platform binary via an optional dependency (no script needed)
+#   - sharp's image optimisation is never invoked (images are plain files in public/)
+allowBuilds:
+  esbuild: false
+  sharp: false
