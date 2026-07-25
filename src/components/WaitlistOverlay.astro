@@ -1,71 +1,44 @@
-<!-- WAITLIST OVERLAY -->
-<section id="waitlist">
-  <button class="wl-close" onclick="closeWaitlist()">×</button>
-  <canvas id="wl-cv" width="1920" height="992"></canvas>
+<!-- DESKTOP ACCESS REQUEST OVERLAY -->
+<section
+  id="waitlist"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="hw-title"
+>
+  <button class="wl-close" onclick="closeWaitlist()" aria-label="[COPY TBC]">×</button>
+  <canvas id="wl-cv" width="1920" height="992" aria-hidden="true"></canvas>
   <div class="wl-ui">
+    <div class="hw-label on" id="hw-label">[COPY TBC]</div>
 
-    <!-- BEAT 1: Mina intro label -->
-    <div class="hw-label" id="hw-label">Building your health world</div>
-
-    <!-- BEAT 2: Questions -->
-    <div class="hw-questions" id="hw-questions">
-      <div class="hw-q active" id="hwq-0">
-        <div class="hw-q-text">Who's this for?</div>
-        <div class="hw-options">
-          <button class="hw-opt" onclick="selectOption(0,&#39;Just me&#39;,&#39;person&#39;)">Just me</button>
-          <button class="hw-opt" onclick="selectOption(0,&#39;Me &amp; Family&#39;,&#39;family&#39;)">Me &amp; Family</button>
-        </div>
-      </div>
-      <div class="hw-q" id="hwq-1">
-        <div class="hw-q-text">NHS App connected?</div>
-        <div class="hw-options">
-          <button class="hw-opt" onclick="selectOption(1,&#39;NHS App&#39;,&#39;nhs&#39;)">Yes, NHS App</button>
-          <button class="hw-opt" onclick="selectOption(1,&#39;NHS only&#39;,&#39;nhs&#39;)">Not yet</button>
-        </div>
-      </div>
-      <div class="hw-q" id="hwq-2">
-        <div class="hw-q-text">Private health access?</div>
-        <div class="hw-options">
-          <button class="hw-opt" onclick="selectOption(2,&#39;NHS only&#39;,&#39;shield&#39;)">NHS only</button>
-          <button class="hw-opt" onclick="selectOption(2,&#39;NHS &amp; Private&#39;,&#39;shield&#39;)">NHS &amp; Private</button>
-        </div>
-      </div>
-      <div class="hw-q" id="hwq-3">
-        <div class="hw-q-text">Private insurance?</div>
-        <div class="hw-options">
-          <button class="hw-opt" onclick="selectOption(3,&#39;Insured&#39;,&#39;insurance&#39;)">Yes, insured</button>
-          <button class="hw-opt" onclick="selectOption(3,&#39;No insurance&#39;,&#39;insurance&#39;)">Not currently</button>
-        </div>
-      </div>
-      <div class="hw-q" id="hwq-4">
-        <div class="hw-q-text">Wearables?</div>
-        <div class="hw-options hw-options-multi">
-          <button class="hw-opt" onclick="selectOption(4,&#39;Fitness tracker&#39;,&#39;wearable&#39;)">Fitness tracker</button>
-          <button class="hw-opt" onclick="selectOption(4,&#39;Sleep tracker&#39;,&#39;wearable&#39;)">Sleep tracker</button>
-          <button class="hw-opt" onclick="selectOption(4,&#39;Smart watch&#39;,&#39;wearable&#39;)">Smart watch</button>
-          <button class="hw-opt" onclick="selectOption(4,&#39;No wearables&#39;,&#39;wearable&#39;)">None yet</button>
-        </div>
-      </div>
+    <div class="hw-capture active" id="hw-capture">
+      <div class="hw-cap-label" id="hw-title">[COPY TBC]</div>
+      <div class="hw-cap-sub">[COPY TBC]</div>
+      <form class="hw-cap-form" onsubmit="submitHW(); return false;">
+        <label class="hw-cap-sub" for="hw-email">[COPY TBC]</label>
+        <input
+          class="hw-inp"
+          id="hw-email"
+          type="email"
+          placeholder="[COPY TBC]"
+          autocomplete="email"
+          inputmode="email"
+          autocapitalize="off"
+          autocorrect="off"
+          required
+        >
+        <div class="mw-error" id="hw-error" aria-live="polite"></div>
+        <button class="hw-submit" id="hw-submit" type="submit">[COPY TBC]</button>
+        <p class="hw-cap-sub">[COPY TBC] <a href="/privacy">[COPY TBC]</a></p>
+        <p class="bp-link">
+          <a href="#" id="hw-resend" onclick="resendHW(); return false;">Already approved? Resend my download link</a>
+        </p>
+      </form>
     </div>
 
-    <!-- BEAT 3: Capture -->
-    <div class="hw-capture" id="hw-capture">
-      <div class="hw-cap-label">Almost there</div>
-      <div class="hw-cap-sub">Mina will save your health world as you build it.</div>
-      <div class="hw-cap-form">
-        <input class="hw-inp" id="hw-name" type="text" placeholder="Your first name" autocomplete="given-name">
-        <input class="hw-inp" id="hw-email" type="email" placeholder="Your email" autocomplete="email">
-        <input class="hw-inp hw-inp-opt" id="hw-phone" type="tel" placeholder="Mobile (optional)" autocomplete="tel">
-        <button class="hw-submit" onclick="submitHW()">Reserve my health world →</button>
-      </div>
+    <div class="hw-done" id="hw-done" aria-live="polite">
+      <div class="hw-done-msg">[COPY TBC]</div>
+      <div class="hw-done-sub">[COPY TBC]</div>
     </div>
-
-    <!-- BEAT 5: Done -->
-    <div class="hw-done" id="hw-done">
-      <div class="hw-done-name" id="hw-done-name"></div>
-      <div class="hw-done-msg">Your health world is reserved.</div>
-      <div class="hw-done-sub">We'll be in touch soon.</div>
-    </div>
-
   </div>
 </section>

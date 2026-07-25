@@ -1,44 +1,46 @@
-<!-- ─── MOBILE WAITLIST ──────────────────────────────────────────────
-Lightweight, single-screen waitlist form shown on narrow viewports
-(≤880px) instead of the elaborate CTA overlay. No canvas animations,
-no multi-step flow, native iOS keyboard support, instant POST.
-Hooked up by openWaitlist() in main.ts, which routes to whichever
-overlay matches the viewport. -->
-<section id="mobile-waitlist" aria-hidden="true">
+<!-- MOBILE ACCESS REQUEST -->
+<section
+  id="mobile-waitlist"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="mw-title"
+>
   <header class="mw-nav">
     <div class="nav-logo">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></div>
-    <button class="mw-close" onclick="closeMobileWaitlist()" aria-label="Close">×</button>
+    <button class="mw-close" onclick="closeMobileWaitlist()" aria-label="[COPY TBC]">×</button>
   </header>
 
-  <div class="mw-stage mw-stage-form" id="mw-stage-form">
-    <p class="mw-eyebrow">Early access</p>
-    <h2 class="mw-h">Join the <em>waiting list</em></h2>
-    <p class="mw-sub">We'll reach out personally when we're ready for you.</p>
+  <div class="mw-stage mw-stage-form active" id="mw-stage-form">
+    <p class="mw-eyebrow">[COPY TBC]</p>
+    <h2 class="mw-h" id="mw-title">[COPY TBC]</h2>
+    <p class="mw-sub">[COPY TBC]</p>
 
-    <form class="mw-form" onsubmit="event.preventDefault(); submitMobileWaitlist();">
-      <label class="mw-field">
-        <span class="mw-label">Full name</span>
-        <input class="mw-inp" id="mw-name" type="text" autocomplete="name"
-               inputmode="text" placeholder="Sabine Azancot" required>
+    <form class="mw-form" onsubmit="submitMobileWaitlist(); return false;">
+      <label class="mw-field" for="mw-email">
+        <span class="mw-label">[COPY TBC]</span>
       </label>
-      <label class="mw-field">
-        <span class="mw-label">Email</span>
-        <input class="mw-inp" id="mw-email" type="email" autocomplete="email"
-               inputmode="email" autocapitalize="off" autocorrect="off"
-               placeholder="you@email.com" required>
-      </label>
-      <label class="mw-field">
-        <span class="mw-label">Mobile <span class="mw-opt">(optional)</span></span>
-        <input class="mw-inp" id="mw-phone" type="tel" autocomplete="tel"
-               inputmode="tel" placeholder="+44 7700 000000">
-      </label>
-      <div class="mw-error" id="mw-error"></div>
-      <button class="mw-submit" type="submit" id="mw-submit">Reserve my spot →</button>
-      <p class="mw-trust">Private. No spam. We'll only email you about your access.</p>
+      <input
+        class="mw-inp"
+        id="mw-email"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        autocorrect="off"
+        placeholder="[COPY TBC]"
+        required
+      >
+      <div class="mw-error" id="mw-error" aria-live="polite"></div>
+      <button class="mw-submit" type="submit" id="mw-submit">[COPY TBC]</button>
+      <p class="mw-trust">[COPY TBC] <a href="/privacy">[COPY TBC]</a></p>
+      <p class="bp-link">
+        <a href="#" id="mw-resend" onclick="resendMobileWaitlist(); return false;">Already approved? Resend my download link</a>
+      </p>
     </form>
   </div>
 
-  <div class="mw-stage mw-stage-done" id="mw-stage-done">
+  <div class="mw-stage mw-stage-done" id="mw-stage-done" aria-live="polite">
     <div class="mw-tick" aria-hidden="true">
       <svg viewBox="0 0 32 32" fill="none">
         <circle cx="16" cy="16" r="14" stroke="#1DDEC8" stroke-width="2"/>
@@ -46,9 +48,9 @@ overlay matches the viewport. -->
               stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <p class="mw-eyebrow">You're on the list</p>
-    <h2 class="mw-h">Thank you<span id="mw-done-name">.</span></h2>
-    <p class="mw-sub">We've got your details. We will reach out as soon as we're ready for you.</p>
-    <button class="mw-submit mw-submit-ghost" onclick="closeMobileWaitlist()">Back to GetMine</button>
+    <p class="mw-eyebrow">[COPY TBC]</p>
+    <h2 class="mw-h">[COPY TBC]</h2>
+    <p class="mw-sub">[COPY TBC]</p>
+    <button class="mw-submit mw-submit-ghost" onclick="closeMobileWaitlist()">[COPY TBC]</button>
   </div>
 </section>

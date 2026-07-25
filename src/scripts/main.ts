@@ -166,109 +166,198 @@ function drawHW(){
   wlCtx.beginPath();wlCtx.arc(WL_CX,WL_CY,70,0,Math.PI*2);wlCtx.fillStyle=cg;wlCtx.fill();
 }
 
-// ── QUESTION LOGIC ────────────────────────────────────────────────
-// ── WAITLIST CAPTURE ─────────────────────────────────────────────
-// Google Apps Script Web App URL — paste the /exec URL after deploying.
-const WAITLIST_ENDPOINT='https://script.google.com/macros/s/AKfycbx9H97Mv1t9HgSs4fn-vdiecye3PgmV_mIc5h7gZD4QALH3q87Ukg2tbjd9KOZZuP3Z/exec';
-const HW_ANSWERS={};
-const HW_QUESTION_KEYS=['q1_household','q2_nhs_app','q3_care_mix','q4_insurance','q5_wearables'];
+// ── ACCESS REQUEST ───────────────────────────────────────────────
+// Astro exposes only PUBLIC_* variables to browser code. Keeping the base
+// here makes the website endpoint configurable without duplicating URLs.
+const API_BASE=String(import.meta.env.PUBLIC_API_BASE||'https://api.getmine.ai').replace(/\/+$/,'');
+const MOBILE_MQ='(max-width: 880px)';
+const ACCESS_COPY={
+  label:'[COPY TBC]',
+  invalid:'[COPY TBC — invalid email]',
+  network:'[COPY TBC — network failure]',
+  rateLimited:'[COPY TBC — too many requests]',
+  pending:'[COPY TBC — sending]',
+  submit:'[COPY TBC]',
+  requestSuccess:'[COPY TBC — request received]',
+  resendSuccess:'[COPY TBC — resend request received]',
+};
+const ACCESS_IN_FLIGHT={hw:false,mw:false};
 
-let hwCurrentQ=0;
-function selectOption(qIdx,label,icon){
-  HW_ANSWERS[HW_QUESTION_KEYS[qIdx]]=label;
-  // Mark selected
-  const q=document.getElementById('hwq-'+qIdx);
-  q.querySelectorAll('.hw-opt').forEach(b=>b.classList.remove('selected'));
-  event.target.classList.add('selected');
-  HW_NODES[qIdx].icon=icon;
-  // Fire node
-  fireNode(qIdx,label);
-  // After brief pause, advance to next question
-  setTimeout(()=>{
-    q.classList.remove('active');
-    if(qIdx+1<5){
-      const next=document.getElementById('hwq-'+(qIdx+1));
-      if(next){next.classList.add('active'); hwCurrentQ=qIdx+1;}
-    } else {
-      // All done — show capture
-      document.getElementById('hw-questions').style.opacity='0';
-      setTimeout(()=>{
-        document.getElementById('hw-questions').style.display='none';
-        const cap=document.getElementById('hw-capture');
-        cap.classList.add('active');
-      },400);
-    }
-  },600);
+let activeAccessModal:HTMLElement|null=null;
+let accessReturnFocus:HTMLElement|null=null;
+
+function accessTriggers(){
+  return Array.from(document.querySelectorAll<HTMLElement>('[onclick*="openWaitlist"]'));
+}
+
+function setAccessExpanded(expanded:boolean){
+  accessTriggers().forEach(trigger=>{
+    trigger.setAttribute('aria-controls','waitlist mobile-waitlist');
+    trigger.setAttribute('aria-expanded',String(expanded));
+  });
+}
+
+function beginAccessModal(modal:HTMLElement){
+  accessReturnFocus=document.activeElement instanceof HTMLElement?document.activeElement:null;
+  activeAccessModal=modal;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  setAccessExpanded(true);
+  document.body.style.overflow='hidden';
+}
+
+function endAccessModal(modal:HTMLElement){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  if(activeAccessModal===modal) activeAccessModal=null;
+  setAccessExpanded(false);
+  document.body.style.overflow='';
+  const returnTarget=accessReturnFocus;
+  accessReturnFocus=null;
+  returnTarget?.focus();
+}
+
+function modalFocusables(modal:HTMLElement){
+  const selector='a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  return Array.from(modal.querySelectorAll<HTMLElement>(selector)).filter(el=>{
+    const style=window.getComputedStyle(el);
+    return style.display!=='none'&&style.visibility!=='hidden';
+  });
+}
+
+document.addEventListener('keydown',event=>{
+  const modal=activeAccessModal;
+  if(!modal) return;
+  if(event.key==='Escape'){
+    event.preventDefault();
+    modal.id==='mobile-waitlist'?closeMobileWaitlist():closeWaitlist();
+    return;
+  }
+  if(event.key!=='Tab') return;
+  const focusable=modalFocusables(modal);
+  if(focusable.length===0){
+    event.preventDefault();
+    modal.focus();
+    return;
+  }
+  const first=focusable[0];
+  const last=focusable[focusable.length-1];
+  if(event.shiftKey&&document.activeElement===first){
+    event.preventDefault();
+    last.focus();
+  } else if(!event.shiftKey&&document.activeElement===last){
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+async function postAccess(path:string,email:string){
+  try{
+    const response=await fetch(`${API_BASE}${path}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email}),
+    });
+    if(response.status===429) return 'rate-limited';
+    if(!response.ok) return 'network';
+    return 'ok';
+  } catch{
+    return 'network';
+  }
+}
+
+function validEmail(input:HTMLInputElement){
+  const value=input.value.trim();
+  return input.validity.valid&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend'){
+  const email=document.getElementById(`${prefix}-email`) as HTMLInputElement|null;
+  const status=document.getElementById(`${prefix}-error`);
+  const submit=document.getElementById(`${prefix}-submit`) as HTMLButtonElement|null;
+  const resend=document.getElementById(`${prefix}-resend`) as HTMLAnchorElement|null;
+  if(!email||!status||!submit) return;
+
+  status.textContent='';
+  if(!validEmail(email)){
+    status.textContent=ACCESS_COPY.invalid;
+    email.focus();
+    return;
+  }
+  if(ACCESS_IN_FLIGHT[prefix]) return;
+
+  const isResend=path==='/api/resend';
+  ACCESS_IN_FLIGHT[prefix]=true;
+  submit.disabled=true;
+  if(resend) resend.setAttribute('aria-disabled','true');
+  const originalLabel=submit.textContent;
+  submit.textContent=ACCESS_COPY.pending;
+
+  const result=await postAccess(path,email.value.trim());
+  ACCESS_IN_FLIGHT[prefix]=false;
+  submit.disabled=false;
+  submit.textContent=originalLabel||ACCESS_COPY.submit;
+  if(resend) resend.removeAttribute('aria-disabled');
+
+  if(result==='rate-limited'){
+    status.textContent=ACCESS_COPY.rateLimited;
+    return;
+  }
+  if(result==='network'){
+    status.textContent=ACCESS_COPY.network;
+    return;
+  }
+  if(isResend){
+    status.textContent=ACCESS_COPY.resendSuccess;
+    return;
+  }
+
+  if(prefix==='mw'){
+    _mwShowStage('mw-stage-done');
+    const modal=document.getElementById('mobile-waitlist');
+    if(modal) modal.scrollTop=0;
+  } else {
+    document.getElementById('hw-capture')?.classList.remove('active');
+    document.getElementById('hw-done')?.classList.add('active');
+    const label=document.getElementById('hw-label');
+    if(label) label.textContent=ACCESS_COPY.requestSuccess;
+  }
 }
 
 function submitHW(){
-  const name=document.getElementById('hw-name').value.trim();
-  const email=document.getElementById('hw-email').value.trim();
-  const phone=document.getElementById('hw-phone').value.trim();
-  if(!name||!email){
-    document.getElementById('hw-email').focus();return;
-  }
-  // Fire-and-forget POST to Google Apps Script. Uses form-urlencoded to
-  // avoid a CORS preflight (Apps Script doPost accepts e.parameter).
-  if(WAITLIST_ENDPOINT && WAITLIST_ENDPOINT.startsWith('http')){
-    const body=new URLSearchParams({
-      name,email,phone,
-      q1_household:HW_ANSWERS.q1_household||'',
-      q2_nhs_app:HW_ANSWERS.q2_nhs_app||'',
-      q3_care_mix:HW_ANSWERS.q3_care_mix||'',
-      q4_insurance:HW_ANSWERS.q4_insurance||'',
-      q5_wearables:HW_ANSWERS.q5_wearables||'',
-      user_agent:navigator.userAgent,
-      referrer:document.referrer||''
-    });
-    fetch(WAITLIST_ENDPOINT,{method:'POST',body}).catch(err=>console.error('waitlist submit failed',err));
-  }
-  // Hide capture
-  document.getElementById('hw-capture').style.opacity='0';
-  setTimeout(()=>{
-    document.getElementById('hw-capture').style.display='none';
-    // Show done
-    const done=document.getElementById('hw-done');
-    document.getElementById('hw-done-name').textContent=name+'.';
-    done.classList.add('active');
-    // Pulse all nodes
-    HW_NODES.forEach(nd=>{if(nd.active){nd.r=1.5;setTimeout(()=>{nd.r=1;},400);}});
-    // Show label
-    document.getElementById('hw-label').classList.add('on');
-    document.getElementById('hw-label').textContent='Your health world is reserved.';
-  },500);
+  return submitAccess('hw','/api/waitlist');
 }
 
-// Show label on open
+function resendHW(){
+  return submitAccess('hw','/api/resend');
+}
+
 function startHW(){
-  hwCurrentQ=0;
   HW_NODES.forEach(nd=>{nd.active=false;nd.alpha=0;});
-  document.getElementById('hw-questions').style.display='';
-  document.getElementById('hw-questions').style.opacity='1';
-  document.getElementById('hw-capture').style.display='none';
-  document.getElementById('hw-capture').style.opacity='1';
-  document.getElementById('hw-capture').classList.remove('active');
-  document.getElementById('hw-done').classList.remove('active');
-  document.querySelectorAll('.hw-q').forEach((q,i)=>q.classList.toggle('active',i===0));
-  document.getElementById('hw-label').classList.remove('on');
-  setTimeout(()=>document.getElementById('hw-label').classList.add('on'),600);
+  const capture=document.getElementById('hw-capture');
+  capture?.classList.add('active');
+  document.getElementById('hw-done')?.classList.remove('active');
+  const error=document.getElementById('hw-error');
+  if(error) error.textContent='';
+  const label=document.getElementById('hw-label');
+  if(label) label.textContent=ACCESS_COPY.label;
+  const submit=document.getElementById('hw-submit') as HTMLButtonElement|null;
+  if(submit){submit.disabled=false;submit.textContent=ACCESS_COPY.submit;}
 }
 
-// Route based on viewport: mobile gets the lightweight single-screen form,
-// desktop gets the elaborate canvas-animated CTA overlay.
-const MOBILE_MQ = '(max-width: 880px)';
 function openWaitlist(){
-  if(typeof window!=='undefined' && window.matchMedia && window.matchMedia(MOBILE_MQ).matches){
+  if(window.matchMedia?.(MOBILE_MQ).matches){
     openMobileWaitlist();
-  } else {
-    window._ctaOpen && window._ctaOpen();
+    return;
   }
+  const modal=document.getElementById('waitlist');
+  if(!modal) return;
+  startHW();
+  beginAccessModal(modal);
+  setTimeout(()=>document.getElementById('hw-email')?.focus(),250);
 }
 
 // ── MOBILE WAITLIST ──────────────────────────────────────────────
-// Simple, animation-free, single-screen form. Posts to the same Apps
-// Script endpoint as submitCtaWaitlist (and submitHW). Used in place of
-// cta-overlay on ≤880px viewports — see openWaitlist() above.
 function _mwShowStage(id){
   document.querySelectorAll('#mobile-waitlist .mw-stage').forEach(s=>s.classList.remove('active'));
   const el=document.getElementById(id);
@@ -294,22 +383,17 @@ function openMobileWaitlist(){
   _mwShowStage('mw-stage-form');
   const ov=document.getElementById('mobile-waitlist');
   if(!ov) return;
-  ov.classList.add('open');
-  ov.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
+  beginAccessModal(ov);
   _pauseBackgroundMedia(true);
-  // Reset any previous error + button label + focus the first field.
   const err=document.getElementById('mw-error'); if(err) err.textContent='';
   const btn=document.getElementById('mw-submit') as HTMLButtonElement|null;
-  if(btn){ btn.disabled=false; btn.textContent='Reserve my spot →'; }
-  setTimeout(()=>{const i=document.getElementById('mw-name') as HTMLInputElement|null;if(i)i.focus();},250);
+  if(btn){btn.disabled=false;btn.textContent=ACCESS_COPY.submit;}
+  setTimeout(()=>document.getElementById('mw-email')?.focus(),250);
 }
 function closeMobileWaitlist(){
   const ov=document.getElementById('mobile-waitlist');
   if(!ov) return;
-  ov.classList.remove('open');
-  ov.setAttribute('aria-hidden','true');
-  document.body.style.overflow='';
+  endAccessModal(ov);
   _pauseBackgroundMedia(false);
 }
 
@@ -333,163 +417,12 @@ function closeMobileMenu(){
   document.body.style.overflow='';
 }
 async function submitMobileWaitlist(){
-  const nameEl =document.getElementById('mw-name')  as HTMLInputElement|null;
-  const emailEl=document.getElementById('mw-email') as HTMLInputElement|null;
-  const phoneEl=document.getElementById('mw-phone') as HTMLInputElement|null;
-  const errEl  =document.getElementById('mw-error');
-  const btn    =document.getElementById('mw-submit') as HTMLButtonElement|null;
-  if(!nameEl||!emailEl||!errEl||!btn) return;
-
-  const name =nameEl.value.trim();
-  const email=emailEl.value.trim();
-  const phone=(phoneEl?.value||'').trim();
-  errEl.textContent='';
-
-  if(!name){ errEl.textContent='Please enter your first name.'; nameEl.focus(); return; }
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    errEl.textContent='Please enter a valid email address.';
-    emailEl.focus(); return;
-  }
-  if(!WAITLIST_ENDPOINT||!WAITLIST_ENDPOINT.startsWith('http')){
-    errEl.textContent='Waitlist endpoint not configured.'; return;
-  }
-
-  btn.disabled=true;
-  const originalLabel=btn.textContent;
-  btn.textContent='Saving…';
-
-  const body=new URLSearchParams({
-    name,email,phone,
-    q1_household:'',q2_nhs_app:'',q3_care_mix:'',q4_insurance:'',q5_wearables:'',
-    source:'mobile-waitlist',
-    user_agent:navigator.userAgent,
-    referrer:document.referrer||''
-  });
-  try{
-    await fetch(WAITLIST_ENDPOINT,{method:'POST',body});
-    // Apps Script no-cors returns opaque — we treat any non-thrown response as success.
-    const nameDot=document.getElementById('mw-done-name');
-    if(nameDot){
-      const first=name.split(/\s+/)[0];
-      nameDot.textContent=', '+first+'.';
-    }
-    _mwShowStage('mw-stage-done');
-    // Scroll the done stage into view in case the success message is below
-    // the fold (the form may have been scrolled up by the iOS keyboard).
-    const ov=document.getElementById('mobile-waitlist');
-    if(ov) ov.scrollTop=0;
-  } catch(err){
-    console.error('mobile waitlist submit failed',err);
-    errEl.textContent='Sorry, something went wrong. Try again in a moment.';
-    btn.disabled=false;
-    btn.textContent=originalLabel;
-  }
+  return submitAccess('mw','/api/waitlist');
 }
 
-// ── BETA PORTAL ───────────────────────────────────────────────────
-// Email-gated access for beta cohorts. Hits the same Apps Script endpoint
-// as the waitlist with mode=check_beta; on match, reveals the install view.
-let BETA_VERIFIED_EMAIL = '';
-
-function _bpShowStage(id){
-  document.querySelectorAll('#beta-portal .bp-stage').forEach(s=>s.classList.remove('active'));
-  const el=document.getElementById(id);
-  if(el) el.classList.add('active');
+function resendMobileWaitlist(){
+  return submitAccess('mw','/api/resend');
 }
-
-function openBetaPortal(){
-  resetBetaPortal();
-  const portal=document.getElementById('beta-portal');
-  portal.classList.add('open');
-  document.body.style.overflow='hidden';
-  setTimeout(()=>{const i=document.getElementById('bp-email');if(i) i.focus();},300);
-}
-
-function closeBetaPortal(){
-  document.getElementById('beta-portal').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-function resetBetaPortal(){
-  BETA_VERIFIED_EMAIL='';
-  const email=document.getElementById('bp-email');
-  if(email) email.value='';
-  const err=document.getElementById('bp-error');
-  if(err) err.textContent='';
-  const submit=document.getElementById('bp-submit');
-  if(submit) submit.disabled=false;
-  _bpShowStage('bp-stage-gate');
-  setTimeout(()=>{const i=document.getElementById('bp-email');if(i) i.focus();},200);
-}
-
-async function submitBetaCheck(){
-  const emailEl=document.getElementById('bp-email');
-  const errEl=document.getElementById('bp-error');
-  const submitEl=document.getElementById('bp-submit');
-  const email=emailEl.value.trim();
-  errEl.textContent='';
-
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    errEl.textContent='Please enter a valid email address.';
-    emailEl.focus();
-    return;
-  }
-  if(!WAITLIST_ENDPOINT||!WAITLIST_ENDPOINT.startsWith('http')){
-    errEl.textContent='Beta endpoint not configured. Please email beta@getmine.ai';
-    return;
-  }
-
-  submitEl.disabled=true;
-  _bpShowStage('bp-stage-checking');
-
-  try{
-    const body=new URLSearchParams({
-      mode:'check_beta',
-      email,
-      user_agent:navigator.userAgent,
-      referrer:document.referrer||''
-    });
-    const res=await fetch(WAITLIST_ENDPOINT,{method:'POST',body});
-    const data=await res.json();
-    if(data&&data.ok&&data.allowed){
-      BETA_VERIFIED_EMAIL=email;
-      const niceName=(data.name&&String(data.name).trim().split(/\s+/)[0])||'there';
-      document.getElementById('bp-greet-name').textContent=niceName;
-      const cohort=(data.cohort&&String(data.cohort).trim())||'Beta';
-      const pill=document.getElementById('bp-cohort-pill');
-      pill.textContent=cohort.charAt(0).toUpperCase()+cohort.slice(1).replace(/-/g,' ');
-      _bpShowStage('bp-stage-install');
-    } else {
-      _bpShowStage('bp-stage-denied');
-    }
-  } catch(err){
-    console.error('beta check failed',err);
-    errEl.textContent='Sorry, something went wrong. Try again in a moment.';
-    submitEl.disabled=false;
-    _bpShowStage('bp-stage-gate');
-  }
-}
-
-function logBetaDownload(os){
-  // Fire-and-forget. Doesn't gate the click — just records it for the access log.
-  if(!WAITLIST_ENDPOINT||!WAITLIST_ENDPOINT.startsWith('http')) return;
-  if(!BETA_VERIFIED_EMAIL) return;
-  const body=new URLSearchParams({
-    mode:'log_download',
-    email:BETA_VERIFIED_EMAIL,
-    os,
-    user_agent:navigator.userAgent,
-    referrer:document.referrer||''
-  });
-  fetch(WAITLIST_ENDPOINT,{method:'POST',body}).catch(err=>console.error('download log failed',err));
-}
-
-// Allow Escape to close the portal.
-document.addEventListener('keydown',ev=>{
-  if(ev.key==='Escape'&&document.getElementById('beta-portal').classList.contains('open')){
-    closeBetaPortal();
-  }
-});
 
 // ── HEX HELPER ───────────────────────────────────────────────────
 function hx(h){const n=parseInt(h.replace('#',''),16);return[(n>>16)&255,(n>>8)&255,n&255];}
@@ -595,8 +528,8 @@ function tick(){
 requestAnimationFrame(tick);
 
 function closeWaitlist(){
-  document.getElementById('waitlist').classList.remove('open');
-  document.body.style.overflow='';
+  const modal=document.getElementById('waitlist');
+  if(modal) endAccessModal(modal);
 }
 function closeCta(){
   const o=document.getElementById('cta-overlay');
@@ -623,7 +556,6 @@ window.closeCtaAndScroll=closeCtaAndScroll;
 // Close overlays on Escape
 window.addEventListener('keydown',e=>{
   if(e.key!=='Escape')return;
-  closeWaitlist();
   closeCta();
 });
 
@@ -750,38 +682,11 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-// ── CTA-OVERLAY WAITLIST POST ────────────────────────────────────
-// Fire-and-forget POST of the user's captured CTA-flow data to the Apps
-// Script Waitlist tab. Triggered once when the user transitions w3 → w4
-// (i.e. clicks "See my health world" or "Skip this step" at the end of
-// the chip-questionnaire — strong intent signal, all data we'll get).
-// Fixes #1 on GetMine-ai/getmine.ai: the CTA flow used to collect into
-// JS state and never send anything.
+// The former questionnaire overlay is no longer an access-request entry
+// point. Its component is outside this phase's file boundary, so keep its
+// internal navigation inert and prevent it from sending any user data.
 function submitCtaWaitlist(){
-  const name =(document.getElementById('in0') as HTMLInputElement|null)?.value.trim() || '';
-  const email=(document.getElementById('in1') as HTMLInputElement|null)?.value.trim() || '';
-  const phone=(document.getElementById('in2') as HTMLInputElement|null)?.value.trim() || '';
-  if(!email) return;                                            // need at least an email
-  if(!WAITLIST_ENDPOINT || !WAITLIST_ENDPOINT.startsWith('http')) return;
-
-  // Selected chips per group → comma-joined string (one or many).
-  const chipsIn=(groupId:string)=>Array.from(document.querySelectorAll('#'+groupId+' .chip.sel'))
-    .map(c=>(c as HTMLElement).dataset.v||'').filter(Boolean).join(', ');
-
-  const body=new URLSearchParams({
-    name,email,phone,
-    q1_household: chipsIn('g-household'),
-    q2_nhs_app:   chipsIn('g-nhs'),
-    q3_care_mix:  chipsIn('g-coverage'),
-    q4_insurance: '',                                           // not currently asked in CTA flow
-    q5_wearables: chipsIn('g-wear'),
-    // Extra chip groups the current sheet schema doesn't have columns for —
-    // bundled into a single field so we don't lose the signal.
-    extra:        [chipsIn('g-tests'),chipsIn('g-clinical'),chipsIn('g-pharma')].filter(Boolean).join(' | '),
-    user_agent:   navigator.userAgent,
-    referrer:     document.referrer||''
-  });
-  fetch(WAITLIST_ENDPOINT,{method:'POST',body}).catch(err=>console.error('cta waitlist submit failed',err));
+  return;
 }
 
 // ══ NAVIGATION ══
@@ -1072,13 +977,8 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 window.ctaGo = go;
-window._ctaOpen = function(){
-  document.getElementById('cta-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-};
 // Expose from inside the IIFE so inline onclick handlers in CtaOverlay.astro
-// (e.g. "See my health world") can call submitCtaWaitlist. Cannot live in the
-// module-level Object.assign below — submitCtaWaitlist is scoped here.
+// remain inert if the archived markup is inspected directly.
 window.submitCtaWaitlist = submitCtaWaitlist;
 })();
 
@@ -1142,4 +1042,17 @@ window.submitCtaWaitlist = submitCtaWaitlist;
 })();
 
 // ── Re-expose inline on* handler entry points on window ──
-Object.assign(window, { openWaitlist, closeWaitlist, scrollToSection, selectOption, submitHW, openBetaPortal, closeBetaPortal, submitBetaCheck, resetBetaPortal, openMobileWaitlist, closeMobileWaitlist, submitMobileWaitlist, openMobileMenu, closeMobileMenu });
+setAccessExpanded(false);
+Object.assign(window, {
+  openWaitlist,
+  closeWaitlist,
+  scrollToSection,
+  submitHW,
+  resendHW,
+  openMobileWaitlist,
+  closeMobileWaitlist,
+  submitMobileWaitlist,
+  resendMobileWaitlist,
+  openMobileMenu,
+  closeMobileMenu,
+});
