@@ -158,12 +158,13 @@ function drawHW(){
     wlCtx.restore();
   });
   // Mina centre
-  wlCtx.save();wlCtx.translate(WL_CX,WL_CY);wlCtx.rotate(hwSpin);
-  drawMinaOn(wlCtx,0,0,1.6,t);wlCtx.restore();
+  const minaY=WL_CY-120;
+  wlCtx.save();wlCtx.translate(WL_CX,minaY);wlCtx.rotate(hwSpin);
+  drawMinaOn(wlCtx,0,0,1.25,t);wlCtx.restore();
   // centre glow
-  const cg=wlCtx.createRadialGradient(WL_CX,WL_CY,0,WL_CX,WL_CY,70);
+  const cg=wlCtx.createRadialGradient(WL_CX,minaY,0,WL_CX,minaY,70);
   cg.addColorStop(0,'rgba(29,222,200,0.1)');cg.addColorStop(1,'transparent');
-  wlCtx.beginPath();wlCtx.arc(WL_CX,WL_CY,70,0,Math.PI*2);wlCtx.fillStyle=cg;wlCtx.fill();
+  wlCtx.beginPath();wlCtx.arc(WL_CX,minaY,70,0,Math.PI*2);wlCtx.fillStyle=cg;wlCtx.fill();
 }
 
 // ── ACCESS REQUEST ───────────────────────────────────────────────
@@ -172,14 +173,13 @@ function drawHW(){
 const API_BASE=String(import.meta.env.PUBLIC_API_BASE||'https://api.getmine.ai').replace(/\/+$/,'');
 const MOBILE_MQ='(max-width: 880px)';
 const ACCESS_COPY={
-  label:'[COPY TBC]',
-  invalid:'[COPY TBC — invalid email]',
-  network:'[COPY TBC — network failure]',
-  rateLimited:'[COPY TBC — too many requests]',
-  pending:'[COPY TBC — sending]',
-  submit:'[COPY TBC]',
-  requestSuccess:'[COPY TBC — request received]',
-  resendSuccess:'[COPY TBC — resend request received]',
+  label:'GetMine open beta',
+  invalid:'Enter a valid email address.',
+  network:'We couldn’t send your request. Check your connection and try again.',
+  rateLimited:'Too many attempts. Please wait a moment and try again.',
+  pending:'Sending…',
+  submit:'Request access',
+  resendSuccess:'If this address is approved, we’ll send a new download link.',
 };
 const ACCESS_IN_FLIGHT={hw:false,mw:false};
 
@@ -319,8 +319,6 @@ async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend')
   } else {
     document.getElementById('hw-capture')?.classList.remove('active');
     document.getElementById('hw-done')?.classList.add('active');
-    const label=document.getElementById('hw-label');
-    if(label) label.textContent=ACCESS_COPY.requestSuccess;
   }
 }
 
