@@ -16,7 +16,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans Variable',sans-serif;overflow-x:hidden}
 ::selection{background:rgba(29,222,200,.22);color:#fff}
 ::-webkit-scrollbar{width:0}
 
