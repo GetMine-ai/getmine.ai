@@ -11,9 +11,12 @@ interface Props {
   title: string;
   description: string;
   canonical: string;
+  /** Keep a page out of search results — for pages that only make sense when
+   *  you arrived from somewhere specific (e.g. the post-confirmation welcome). */
+  noindex?: boolean;
 }
 
-const { title, description, canonical } = Astro.props;
+const { title, description, canonical, noindex = false } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +26,7 @@ const { title, description, canonical } = Astro.props;
 <title>{title}</title>
 <meta name="description" content={description}>
 <meta name="theme-color" content="#060C14">
-<meta name="robots" content="index,follow">
+<meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow'}>
 <link rel="canonical" href={canonical}>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
