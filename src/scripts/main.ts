@@ -171,6 +171,12 @@ function drawHW(){
 // Astro exposes only PUBLIC_* variables to browser code. Keeping the base
 // here makes the website endpoint configurable without duplicating URLs.
 const API_BASE=String(import.meta.env.PUBLIC_API_BASE||'https://api.getmine.ai').replace(/\/+$/,'');
+// Temporary Phase 1 bridge: access requests go to the existing Google Sheet
+// until the beta access gateway is available. Resends still use API_BASE.
+const WAITLIST_ENDPOINT=String(
+  import.meta.env.PUBLIC_WAITLIST_ENDPOINT
+  ||'https://script.google.com/macros/s/AKfycbx9H97Mv1t9HgSs4fn-vdiecye3PgmV_mIc5h7gZD4QALH3q87Ukg2tbjd9KOZZuP3Z/exec',
+).trim();
 const MOBILE_MQ='(max-width: 880px)';
 const ACCESS_COPY={
   label:'GetMine open beta',
@@ -253,13 +259,22 @@ document.addEventListener('keydown',event=>{
 
 async function postAccess(path:string,email:string){
   try{
-    const response=await fetch(`${API_BASE}${path}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email}),
-    });
+    const response=path==='/api/waitlist'
+      ? await fetch(WAITLIST_ENDPOINT,{
+          method:'POST',
+          body:new URLSearchParams({email}),
+        })
+      : await fetch(`${API_BASE}${path}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({email}),
+        });
     if(response.status===429) return 'rate-limited';
     if(!response.ok) return 'network';
+    if(path==='/api/waitlist'){
+      const result=await response.json().catch(()=>null);
+      if(!result||result.ok!==true) return 'network';
+    }
     return 'ok';
   } catch{
     return 'network';
