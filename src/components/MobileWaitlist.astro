@@ -13,8 +13,8 @@
 
   <div class="mw-stage mw-stage-form active" id="mw-stage-form">
     <p class="mw-eyebrow">GetMine open beta</p>
-    <h2 class="mw-h" id="mw-title">Request beta access</h2>
-    <p class="mw-sub">Enter your email to request access. If you’re approved, we’ll email your private download link.</p>
+    <h2 class="mw-h" id="mw-title">Join the open beta</h2>
+    <p class="mw-sub">Join the waiting list &mdash; confirm your email, and your invitation arrives when your wave opens.</p>
 
     <form class="mw-form" novalidate onsubmit="submitMobileWaitlist(); return false;">
       <label class="mw-field" for="mw-email">
@@ -32,11 +32,9 @@
         required
       >
       <div class="mw-error" id="mw-error" aria-live="polite"></div>
-      <button class="mw-submit" type="submit" id="mw-submit">Request access</button>
+      <button class="mw-submit" type="submit" id="mw-submit">Join the waiting list</button>
+      <p class="mw-trust mw-requirement">GetMine needs a computer running macOS&nbsp;14 or later, or Windows&nbsp;11 &mdash; apply now, and install on your computer when your invitation arrives.</p>
       <p class="mw-trust">We’ll use your email only to manage beta access. <a href="/privacy">Read our Privacy Policy.</a></p>
-      <p class="bp-link">
-        <a href="#" id="mw-resend" onclick="resendMobileWaitlist(); return false;">Already approved? Resend my download link</a>
-      </p>
     </form>
   </div>
 
@@ -49,8 +47,8 @@
       </svg>
     </div>
     <p class="mw-eyebrow">GetMine open beta</p>
-    <h2 class="mw-h">Request received</h2>
-    <p class="mw-sub">If this address is approved, we’ll email the private download link. If you’ve requested access before, there’s nothing else to do.</p>
+    <h2 class="mw-h">Almost there</h2>
+    <p class="mw-sub">Check your inbox and click the confirmation link to join the waiting list. Not there? Have a look in your junk folder.</p>
     <button class="mw-submit mw-submit-ghost" onclick="closeMobileWaitlist()">Back to GetMine</button>
   </div>
 </section>

@@ -46,7 +46,8 @@
 
 .hv-mina{margin-top:14px;padding:11px;border:1px solid color-mix(in srgb,var(--teal-deck) 46%,transparent);border-radius:12px;background:color-mix(in srgb,var(--teal-deck) 15%,transparent)}
 .hv-mina-head{display:flex;align-items:center;gap:12px}
-.hv-mina-head canvas{width:62px;height:77px;flex:0 0 auto}
+.hv-mina-mark{display:flex;align-items:center;justify-content:center;width:52px;height:52px;flex:0 0 auto;border-radius:50%;background:var(--navy);font-family:'Fraunces Variable',serif;font-style:italic;font-size:25px;line-height:1;color:var(--cream);user-select:none}
+.hv-mina-dot{color:var(--teal-deck)}
 .hv-mina-head strong{display:block;color:var(--navy);font-family:'Fraunces Variable',serif;font-size:18px;font-weight:500}
 .hv-mina-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:9px}
 .hv-mina-actions span{border:1px solid color-mix(in srgb,var(--teal-deck) 30%,transparent);border-radius:9px;background:color-mix(in srgb,var(--cream) 64%,transparent);color:var(--navy);padding:7px 4px;font-size:10px;font-weight:700;letter-spacing:.1em;text-align:center;text-transform:uppercase}

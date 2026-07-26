@@ -12,8 +12,8 @@
     <div class="hw-label on" id="hw-label">GetMine open beta</div>
 
     <div class="hw-capture active" id="hw-capture">
-      <div class="hw-cap-label" id="hw-title">Request beta access</div>
-      <div class="hw-cap-sub hw-cap-intro">Enter your email to request access. If you’re approved, we’ll email your private download link.</div>
+      <div class="hw-cap-label" id="hw-title">Join the open beta</div>
+      <div class="hw-cap-sub hw-cap-intro">Join the waiting list &mdash; confirm your email, and your invitation arrives when your wave opens.</div>
       <form class="hw-cap-form" novalidate onsubmit="submitDesktopAccessRequest(); return false;">
         <label class="hw-field-label" for="hw-email">Email address</label>
         <input
@@ -28,17 +28,15 @@
           required
         >
         <div class="mw-error" id="hw-error" aria-live="polite"></div>
-        <button class="hw-submit" id="hw-submit" type="submit">Request access</button>
+        <button class="hw-submit" id="hw-submit" type="submit">Join the waiting list</button>
+        <p class="hw-cap-sub hw-requirement">GetMine needs a computer running macOS&nbsp;14 or later, or Windows&nbsp;11.</p>
         <p class="hw-cap-sub hw-privacy">We’ll use your email only to manage beta access. <a href="/privacy">Read our Privacy Policy.</a></p>
-        <p class="bp-link">
-          <a href="#" id="hw-resend" onclick="resendHW(); return false;">Already approved? Resend my download link</a>
-        </p>
       </form>
     </div>
 
     <div class="hw-done" id="hw-done" aria-live="polite">
-      <div class="hw-done-msg">Request received</div>
-      <div class="hw-done-sub">If this address is approved, we’ll email the private download link. If you’ve requested access before, there’s nothing else to do.</div>
+      <div class="hw-done-msg">Almost there</div>
+      <div class="hw-done-sub">Check your inbox and click the confirmation link to join the waiting list. Not there? Have a look in your junk folder.</div>
     </div>
   </div>
 </section>
@@ -96,6 +94,12 @@
 
   .hw-submit:hover {
     background: var(--teal);
+  }
+
+  /* Stage 0's first filter: the website guides, the installer enforces. */
+  .hw-requirement {
+    color: rgba(240, 244, 248, 0.72);
+    font-size: 13px;
   }
 
   .hw-privacy {

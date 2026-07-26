@@ -157,10 +157,19 @@ function drawHW(){
     wlCtx.fillText(nd.label,nd.px,nd.py+28);
     wlCtx.restore();
   });
-  // Mina centre
+  // The M. mark at centre — the mascot was retired (branding ruling, 2026-07-07)
+  // and the mark replaces it. Drawn upright, never spun: it is a signature, not
+  // a character.
   const minaY=WL_CY-120;
-  wlCtx.save();wlCtx.translate(WL_CX,minaY);wlCtx.rotate(hwSpin);
-  drawMinaOn(wlCtx,0,0,1.25,t);wlCtx.restore();
+  wlCtx.save();wlCtx.translate(WL_CX,minaY);
+  wlCtx.beginPath();wlCtx.arc(0,0,34,0,Math.PI*2);
+  wlCtx.fillStyle='#0B1420';wlCtx.fill();
+  wlCtx.lineWidth=1;wlCtx.strokeStyle='rgba(232,250,248,0.14)';wlCtx.stroke();
+  wlCtx.font="italic 400 32px Georgia, 'Times New Roman', serif";
+  wlCtx.textAlign='center';wlCtx.textBaseline='middle';
+  wlCtx.fillStyle='#E8FAF8';wlCtx.fillText('M',-4,2);
+  wlCtx.fillStyle='#1DBFB0';wlCtx.fillText('.',14,2);
+  wlCtx.restore();
   // centre glow
   const cg=wlCtx.createRadialGradient(WL_CX,minaY,0,WL_CX,minaY,70);
   cg.addColorStop(0,'rgba(29,222,200,0.1)');cg.addColorStop(1,'transparent');
@@ -170,12 +179,14 @@ function drawHW(){
 // ── ACCESS REQUEST ───────────────────────────────────────────────
 // Astro exposes only PUBLIC_* variables to browser code. Keeping the base
 // here makes the website endpoint configurable without duplicating URLs.
-const API_BASE=String(import.meta.env.PUBLIC_API_BASE||'https://api.getmine.ai').replace(/\/+$/,'');
-// Temporary Phase 1 bridge: access requests go to the existing Google Sheet
-// until the beta access gateway is available. Resends still use API_BASE.
+// Sign-ups go straight to Brevo's double-opt-in list (ruled 2026-07-26): Brevo
+// owns intake, so no route of ours ever accepts an email address from the open
+// internet. Posted from here rather than with Brevo's own embed script, so no
+// third-party code or fonts load on getmine.ai — the visitor's browser only ever
+// contacts Brevo at the moment they choose to submit.
 const WAITLIST_ENDPOINT=String(
   import.meta.env.PUBLIC_WAITLIST_ENDPOINT
-  ||'https://script.google.com/macros/s/AKfycbx9H97Mv1t9HgSs4fn-vdiecye3PgmV_mIc5h7gZD4QALH3q87Ukg2tbjd9KOZZuP3Z/exec',
+  ||'https://f3cde459.sibforms.com/serve/MUIFAPkIttg9_w9drKl1pUH19xvaHSB6th2O_Uk7AMjGv6Yks09ls0EtOJ6n5sYr_dL_TrtArIYmoXK4dIp-183Oxac9u5FLhBTU7DZX1lAwkdefJAlLv7e0yqZMIq_grAsEXXYEqFPnRr8llU_6kHz5oT1mLU6xrIyqIABJ9a6NgG8lPR-YTOe3vNY7_OOFVmmb_PYkuekUN62fXw==',
 ).trim();
 const MOBILE_MQ='(max-width: 880px)';
 const ACCESS_COPY={
@@ -184,8 +195,7 @@ const ACCESS_COPY={
   network:'We couldn’t send your request. Check your connection and try again.',
   rateLimited:'Too many attempts. Please wait a moment and try again.',
   pending:'Sending…',
-  submit:'Request access',
-  resendSuccess:'If this address is approved, we’ll send a new download link.',
+  submit:'Join the waiting list',
 };
 const ACCESS_IN_FLIGHT={hw:false,mw:false};
 
@@ -257,24 +267,17 @@ document.addEventListener('keydown',event=>{
   }
 });
 
-async function postAccess(path:string,email:string){
+async function postAccess(email:string){
   try{
-    const response=path==='/api/waitlist'
-      ? await fetch(WAITLIST_ENDPOINT,{
-          method:'POST',
-          body:new URLSearchParams({email}),
-        })
-      : await fetch(`${API_BASE}${path}`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({email}),
-        });
+    // Brevo's own field names. `email_address_check` is their honeypot: it must
+    // be present and empty — bots fill it, people never see it.
+    const body=new FormData();
+    body.append('EMAIL',email);
+    body.append('email_address_check','');
+    body.append('locale','en');
+    const response=await fetch(WAITLIST_ENDPOINT,{method:'POST',body});
     if(response.status===429) return 'rate-limited';
     if(!response.ok) return 'network';
-    if(path==='/api/waitlist'){
-      const result=await response.json().catch(()=>null);
-      if(!result||result.ok!==true) return 'network';
-    }
     return 'ok';
   } catch{
     return 'network';
@@ -286,11 +289,10 @@ function validEmail(input:HTMLInputElement){
   return input.validity.valid&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend'){
+async function submitAccess(prefix:'hw'|'mw'){
   const email=document.getElementById(`${prefix}-email`) as HTMLInputElement|null;
   const status=document.getElementById(`${prefix}-error`);
   const submit=document.getElementById(`${prefix}-submit`) as HTMLButtonElement|null;
-  const resend=document.getElementById(`${prefix}-resend`) as HTMLAnchorElement|null;
   if(!email||!status||!submit) return;
 
   status.textContent='';
@@ -301,18 +303,15 @@ async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend')
   }
   if(ACCESS_IN_FLIGHT[prefix]) return;
 
-  const isResend=path==='/api/resend';
   ACCESS_IN_FLIGHT[prefix]=true;
   submit.disabled=true;
-  if(resend) resend.setAttribute('aria-disabled','true');
   const originalLabel=submit.textContent;
   submit.textContent=ACCESS_COPY.pending;
 
-  const result=await postAccess(path,email.value.trim());
+  const result=await postAccess(email.value.trim());
   ACCESS_IN_FLIGHT[prefix]=false;
   submit.disabled=false;
   submit.textContent=originalLabel||ACCESS_COPY.submit;
-  if(resend) resend.removeAttribute('aria-disabled');
 
   if(result==='rate-limited'){
     status.textContent=ACCESS_COPY.rateLimited;
@@ -320,10 +319,6 @@ async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend')
   }
   if(result==='network'){
     status.textContent=ACCESS_COPY.network;
-    return;
-  }
-  if(isResend){
-    status.textContent=ACCESS_COPY.resendSuccess;
     return;
   }
 
@@ -338,11 +333,7 @@ async function submitAccess(prefix:'hw'|'mw',path:'/api/waitlist'|'/api/resend')
 }
 
 function submitDesktopAccessRequest(){
-  return submitAccess('hw','/api/waitlist');
-}
-
-function resendHW(){
-  return submitAccess('hw','/api/resend');
+  return submitAccess('hw');
 }
 
 function startHW(){
@@ -430,11 +421,7 @@ function closeMobileMenu(){
   document.body.style.overflow='';
 }
 async function submitMobileWaitlist(){
-  return submitAccess('mw','/api/waitlist');
-}
-
-function resendMobileWaitlist(){
-  return submitAccess('mw','/api/resend');
+  return submitAccess('mw');
 }
 
 // ── HEX HELPER ───────────────────────────────────────────────────
@@ -453,82 +440,6 @@ function drawHero(){
 }
 
 // ── MINA DRAW (Design D — calm agent, no antennas) ───────────────
-function drawMinaOn(c,x,y,sc,tt){
-  const b=Math.sin(tt*.72)*.018+1,s=sc*b;
-  c.save();c.translate(x,y);
-
-  // ── Body hint (soft ellipse below face) ──
-  c.beginPath();c.ellipse(0,52*s,30*s,20*s,0,0,Math.PI*2);
-  c.fillStyle='rgba(29,222,200,.28)';c.fill();
-
-  // ── Feet — two solid pads with toe dots ──
-  const footA=Math.max(0,Math.min(1,(sc-.28)/.5));
-  if(footA>.02){
-    c.globalAlpha=footA;
-    [-14*s,14*s].forEach(dx=>{
-      c.beginPath();c.ellipse(dx,68*s,11*s,7*s,dx>0?.15:-.15,0,Math.PI*2);
-      c.fillStyle='#1DDEC8';c.fill();
-      [-3.5*s,0,3.5*s].forEach((tx,ti)=>{
-        c.beginPath();c.arc(dx+tx,63*s-Math.abs(ti-1)*s,2.8*s,0,Math.PI*2);
-        c.fillStyle='#0FB5A8';c.fill();
-      });
-    });
-    c.globalAlpha=1;
-  }
-
-  // ── Side arms — solid ovals, no transparency ──
-  const armA=Math.max(0,Math.min(1,(sc-.28)/.5));
-  if(armA>.02){
-    c.globalAlpha=armA;
-    [-1,1].forEach(side=>{
-      c.beginPath();c.ellipse(side*46*s,32*s,10*s,7*s,side*.1,0,Math.PI*2);
-      c.fillStyle='#1DDEC8';c.fill();
-    });
-    c.globalAlpha=1;
-  }
-
-  // ── Teal ring (framing the face) ──
-  const fr=48*s;
-  const rg=c.createLinearGradient(0,-fr,0,fr);
-  rg.addColorStop(0,'#1DDEC8');rg.addColorStop(1,'#4CD680');
-  c.beginPath();c.arc(0,0,fr+6*s,0,Math.PI*2);
-  c.strokeStyle=rg;c.lineWidth=6*s;c.stroke();
-
-  // ── Face — large, fills ring ──
-  const fg=c.createRadialGradient(0,0,0,0,0,fr);
-  fg.addColorStop(0,'#5ADB9A');fg.addColorStop(0.6,'#2AAA70');fg.addColorStop(1,'#1A7A4A');
-  c.beginPath();c.arc(0,0,fr,0,Math.PI*2);c.fillStyle=fg;c.fill();
-
-  // blush
-  c.globalAlpha=.28;c.fillStyle='#FF8FA0';
-  c.beginPath();c.ellipse(-fr*.5,fr*.1,fr*.22,fr*.13,-.15,0,Math.PI*2);c.fill();
-  c.beginPath();c.ellipse( fr*.5,fr*.1,fr*.22,fr*.13, .15,0,Math.PI*2);c.fill();
-  c.globalAlpha=1;
-
-  // eyebrows
-  c.strokeStyle='#4CD680';c.lineWidth=fr*.06;c.lineCap='round';
-  c.beginPath();c.arc(-fr*.36,-fr*.3,fr*.18,Math.PI*1.15,Math.PI*1.85);c.stroke();
-  c.beginPath();c.arc( fr*.36,-fr*.3,fr*.18,Math.PI*1.15,Math.PI*1.85);c.stroke();
-
-  // eyes with slow blink
-  const bl=Math.max(0,Math.sin(tt*.16)),blH=bl>.96?Math.max(0,(bl-.96)/.04):1;
-  const eR=fr*.21,eY=-fr*.08,eX=fr*.34;
-  [[-eX,eY],[eX,eY]].forEach(([ex,ey])=>{
-    c.beginPath();c.arc(ex,ey,eR,0,Math.PI*2);c.fillStyle='white';c.fill();
-    if(blH<1){c.fillStyle='white';c.fillRect(ex-eR,ey-eR,eR*2,eR*2*(1-blH));}
-    c.beginPath();c.arc(ex+eR*.2,ey+eR*.2,eR*.58,0,Math.PI*2);
-    c.fillStyle='#08101A';c.globalAlpha=blH;c.fill();c.globalAlpha=1;
-    // small crisp shine dot — not a blob
-    c.beginPath();c.arc(ex-eR*.3,ey-eR*.3,eR*.18,0,Math.PI*2);
-    c.fillStyle='rgba(255,255,255,.9)';c.fill();
-  });
-
-  // calm smile
-  c.beginPath();c.arc(0,fr*.28,fr*.24,.18*Math.PI,.82*Math.PI);
-  c.strokeStyle='white';c.lineWidth=fr*.075;c.lineCap='round';c.stroke();
-
-  c.restore();
-}
 
 
 // ── MAIN RAF LOOP ─────────────────────────────────────────────────
@@ -605,64 +516,6 @@ function scrollToSection(id){
 // Scroll reveal on load
 window.dispatchEvent(new Event('scroll'));
 
-(function(){
-  function drawHeroMina(c, cx, cy, sc) {
-    c.beginPath();
-    c.ellipse(cx, cy + 52 * sc, 30 * sc, 20 * sc, 0, 0, Math.PI * 2);
-    c.fillStyle = "rgba(29,222,200,.3)";
-    c.fill();
-    [-14 * sc, 14 * sc].forEach(function(dx){
-      c.beginPath();
-      c.ellipse(cx + dx, cy + 68 * sc, 11 * sc, 7 * sc, dx > 0 ? .15 : -.15, 0, Math.PI * 2);
-      c.fillStyle = "#1DDEC8";
-      c.fill();
-    });
-    [-1, 1].forEach(function(side){
-      c.beginPath();
-      c.ellipse(cx + side * 46 * sc, cy + 32 * sc, 10 * sc, 7 * sc, side * .1, 0, Math.PI * 2);
-      c.fillStyle = "#1DDEC8";
-      c.fill();
-    });
-    var fr = 48 * sc;
-    var rg = c.createLinearGradient(cx, cy - fr, cx, cy + fr);
-    rg.addColorStop(0, "#1DDEC8");
-    rg.addColorStop(1, "#4CD680");
-    c.beginPath();
-    c.arc(cx, cy, fr + 6 * sc, 0, Math.PI * 2);
-    c.strokeStyle = rg;
-    c.lineWidth = 6 * sc;
-    c.stroke();
-    var fg = c.createRadialGradient(cx, cy, 0, cx, cy, fr);
-    fg.addColorStop(0, "#5ADB9A");
-    fg.addColorStop(.6, "#2AAA70");
-    fg.addColorStop(1, "#1A7A4A");
-    c.beginPath();
-    c.arc(cx, cy, fr, 0, Math.PI * 2);
-    c.fillStyle = fg;
-    c.fill();
-    var eR = fr * .21, eY = cy - fr * .08, eX = fr * .34;
-    [cx - eX, cx + eX].forEach(function(ex){
-      c.beginPath();
-      c.arc(ex, eY, eR, 0, Math.PI * 2);
-      c.fillStyle = "white";
-      c.fill();
-      c.beginPath();
-      c.arc(ex + eR * .2, eY + eR * .2, eR * .58, 0, Math.PI * 2);
-      c.fillStyle = "#08101A";
-      c.fill();
-    });
-    c.beginPath();
-    c.arc(cx, cy + fr * .28, fr * .24, .18 * Math.PI, .82 * Math.PI);
-    c.strokeStyle = "white";
-    c.lineWidth = fr * .075;
-    c.lineCap = "round";
-    c.stroke();
-  }
-  var mc = document.getElementById("hero-mina-canvas");
-  if (mc) {
-    drawHeroMina(mc.getContext("2d"), mc.width / 2, mc.height * .42, mc.width / 168);
-  }
-})();
 
 // ── Re-expose inline on* handler entry points on window ──
 setAccessExpanded(false);
@@ -671,11 +524,9 @@ Object.assign(window, {
   closeWaitlist,
   scrollToSection,
   submitDesktopAccessRequest,
-  resendHW,
   openMobileWaitlist,
   closeMobileWaitlist,
   submitMobileWaitlist,
-  resendMobileWaitlist,
   openMobileMenu,
   closeMobileMenu,
 });
