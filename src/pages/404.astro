@@ -1,5 +1,8 @@
 ---
 // Standalone 404 page. Astro emits dist/404.html, which GitHub Pages serves on not-found.
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/fraunces/wght-italic.css';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -9,10 +12,6 @@
 <title>Page not found — GetMine.ai</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#060C14">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -31,7 +30,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans Variable',sans-serif;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
 
 /* Soft radial glow behind the content — same vibe as the deck */
 body::before{
@@ -59,25 +58,25 @@ main{
   text-align:center;padding:60px 32px
 }
 .code{
-  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-family:'Fraunces Variable',serif;font-style:italic;font-weight:300;
   font-size:clamp(120px,22vw,220px);line-height:1;color:var(--teal-deck);
   letter-spacing:-.02em;opacity:.95;margin-bottom:8px;
 }
 .heading{
-  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-family:'Fraunces Variable',serif;font-style:italic;font-weight:300;
   font-size:clamp(28px,4vw,44px);color:var(--cream);
   line-height:1.15;margin-bottom:20px;max-width:640px;
 }
 .heading em{font-style:italic;color:var(--taupe);font-weight:300}
 .lede{
-  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-family:'DM Sans Variable',sans-serif;font-weight:300;
   font-size:clamp(15px,1.6vw,18px);color:rgba(240,244,248,.72);
   line-height:1.6;max-width:480px;margin-bottom:36px;
 }
 .cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .btn{
   background:var(--cream);color:var(--navy);border:none;border-radius:100px;
-  padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;
+  padding:14px 32px;font-family:'DM Sans Variable',sans-serif;font-size:15px;
   font-weight:700;cursor:pointer;text-decoration:none;
   letter-spacing:-.015em;
   transition:all .22s cubic-bezier(.22,1,.36,1);
