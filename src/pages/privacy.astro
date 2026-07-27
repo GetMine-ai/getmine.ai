@@ -1,34 +1,81 @@
 ---
 import LegalPage from '../layouts/LegalPage.astro';
+// The board-reviewed open-beta privacy policy (GetMine Ltd, Version 1.0).
+// Source of truth reviewed 27 Jul 2026 with Sabine; effective date is stamped
+// at publication, after the advisory-board session of 5 Aug 2026.
 ---
-<LegalPage title="Privacy — GetMine.ai" description="A short, plain-English summary of how GetMine.ai handles your health information." canonical="https://getmine.ai/privacy.html">
-    <p class="page-eyebrow">Privacy</p>
-    <h1 class="page-headline">Your health information belongs to you.</h1>
+<LegalPage title="Privacy policy — GetMine" description="How GetMine handles your information: your health records live on your computer, in a folder you own. We never have a copy." canonical="https://getmine.ai/privacy.html">
+    <p class="page-eyebrow">Privacy policy</p>
+    <h1 class="page-headline">Your health records live on your computer, in a folder you own.</h1>
 
-    <p class="page-lead">This is a short, plain-English summary of how we handle your information at GetMine. A fuller privacy notice will accompany the public launch &mdash; until then, this is what to expect.</p>
+    <p class="page-lead"><strong>The short version:</strong> we never have a copy. The only personal data we hold about you is what it takes to run the beta: your email address and your status on the open beta. This one policy covers the GetMine desktop app and the getmine.ai website.</p>
 
     <div class="page-section">
-      <h2>What we collect</h2>
-      <p>We only collect what we need to run the service and improve it: the information you choose to add or connect to your vault, contact details for your account, and the product feedback you give us during Early Access. Where information has to pass through the cloud (for example, to answer an AI query), it does so only as needed to complete the task.</p>
+      <h2>The beta, plainly</h2>
+      <p>GetMine is experimental software for adults (18+). Mina organises your health information; <strong>she is not a doctor and does not diagnose</strong>. Check anything important with a clinician, and keep your own copies of anything you can&rsquo;t afford to lose.</p>
     </div>
 
     <div class="page-section">
-      <h2>We don&rsquo;t sell your data</h2>
-      <p>GetMine does not sell personal information. We don&rsquo;t trade access to your vault for partnerships or revenue. We grow by deepening what stays with you &mdash; not by leveraging your data.</p>
+      <h2>Your Health Vault: yours, on your computer</h2>
+      <p>Everything you add or connect (electronic health records, documents, emails you choose to scan, photos, notes) lives in the <strong>Health Vault folder on your own computer</strong>. We hold no copy, we cannot see it, and nothing in the product reports its contents to us.</p>
+      <ul>
+        <li><strong>We can&rsquo;t lose or leak what we don&rsquo;t have.</strong> Your records are as safe as your computer: keeping it protected, and being careful where you copy or share your vault folder, is in your hands, as it would be with paper records.</li>
+        <li><strong>Deleting GetMine never deletes your vault.</strong> The app and Mina go; your folder stays, readable without us. Want it gone too? Put it in the Bin.</li>
+      </ul>
     </div>
 
     <div class="page-section">
-      <h2>You stay in control</h2>
-      <p>You decide what is shared, with whom, and for how long. You can change your mind, and you can ask us to delete information you&rsquo;ve added. Our role is to organise and help &mdash; not to keep something you no longer want kept.</p>
+      <h2>When Mina answers a question</h2>
+      <p>Mina is powered by our AI LLM provider. To answer a question, or to file a document, email or photo you&rsquo;ve added, she sends the provider <strong>only the slice of your records relevant to that task</strong>. Never your whole vault, never your logins. And only after you&rsquo;ve agreed on the first-open screen: no consent, no Mina.</p>
+      <p>Requests either pass through GetMine&rsquo;s server, which keeps <strong>none of the content</strong> and only counts them against the AI allowance included with the beta, or go straight from your computer to the provider under your own key, never touching a GetMine server.</p>
+      <p><strong>About our AI LLM provider:</strong> whoever it is, our terms with them must meet three conditions. Your content is <strong>never used to train AI models</strong>, operational logs delete automatically within days, and data leaving the UK travels under lawful safeguards.</p>
     </div>
 
     <div class="page-section">
-      <h2>During Early Access</h2>
-      <p>As a closed-beta participant you may share contact details, give us product feedback, and choose what to add or connect to your vault. We treat all of that as your information, on your terms.</p>
+      <h2>Sources you connect</h2>
+      <ul>
+        <li><strong>Electronic health records</strong> (in the UK, your NHS record) reach your vault through our health-records access partner, after you log in with them and authorise it.</li>
+        <li><strong>Email scanning is read-only.</strong> GetMine can never send, change or delete your email, and your mailbox is read on your computer, not by us. You can revoke the access you granted with your email provider at any time.</li>
+        <li><strong>The logins you grant are stored encrypted on your machine</strong>, with the key kept outside the vault folder. A copy of your folder, wherever it ends up, contains no usable login to anything.</li>
+        <li>Disconnect any source at any time, in the app.</li>
+      </ul>
     </div>
 
     <div class="page-section">
-      <h2>Access, deletion, questions</h2>
-      <p>Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a> for any privacy question &mdash; including requests to access or delete the information we hold about you.</p>
+      <h2>What we hold</h2>
+      <p>GetMine holds exactly this, and nothing else:</p>
+      <table>
+        <thead><tr><th>What</th><th>Why</th><th>Kept until</th></tr></thead>
+        <tbody>
+          <tr><td>Your email address</td><td>beta emails</td><td>you leave, or the beta ends</td></tr>
+          <tr><td>Your beta status</td><td>running the beta</td><td>6 months after it ends</td></tr>
+          <tr><td>Your consent record</td><td>proving we asked</td><td>6 years</td></tr>
+          <tr><td>AI usage counts</td><td>your included allowance</td><td>the beta ends</td></tr>
+          <tr><td>App usage (which parts of the app you use, never health data)</td><td>improving the beta; only if you opt in</td><td>the beta ends</td></tr>
+          <tr><td>Feedback you send</td><td>improving the product; quoted without your name only if you opt in</td><td>the beta ends</td></tr>
+        </tbody>
+      </table>
+      <p><strong>No health information appears in this table.</strong> When you apply on the website, your email goes straight to our email delivery provider. Our own site stores nothing, and until you click the confirmation link, the address isn&rsquo;t kept anywhere at all.</p>
+      <p>Our lawful bases: running the beta you asked to join (contract), improving the product (legitimate interests), and your <strong>explicit consent</strong> for the AI processing of health information described above.</p>
     </div>
+
+    <div class="page-section">
+      <h2>What we don&rsquo;t do</h2>
+      <ul>
+        <li>We don&rsquo;t sell personal data, and we never will.</li>
+        <li>We don&rsquo;t run advertising or tracking on the product.</li>
+        <li>We don&rsquo;t look at your vault. We built it so we can&rsquo;t.</li>
+        <li>We don&rsquo;t send your data anywhere this page hasn&rsquo;t told you about.</li>
+        <li>We don&rsquo;t change this page quietly: if it changes, we tell you before it applies to you.</li>
+      </ul>
+    </div>
+
+    <div class="page-section">
+      <h2>Your rights</h2>
+      <p>For the data in the table above: ask what we hold, correct it, or have it deleted. Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a>, or use &ldquo;leave the beta&rdquo; when it ships in the app. Your vault needs no rights from us: you hold the data.</p>
+      <p>If you&rsquo;re unhappy with how we&rsquo;ve handled something, you can complain to the Information Commissioner&rsquo;s Office (<a href="https://ico.org.uk">ico.org.uk</a>). We&rsquo;d appreciate the chance to fix it first.</p>
+      <p>GetMine Ltd, registered in England and Wales, company number <strong>17070331</strong>, is responsible for the personal data listed under &ldquo;What we hold&rdquo;. Contact: <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a>.</p>
+    </div>
+
+    <p class="page-lead" style="font-size:.85em;opacity:.75">GetMine Ltd &middot; Version 1.0 &middot; Last updated: 27 July 2026</p>
 </LegalPage>
