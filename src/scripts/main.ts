@@ -188,6 +188,10 @@ const WAITLIST_ENDPOINT=String(
   import.meta.env.PUBLIC_WAITLIST_ENDPOINT
   ||'https://f3cde459.sibforms.com/serve/MUIFAPkIttg9_w9drKl1pUH19xvaHSB6th2O_Uk7AMjGv6Yks09ls0EtOJ6n5sYr_dL_TrtArIYmoXK4dIp-183Oxac9u5FLhBTU7DZX1lAwkdefJAlLv7e0yqZMIq_grAsEXXYEqFPnRr8llU_6kHz5oT1mLU6xrIyqIABJ9a6NgG8lPR-YTOe3vNY7_OOFVmmb_PYkuekUN62fXw==',
 ).trim();
+const REQUEST_SUBMITTED_ENDPOINT=String(
+  import.meta.env.PUBLIC_REQUEST_SUBMITTED_ENDPOINT
+  ||'https://api.getmine.ai/access/v1/request-submitted',
+).trim();
 const MOBILE_MQ='(max-width: 880px)';
 const ACCESS_COPY={
   label:'GetMine open beta',
@@ -278,10 +282,23 @@ async function postAccess(email:string){
     const response=await fetch(WAITLIST_ENDPOINT,{method:'POST',body});
     if(response.status===429) return 'rate-limited';
     if(!response.ok) return 'network';
+    recordRequestSubmitted();
     return 'ok';
   } catch{
     return 'network';
   }
+}
+
+function recordRequestSubmitted(){
+  // This is deliberately a gross event count, not a person count. It carries no
+  // body, email or identifier, and a counter failure must never change the
+  // visitor's successful Brevo signup result.
+  void fetch(REQUEST_SUBMITTED_ENDPOINT,{
+    method:'POST',
+    credentials:'omit',
+    referrerPolicy:'no-referrer',
+    keepalive:true,
+  }).catch(()=>{ /* non-blocking operational metric */ });
 }
 
 function validEmail(input:HTMLInputElement){
