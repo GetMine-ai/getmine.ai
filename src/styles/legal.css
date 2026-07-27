@@ -38,3 +38,12 @@ footer{padding:32px;border-top:1px solid color-mix(in srgb,var(--cream) 5%,trans
   main{padding:56px 20px}
   .page-headline{font-size:clamp(32px,9vw,42px)}
 }
+
+/* Data tables inside legal pages (privacy: What we hold). Dark-theme card table:
+   left-aligned, bordered rows, teal header rail, scrolls sideways on small screens. */
+.page-section .table-scroll{overflow-x:auto;margin:14px 0}
+.page-section table{width:100%;min-width:520px;border-collapse:separate;border-spacing:0;font-family:'DM Sans Variable',sans-serif;font-size:14px;background:color-mix(in srgb,var(--cream) 4%,transparent);border:1px solid color-mix(in srgb,var(--cream) 14%,transparent);border-radius:12px;overflow:hidden}
+.page-section th{text-align:left;padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-deck);border-bottom:1px solid color-mix(in srgb,var(--cream) 14%,transparent);background:color-mix(in srgb,var(--cream) 6%,transparent)}
+.page-section td{text-align:left;padding:11px 14px;vertical-align:top;color:color-mix(in srgb,var(--cream) 82%,transparent);line-height:1.5}
+.page-section tr+tr td{border-top:1px solid color-mix(in srgb,var(--cream) 9%,transparent)}
+.page-section td:first-child{color:var(--cream);font-weight:600}
