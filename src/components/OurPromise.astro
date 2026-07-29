@@ -1,101 +1,188 @@
-<!-- OUR PROMISE -->
-<section id="our-promise">
-  <div class="promise-inner reveal-stagger">
-    <p class="promise-eyebrow">Our promise</p>
-    <h2 class="promise-headline">
-      Your vault stays with you.<br>
-      <em>You decide</em> <span class="beat-taupe">what leaves.</span>
-    </h2>
-    <p class="promise-supporting">
-      Built so your health data works for you, without giving up control.
-    </p>
-
-    <div class="promise-layout">
-      <div class="promise-grid">
-        <div class="constellation-hub" aria-hidden="true">
-          <svg viewBox="0 0 80 80">
-            <circle class="hub-dot" cx="40" cy="40" r="2.6"/>
-            <circle class="hub-ring" cx="40" cy="40" r="9" opacity=".45"/>
-            <line x1="40" y1="40" x2="12" y2="12" opacity=".55"/>
-            <line x1="40" y1="40" x2="68" y2="12" opacity=".55"/>
-            <line x1="40" y1="40" x2="12" y2="68" opacity=".55"/>
-            <line x1="40" y1="40" x2="68" y2="68" opacity=".55"/>
-          </svg>
-        </div>
-        <article class="promise-card">
-          <h3>Your data. Your rules.</h3>
-          <p>You control what is shared, with whom, and for how long.</p>
-        </article>
-        <article class="promise-card">
-          <h3>Minimum necessary exposure.</h3>
-          <p>Only the context needed for a task leaves your vault. Never your entire record.</p>
-        </article>
-        <article class="promise-card">
-          <h3>Your vault lives with you.</h3>
-          <p>Your vault lives on your device. We are builders, not keepers.</p>
-        </article>
-        <article class="promise-card">
-          <h3>You stay in control.</h3>
-          <p>See what has been shared. Revoke access at any time.</p>
-        </article>
+---
+const promises = [
+  ['Your vault lives with you.', 'Local-first on your device.', 'I’m a builder, not a keeper.'],
+  ['Your question defines the task.', 'You decide what leaves.', 'I prepare only the context the task needs, never the whole record.'],
+  ['You set the terms.', 'Revocable, always in view.', 'You decide. I execute.'],
+  ['Built to serve you.', 'Not to mine you.', 'I have one side. Yours.'],
+];
+---
+<section id="our-promise" class="section-edge" aria-labelledby="our-promise-heading">
+  <div class="wrap section-pad">
+    <div class="promise-head">
+      <div class="section-heading">
+        <p class="eyebrow">Our promise</p>
+        <h2 id="our-promise-heading">
+          Self-sovereignty isn’t a feature.
+          <span>It’s an oath.</span>
+        </h2>
+        <p class="support">
+          Too much. Too little. The wrong context. People are left to guess what to
+          share. Mina identifies what the task needs, your vault stays yours, and you
+          decide what leaves.
+        </p>
       </div>
-
-      <aside class="promise-vault hero-vault" aria-label="What your vault looks like">
-        <div class="hv-top">
-          <span>Private by design</span>
-        </div>
-        <div class="hv-title">
-          <strong>Your personal health vault</strong>
-        </div>
-        <div class="hv-sources">
-          <div class="hv-source">
-            <span class="hv-nhs">NHS</span>
-            <span>NHS App records</span>
-          </div>
-          <div class="hv-source">
-            <span class="hv-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V4h10l3 3v12h-3"></path><path d="M4 7h10l3 3v11H4z"></path><path d="M7 12h7M7 16h7"></path></svg>
-            </span>
-            <span>Letters &amp; Docs</span>
-          </div>
-          <div class="hv-source hv-source-email">
-            <span class="hv-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v12H3z"></path><path d="m4 8 8 6 8-6"></path><path d="M7 5h14v11"></path></svg>
-            </span>
-            <span>Health Emails</span>
-          </div>
-          <div class="hv-source">
-            <span class="hv-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l2-2h4l2 2h4v12H4z"></path><circle cx="12" cy="13" r="3"></circle></svg>
-            </span>
-            <span>Snaps</span>
-          </div>
-          <div class="hv-source">
-            <span class="hv-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="10" height="12" rx="2.4"></rect><path d="M10 6V4h4v2M10 18v2h4v-2"></path><path d="M19 10v3"></path><path d="M9.6 12.4h1.5l.9-1.8 1.4 3 .8-1.6h2.2"></path></svg>
-            </span>
-            <span>Wearables</span>
-          </div>
-        </div>
-        <div class="hv-mina">
-          <div class="hv-mina-head">
-            <canvas id="hero-mina-canvas" width="100" height="124" aria-label="Mina mascot"></canvas>
-            <strong>Mina, your health companion</strong>
-          </div>
-          <div class="hv-mina-actions">
-            <span>Connect</span>
-            <span>Capture</span>
-            <span>Notice</span>
-            <span>Share</span>
-          </div>
-        </div>
-        <div class="hv-props">
-          <div><span>Organised</span><small>Everything in one place</small></div>
-          <div><span>Portable</span><small>Share only when you choose</small></div>
-          <div><span>Secure</span><small>Encrypted on your device</small></div>
-        </div>
-        <p class="hv-footer">A folder on your device: organised, summarised, always with you.</p>
-      </aside>
+      <div class="mina-oath">
+        <span class="mina-mark" role="img" aria-label="Mina"><i>M</i><b>.</b></span>
+        <p>How Mina keeps the oath.</p>
+      </div>
     </div>
+
+    <ul class="promise-grid">
+      {promises.map(([claim, beat, implication]) => (
+        <li>
+          <div class="card claim"><p>{claim} <strong>{beat}</strong></p></div>
+          <div class="card response"><p>“{implication}”</p></div>
+        </li>
+      ))}
+    </ul>
+
+    <p class="signature">
+      <span>Your health.</span> <strong>Your data.</strong> <em>Your rules.</em>
+    </p>
   </div>
 </section>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  .promise-head {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .section-heading h2 span {
+    color: var(--teal);
+    font-style: italic;
+  }
+
+  .support {
+    max-width: 42.5rem;
+    margin: 1.5rem 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-lead);
+    line-height: 1.6;
+  }
+
+  .mina-oath {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .mina-mark {
+    position: relative;
+    display: inline-flex;
+    width: 5rem;
+    height: 5rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    background: var(--navy-2);
+    box-shadow: 0 0 4rem rgb(29 191 176 / 20%);
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+  }
+
+  .mina-mark i {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .mina-mark b {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  .mina-oath p {
+    margin: 0;
+    color: var(--taupe);
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.375rem);
+    font-style: italic;
+  }
+
+  .promise-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 3rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .promise-grid li {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .promise-grid .card {
+    display: flex;
+    min-height: 6.75rem;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .promise-grid p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.4vw, 1.625rem);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+
+  .claim strong {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  .response {
+    border-color: var(--teal-line);
+    background: var(--teal-surface);
+  }
+
+  .response p {
+    font-style: italic;
+  }
+
+  .signature {
+    margin: 3.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .signature strong {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  .signature em {
+    color: var(--taupe);
+    font-style: normal;
+  }
+
+  @media (min-width: 64rem) {
+    .promise-head {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
+
+    .mina-oath {
+      display: flex;
+    }
+
+    .promise-grid li {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
+  }
+</style>

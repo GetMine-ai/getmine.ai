@@ -1,97 +1,203 @@
-<!-- HERO -->
-<section id="hero">
-  <canvas id="hero-cv" width="1920" height="992"></canvas>
-  <div class="hero-layout">
-    <div>
-      <span class="hero-live-badge"><span class="hero-live-dot" aria-hidden="true"></span>Live Beta</span>
-      <p class="hero-kicker">Your personal health vault</p>
-      <h1 class="hero-h1"><span class="hero-h1-line">Your health.</span><span class="hero-h1-line hero-h1-data">Your data.</span><span class="hero-h1-line hero-h1-rules">Your rules.</span></h1>
-      <p class="hero-subtitle">All your health data: organised, private, and working for you.</p>
-      <p class="hero-disclaimer">Not a doctor &middot; Not a diagnostic service</p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="openWaitlist()" aria-controls="waitlist mobile-waitlist" aria-expanded="false">Request beta access</button>
+<section class="hero" id="top">
+  <div class="hero-light" aria-hidden="true"></div>
+  <div class="wrap-wide hero-grid">
+    <div class="hero-copy">
+      <h1>
+        <span>Your health.</span>
+        <span>Your data.</span>
+        <span>Your rules.</span>
+      </h1>
+      <p>
+        Your health data, brought together in one private vault. Mina, your personal
+        health agent, helps you put it to work.
+      </p>
+      <div class="hero-actions" id="hero-cta">
+        <a class="primary-cta" href="/beta">Request beta access</a>
+        <span>Open beta · Rolling out in waves</span>
       </div>
     </div>
 
-    <div class="hero-visual-wrap">
-      <div class="hero-phone-stage" aria-label="Mina product demo loop">
-        <video class="hero-phone-video"
-               autoplay muted loop playsinline
-               preload="metadata"
-               poster="/assets/getmine-hero-poster.jpg"
-               aria-label="GetMine product loop">
-          <source src="/assets/getmine-hero-loop.mp4" type="video/mp4">
-        </video>
-        <div class="threads-container" aria-hidden="true">
-          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
-                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
-              </linearGradient>
-            </defs>
-            <path class="thread" d="M200,50 C120,80 80,120 200,160"/>
-            <path class="thread" d="M200,90 C100,120 60,160 200,200"/>
-            <path class="thread" d="M200,130 C110,160 70,200 200,240"/>
-            <circle class="node" cx="110" cy="120" r="2.5"/>
-            <circle class="node" cx="85" cy="150" r="2.5"/>
-            <circle class="node" cx="105" cy="180" r="2.5"/>
-            <circle class="particle" cx="140" cy="110" r="1.2"/>
-            <circle class="particle" cx="90" cy="135" r="1"/>
-            <circle class="particle" cx="130" cy="170" r="1"/>
-            <circle class="particle" cx="160" cy="220" r="1"/>
-            <circle class="particle" cx="120" cy="200" r="1.2"/>
-          </svg>
-        </div>
-        <div class="threads-container threads-right" aria-hidden="true">
-          <svg viewBox="0 0 200 300" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="threadGradR" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#00E6D6" stop-opacity="0"/>
-                <stop offset="35%" stop-color="#00E6D6" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#00E6D6" stop-opacity="0.9"/>
-              </linearGradient>
-            </defs>
-            <path class="thread" d="M200,80 C120,110 80,150 200,190"/>
-            <path class="thread" d="M200,140 C110,170 70,210 200,240"/>
-            <circle class="node" cx="105" cy="145" r="2.5"/>
-            <circle class="node" cx="100" cy="200" r="2.5"/>
-            <circle class="particle" cx="135" cy="125" r="1.1"/>
-            <circle class="particle" cx="90" cy="175" r="1"/>
-            <circle class="particle" cx="130" cy="225" r="1"/>
-          </svg>
-        </div>
-      </div>
-
-      <article class="hero-cue hero-cue-a" aria-hidden="true">
-        <header class="hero-cue-head">
-          <span class="hero-cue-label">NHS Records</span>
-          <span class="hero-cue-status">Imported</span>
-        </header>
-        <p class="hero-cue-big">509 GP records</p>
-        <p class="hero-cue-body">17 years of memory</p>
-      </article>
-      <article class="hero-cue hero-cue-b" aria-hidden="true">
-        <header class="hero-cue-head">
-          <span class="hero-cue-label">Health Vault</span>
-          <span class="hero-cue-status">Connected</span>
-        </header>
-        <p class="hero-cue-big">4 sources</p>
-        <p class="hero-cue-body">NHS &middot; Letters &middot; Emails &middot; Snaps</p>
-      </article>
-      <article class="hero-cue hero-cue-c" aria-hidden="true">
-        <header class="hero-cue-head">
-          <span class="hero-cue-label">Memory Found</span>
-          <span class="hero-cue-status">Longitudinal</span>
-        </header>
-        <p class="hero-cue-big">ACL reconstruction 2020</p>
-        <p class="hero-cue-body">Connected to knee question today</p>
-      </article>
-      <article class="hero-cue hero-cue-d" aria-hidden="true">
-        <p class="hero-cue-big hero-cue-big-italic">Your health memory</p>
-        <p class="hero-cue-body hero-cue-body-lead">working for you</p>
-      </article>
+    <div class="product-scene">
+      <svg class="memory-line" viewBox="0 0 1000 250" aria-hidden="true">
+        <path d="M0 145 C100 80 160 220 255 145 S415 70 500 145 S670 220 760 145 S915 70 1000 145" />
+        <circle cx="255" cy="145" r="5" />
+        <circle cx="500" cy="145" r="5" />
+        <circle cx="760" cy="145" r="5" />
+      </svg>
+      <picture>
+        <source srcset="/assets/redesign/getmine-desk-scene.avif" type="image/avif" />
+        <source srcset="/assets/redesign/getmine-desk-scene.webp" type="image/webp" />
+        <img
+          src="/assets/redesign/getmine-desk-scene.png"
+          alt="GetMine running on a desktop monitor showing Your Vault, with keyboard and mouse on a desk"
+          width="954"
+          height="828"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </picture>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <p>GetMine for macOS and Windows</p>
     </div>
   </div>
 </section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(57rem, 100svh);
+    padding-top: 4.75rem;
+    background: var(--navy);
+  }
+
+  .hero-light {
+    position: absolute;
+    z-index: 0;
+    top: 18%;
+    right: -10%;
+    width: 42rem;
+    height: 42rem;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--teal), transparent 72%);
+    filter: blur(9rem);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-items: center;
+    gap: 3rem;
+    padding-block: 2.5rem 3.5rem;
+  }
+
+  .hero-copy {
+    max-width: 35rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: 300;
+    letter-spacing: -0.05em;
+    line-height: 0.94;
+  }
+
+  h1 span {
+    display: block;
+  }
+
+  h1 span:nth-child(2) {
+    color: var(--teal);
+  }
+
+  h1 span:nth-child(3) {
+    color: var(--taupe);
+  }
+
+  .hero-copy > p {
+    max-width: 33.75rem;
+    margin: 1.75rem 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-lead);
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.25rem;
+  }
+
+  .hero-actions > span {
+    color: var(--text-quiet);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .product-scene {
+    position: relative;
+    min-width: 0;
+  }
+
+  .product-scene picture {
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-scene img {
+    width: 100%;
+    height: auto;
+    user-select: none;
+    mask-image: radial-gradient(140% 120% at 55% 45%, #000 50%, transparent 95%);
+  }
+
+  .memory-line {
+    position: absolute;
+    z-index: 0;
+    inset: 8% -12% auto;
+    width: 124%;
+    height: 70%;
+    overflow: visible;
+    opacity: 0.16;
+  }
+
+  .memory-line path {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2;
+  }
+
+  .memory-line circle {
+    fill: var(--teal);
+  }
+
+  .scene-shade {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    background: radial-gradient(
+      120% 100% at 55% 45%,
+      transparent 20%,
+      rgb(6 12 20 / 60%) 65%,
+      rgb(6 12 20 / 95%) 100%
+    );
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .product-scene > p {
+    position: relative;
+    z-index: 3;
+    margin: 0.75rem 0 0;
+    color: rgb(199 194 182 / 80%);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    text-align: center;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 3.5rem;
+      padding-block: 3.5rem 5rem;
+    }
+
+    .product-scene {
+      margin-right: -2.5rem;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .hero-copy > p {
+      font-size: 1.1875rem;
+    }
+  }
+</style>

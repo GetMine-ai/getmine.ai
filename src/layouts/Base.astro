@@ -1,15 +1,8 @@
 ---
-// Document shell for the main marketing site. Head/meta ported from the original
-// index.html, parameterised so other pages can reuse it. CSS is imported here in
-// the original source order so the global cascade is preserved exactly.
 import '@fontsource-variable/dm-sans';
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/fraunces/wght-italic.css';
-import '../styles/global.css';
-import '../styles/nav.css';
-import '../styles/hero.css';
-import '../styles/sections.css';
-import '../styles/overlays.css';
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/full-italic.css';
+import '../styles/tokens.css';
 
 interface Props {
   title?: string;
@@ -22,53 +15,233 @@ interface Props {
 }
 
 const {
-  title = 'GetMine.ai | Your health. Your data. Your rules.',
-  description = 'Your health. Your data. Your rules. All your health data: organised, private, and working for you. Join the GetMine.ai waitlist.',
-  ogDescription = 'All your health data: organised, private, and working for you.',
+  title = 'GetMine.ai — Your health. Your data. Your rules.',
+  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health agent, helping you organise and use your health information. Request access to the GetMine open beta.',
+  ogDescription = 'A desktop-native personal health vault for macOS and Windows. Bring records, emails and notes into one vault you control.',
   canonical = 'https://getmine.ai/',
   ogImage = 'https://getmine.ai/og-image.png',
   ogType = 'website',
   locale = 'en_GB',
 } = Astro.props;
 ---
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title}</title>
-
-<!-- ── SEO ──────────────────────────────────────────────────────── -->
-<meta name="description" content={description}>
-<meta name="author" content="GetMine.ai">
-<meta name="theme-color" content="#060C14">
-<link rel="canonical" href={canonical}>
-
-<!-- ── Open Graph (Facebook, LinkedIn, Slack, Discord, iMessage) ── -->
-<meta property="og:type" content={ogType}>
-<meta property="og:site_name" content="GetMine.ai">
-<meta property="og:title" content={title}>
-<meta property="og:description" content={ogDescription}>
-<meta property="og:url" content={canonical}>
-<meta property="og:image" content={ogImage}>
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="GetMine.ai | your health, your data, your rules">
-<meta property="og:locale" content={locale}>
-
-<!-- ── Twitter Card ───────────────────────────────────────────── -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content={title}>
-<meta name="twitter:description" content={ogDescription}>
-<meta name="twitter:image" content={ogImage}>
-<meta name="twitter:image:alt" content="GetMine.ai | your health, your data, your rules">
-
-<!-- ── Favicons + Apple touch icon ─────────────────────────────── -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-</head>
-<body>
-<slot />
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="GetMine.ai" />
+    <meta name="theme-color" content="#060c14" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="GetMine.ai" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="GetMine.ai | your health, your data, your rules" />
+    <meta property="og:locale" content={locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="GetMine.ai | your health, your data, your rules" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <slot />
+    <script src="../scripts/main.ts"></script>
+  </body>
 </html>
+
+<style is:global>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-width: 20rem;
+    background: var(--navy);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.75rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background: var(--navy);
+    color: var(--cream);
+    font-family: var(--font-sans);
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  img,
+  picture {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: rgb(29 191 176 / 35%);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .wrap,
+  .wrap-wide {
+    width: min(100%, var(--wrap));
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .wrap-wide {
+    width: min(100%, var(--wrap-wide));
+  }
+
+  .section-pad {
+    padding-block: 3.5rem;
+  }
+
+  .section-edge {
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .section-heading {
+    max-width: 53.75rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--teal);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .section-heading h2 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .display {
+    font-family: var(--font-display);
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .primary-cta {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1.5rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--ember);
+    box-shadow: 0 10px 24px -14px rgb(226 112 58 / 90%);
+    color: var(--navy);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      transform 180ms var(--ease-gm),
+      box-shadow 180ms var(--ease-gm),
+      filter 180ms var(--ease-gm);
+  }
+
+  .primary-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px -14px rgb(226 112 58 / 95%);
+    filter: brightness(1.05);
+  }
+
+  @media (min-width: 40rem) {
+    .wrap,
+    .wrap-wide {
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .section-pad {
+      padding-block: 5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .section-pad {
+      padding-block: 7rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

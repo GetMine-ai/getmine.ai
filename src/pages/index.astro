@@ -3,26 +3,19 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import WhyItMatters from '../components/WhyItMatters.astro';
+import HowItWorks from '../components/HowItWorks.astro';
 import OurPromise from '../components/OurPromise.astro';
-import WhatBecomesPossible from '../components/WhatBecomesPossible.astro';
-import EarlyAccess from '../components/EarlyAccess.astro';
-import WaitlistOverlay from '../components/WaitlistOverlay.astro';
 import About from '../components/About.astro';
+import EarlyAccess from '../components/EarlyAccess.astro';
 import Footer from '../components/Footer.astro';
-import MobileWaitlist from '../components/MobileWaitlist.astro';
 ---
 <Base>
   <Nav />
   <Hero />
   <WhyItMatters />
+  <HowItWorks />
   <OurPromise />
-  <WhatBecomesPossible />
-  <EarlyAccess />
-  <WaitlistOverlay />
   <About />
+  <EarlyAccess variant="close" />
   <Footer />
-  <MobileWaitlist />
-  <script>
-    import '../scripts/main.ts';
-  </script>
 </Base>

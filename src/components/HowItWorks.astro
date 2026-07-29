@@ -1,0 +1,844 @@
+---
+const steps = [
+  {
+    id: 'build',
+    nav: 'Sources → Vault',
+    eyebrow: 'Step one',
+    title: 'Build your own vault.',
+    body: 'Connect every source you have: health records, uploaded files, scanned emails, snaps of paper and self-reported notes. Everything lands in one local vault, browsable by source or category.',
+  },
+  {
+    id: 'ask',
+    nav: 'Ask Mina',
+    eyebrow: 'Step two',
+    title: 'Mina reads across your vault and puts your data to work.',
+    body: 'Mina reads across your entire vault, on your own machine, and shows the source behind every answer — the what, the when, the who.',
+  },
+  {
+    id: 'topics',
+    nav: 'Topics',
+    eyebrow: 'Step three',
+    title: 'Topics frame what matters, in your own words, with context and memory.',
+    body: 'Supplements, longevity, menopause — name the things you care about and tag records to them from any source. Each topic builds its own context and memory, with its own span and what’s new.',
+  },
+  {
+    id: 'watching',
+    nav: 'Watching',
+    eyebrow: 'Step four',
+    title: 'Keep an eye on what changes, when it happens, or keep a diary.',
+    body: 'Track a symptom, a pattern or a habit over time. Log a moment whenever it happens or keep a daily diary — private by default, ready for your next appointment.',
+  },
+];
+
+const sources = [
+  ['NHS', 'NHS records', '699 records'],
+  ['UP', 'Uploads', '71 documents'],
+  ['@', 'Health emails', '45 emails'],
+  ['◉', 'Snaps', '12 snaps'],
+  ['You', 'Self-reported', '25 items'],
+  ['M.', 'Made by Mina', '12 items'],
+];
+---
+<section id="how-it-works" class="section-edge" aria-labelledby="how-it-works-heading" data-walkthrough>
+  <div class="wrap-wide heading-wrap">
+    <header class="section-heading">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-it-works-heading">
+        A self-sovereign vault —
+        <span>powered by Mina, your personal health agent.</span>
+      </h2>
+    </header>
+  </div>
+
+  <div class="desktop-walkthrough">
+    <div class="app-stage" data-walkthrough-stage>
+      <div class="app-window" data-walkthrough-frame>
+        <div class="titlebar">
+          <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
+          <b>● Open Beta</b>
+          <small>GetMine</small>
+        </div>
+        <div class="app-body">
+          <nav class="app-nav" aria-label="GetMine app preview">
+            {['⌂ Home', '⌁ Topics & Watching', '♢ Vault', '▱ Sources', '▥ Insights', '♙ Sharing'].map((item) => (
+              <span>{item}</span>
+            ))}
+          </nav>
+
+          <div class="screen-stack">
+            <div class="product-screen active" data-walkthrough-panel="0">
+              <div class="brandline">Get<span>Mine</span>.ai</div>
+              <p class="tagline">Your health, your data, <em>your rules.</em></p>
+              <h3>Good evening, Helen.</h3>
+              <div class="composer">
+                <i>M.</i><span>What is in my vault?</span><button aria-label="Send">↑</button>
+              </div>
+              <div class="health-story">
+                <div><b>Your health story · 864 records across 19 years</b><a>See your story →</a></div>
+                <div class="story-bars" aria-hidden="true">
+                  {Array.from({length: 34}, (_, index) => (
+                    <span style={`height:${16 + ((index * 29) % 68)}%;--delay:${index * 12}ms`}></span>
+                  ))}
+                </div>
+                <div class="years"><span>2008</span><span>2026</span></div>
+                <p><b>Topics</b> <em>Longevity</em> <em>Supplements</em> <em>Menopause</em></p>
+                <p><b>Watching</b> <em>Sleep</em> <em>Balanced Nutrition</em></p>
+              </div>
+            </div>
+
+            <div class="product-screen" data-walkthrough-panel="1" hidden>
+              <div class="conversation-head">
+                <span>CONVERSATIONS</span><a>+ New</a>
+              </div>
+              <div class="question">What is the current status of my vaccinations?</div>
+              <div class="mina-answer">
+                <i>M.</i>
+                <div>
+                  <p>Here’s the complete picture of your vaccinations, pulled from your NHS record, letters, emails and snaps:</p>
+                  <p><b>Routine immunisations:</b> your NHS record shows three COVID-19 doses plus the bivalent booster, and a flu vaccine from November 2022.</p>
+                  <p><b>Shingles:</b> you received Shingrix on 30 January 2026. This is confirmed by three independent sources.</p>
+                  <p><b>Gaps:</b> I did not find a recorded pneumococcal vaccine. You may want to ask your GP whether you are eligible.</p>
+                  <div class="source-chips"><span>NHS 4</span><span>Letters 2</span><span>Snaps 1</span><span>Emails 1</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-screen" data-walkthrough-panel="2" hidden>
+              <div class="screen-title"><div><h3>Topics</h3><p>What you’re attending to, in your own words</p></div><button>+ New topic</button></div>
+              <div class="mina-read"><i>M.</i><p><b>Mina’s read on your topics</b><br />3 topics over your vault. Each one gathers records you tag from every source, and keeps its own context and memory.</p></div>
+              <div class="topic-grid">
+                <article><b>⌗ Supplements</b><div class="meter"></div><small>NHS 1 · ◉ 5</small><p>6 items · Feb 2026 – Jul 2026 · <em>6 new</em></p></article>
+                <article><b>⌗ Longevity</b><div class="meter orange"></div><small>NHS 1 · ▤ 9 · ◉ 1</small><p>11 items · Dec 2015 – Jul 2026 · <em>11 new</em></p></article>
+                <article><b>⌗ Menopause</b><div class="meter pink"></div><small>NHS 6 · ▤ 1 · ◉ 1</small><p>8 items · May 2024 – Jul 2026 · <em>2 new</em></p></article>
+              </div>
+            </div>
+
+            <div class="product-screen" data-walkthrough-panel="3" hidden>
+              <div class="screen-title"><div><h3>Watching</h3><p>Things you keep an eye on · in your own words, private by default</p></div><button>+ Watch something</button></div>
+              <div class="watch-list">
+                <article>
+                  <div><b>◉ Sleep</b><span>Daily diary</span><small>5 logs ⌃</small></div>
+                  <p>Sleep — 5× since Jul, last 23 Jul</p>
+                  <div class="timeline"><i></i><i></i><i></i><i></i></div>
+                  <ul><li><b>23 Jul</b> “today my sleep score is 79 and my sleep debt is 3h30”</li><li><b>22 Jul</b> “Sleep score 71, 3 hours sleep debt going down”</li></ul>
+                </article>
+                <article><div><b>◉ Balanced Nutrition</b><span>Daily diary</span><small>4 logs ⌄</small></div><p>Balanced Nutrition — 4× since Jul, last 23 Jul</p><div class="timeline short"><i></i><i></i><i></i></div></article>
+                <article><div><b>◉ Blood vessel on my right eye</b><small>2 logs ⌄</small></div><p>Blood vessel on my right eye — 2× since Jul, last 20 Jul</p></article>
+              </div>
+            </div>
+          </div>
+
+          <aside class="vault-rail">
+            <p>YOUR VAULT · UPDATED 4 DAYS AGO</p>
+            <div class="vault-totals"><strong>864<small>Records</small></strong><strong>6<small>Sources</small></strong></div>
+            <p>SOURCES</p>
+            <ul>
+              {sources.map(([tag, name, detail]) => (
+                <li><b>{tag}</b><span>{name}<small>{detail}</small></span></li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="walkthrough-tabs" role="tablist" aria-label="Product walkthrough" data-walkthrough-tabs>
+      {steps.map((step, index) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-controls={`walkthrough-${step.id}`}
+          data-walkthrough-tab={index}
+        >
+          <i></i>
+          <span>{String(index + 1).padStart(2, '0')} · {step.nav}</span>
+          <b>{step.title}</b>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="mobile-walkthrough wrap">
+    {steps.map((step, index) => (
+      <article>
+        <p>{String(index + 1).padStart(2, '0')} · {step.nav}</p>
+        <h3>{step.title}</h3>
+        <div>{step.body}</div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  .heading-wrap {
+    padding-top: 3.5rem;
+  }
+
+  .section-heading h2 span {
+    color: var(--taupe);
+    font-style: italic;
+  }
+
+  .desktop-walkthrough {
+    display: none;
+    padding: 0.25rem 2rem 1.25rem;
+  }
+
+  .app-stage {
+    display: flex;
+    margin-inline: auto;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .app-window {
+    width: 61.25rem;
+    flex: 0 0 61.25rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--radius-md);
+    background: #fbf8f1;
+    box-shadow: 0 40px 120px -40px rgb(0 0 0 / 85%);
+    color: #0f1b18;
+    transform-origin: top center;
+  }
+
+  .titlebar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid rgb(15 27 24 / 10%);
+    background: #f3ecdc;
+  }
+
+  .traffic {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+  }
+
+  .traffic + .traffic {
+    margin-left: -0.15rem;
+  }
+
+  .red { background: #ff5f57; }
+  .yellow { background: #febc2e; }
+  .green { background: #28c840; }
+
+  .titlebar b {
+    justify-self: center;
+    padding: 0.2rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: #e8763a;
+    color: #fff;
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .titlebar small {
+    color: #54635e;
+    font-size: 0.625rem;
+  }
+
+  .app-body {
+    display: grid;
+    grid-template-columns: 5.375rem minmax(0, 1fr) 13.75rem;
+    min-height: 29.375rem;
+  }
+
+  .app-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1rem 0.35rem;
+    background: #0f1b18;
+  }
+
+  .app-nav span {
+    padding: 0.48rem 0.2rem;
+    color: rgb(251 248 241 / 60%);
+    font-size: 0.55rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .app-nav span:first-child,
+  .app-nav span:nth-child(2) {
+    color: #6fd3b8;
+  }
+
+  .screen-stack {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    padding: 1.25rem;
+    background: #fbf8f1;
+  }
+
+  .product-screen {
+    min-width: 0;
+    animation: fade-panel 420ms var(--ease-gm);
+  }
+
+  .product-screen[hidden] {
+    display: none;
+  }
+
+  .brandline {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .brandline span {
+    color: #0e7c66;
+  }
+
+  .tagline {
+    margin: 0.2rem 0 0;
+    color: #54635e;
+    font-size: 0.68rem;
+    text-align: center;
+  }
+
+  .product-screen > h3 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .composer {
+    display: flex;
+    max-width: 32.5rem;
+    min-height: 4.5rem;
+    margin: 1rem auto 0;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+    font-size: 0.8rem;
+  }
+
+  .composer i,
+  .mina-answer > i,
+  .mina-read > i {
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #0f1b18;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+  }
+
+  .composer button {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: auto 0 0 auto;
+    border: 0;
+    border-radius: 50%;
+    background: #0e7c66;
+    color: #fff;
+  }
+
+  .health-story {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+
+  .health-story > div:first-child,
+  .years,
+  .conversation-head,
+  .screen-title,
+  .watch-list article > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .health-story b {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .health-story a {
+    color: #0e7c66;
+    font-size: 0.62rem;
+  }
+
+  .story-bars {
+    display: flex;
+    height: 4rem;
+    align-items: flex-end;
+    gap: 0.18rem;
+    margin-top: 0.75rem;
+  }
+
+  .story-bars span {
+    flex: 1;
+    border-radius: var(--radius-pill);
+    background: #0e7c66;
+    animation: grow-bar 600ms var(--ease-gm) both;
+    animation-delay: var(--delay);
+  }
+
+  .story-bars span:nth-child(3n) {
+    background: #8fa4c8;
+  }
+
+  .years {
+    margin-top: 0.15rem;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+  }
+
+  .health-story p {
+    margin: 0.45rem 0 0;
+    color: #54635e;
+    font-size: 0.58rem;
+  }
+
+  .health-story p em,
+  .source-chips span {
+    display: inline-block;
+    margin-left: 0.25rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-pill);
+    background: #f0eaf6;
+    color: #6c4e8c;
+    font-style: normal;
+  }
+
+  .conversation-head {
+    color: #54635e;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .conversation-head a {
+    color: #0e7c66;
+    letter-spacing: normal;
+  }
+
+  .question {
+    max-width: 29rem;
+    margin: 1rem 0 0 auto;
+    padding: 0.75rem 1rem;
+    border-radius: 0.8rem;
+    background: #0f1b18;
+    color: #fff;
+    font-size: 0.75rem;
+  }
+
+  .mina-answer {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+    padding: 0.8rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.8rem;
+    background: #fff;
+  }
+
+  .mina-answer p {
+    margin: 0 0 0.5rem;
+    font-size: 0.66rem;
+    line-height: 1.5;
+  }
+
+  .source-chips span {
+    margin: 0 0.25rem 0 0;
+    background: #e6f2ee;
+    color: #0e7c66;
+    font-size: 0.55rem;
+  }
+
+  .screen-title h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .screen-title p {
+    margin: 0.2rem 0 0;
+    color: #54635e;
+    font-size: 0.66rem;
+  }
+
+  .screen-title button {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: #0f1b18;
+    font-size: 0.62rem;
+  }
+
+  .mina-read {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.8rem;
+    border: 1px solid #cfe6dd;
+    border-radius: 0.75rem;
+    background: #f2f9f6;
+  }
+
+  .mina-read p {
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+  }
+
+  .topic-grid article,
+  .watch-list article {
+    padding: 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+
+  .topic-grid article > b {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: #eaf1fa;
+    color: #2a5b99;
+    font-size: 0.6rem;
+  }
+
+  .meter {
+    height: 0.35rem;
+    margin-top: 0.65rem;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(90deg, #2a5b99 14%, #3f8f63 14% 80%, #7fb98c 80%);
+  }
+
+  .meter.orange {
+    background: linear-gradient(90deg, #2a5b99 8%, #c2803b 8% 70%, #3f8f63 70%);
+  }
+
+  .meter.pink {
+    background: linear-gradient(90deg, #2a5b99 34%, #b45b7a 34% 64%, #3f8f63 64%);
+  }
+
+  .topic-grid small,
+  .topic-grid p,
+  .watch-list p {
+    color: #54635e;
+    font-size: 0.56rem;
+  }
+
+  .topic-grid p em {
+    color: #0e7c66;
+  }
+
+  .watch-list {
+    display: grid;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+  }
+
+  .watch-list article:first-child {
+    border-color: #0e7c66;
+    box-shadow: 0 0 0 3px #e6f2ee;
+  }
+
+  .watch-list b {
+    font-size: 0.7rem;
+  }
+
+  .watch-list span,
+  .watch-list small {
+    margin-left: auto;
+    padding: 0.18rem 0.4rem;
+    border-radius: var(--radius-pill);
+    background: #e6f2ee;
+    color: #0e7c66;
+    font-size: 0.52rem;
+  }
+
+  .timeline {
+    position: relative;
+    display: flex;
+    height: 0.8rem;
+    margin-top: 0.5rem;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid #e4ddd1;
+  }
+
+  .timeline i {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #0e7c66;
+  }
+
+  .watch-list ul {
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .watch-list li {
+    padding-block: 0.2rem;
+    color: #54635e;
+    font-size: 0.56rem;
+    font-style: italic;
+  }
+
+  .watch-list li b {
+    display: inline-block;
+    min-width: 2.5rem;
+    color: #0f1b18;
+    font-size: inherit;
+    font-style: normal;
+  }
+
+  .vault-rail {
+    padding: 1rem 0.75rem;
+    border-left: 1px solid rgb(15 27 24 / 10%);
+    background: #fff;
+  }
+
+  .vault-rail > p {
+    color: #54635e;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .vault-totals {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0.75rem 0 1rem;
+    padding: 0.75rem 0.4rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #f7fbf9;
+  }
+
+  .vault-totals strong {
+    color: #0e7c66;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .vault-totals small {
+    display: block;
+    color: #54635e;
+    font-family: var(--font-sans);
+    font-size: 0.55rem;
+  }
+
+  .vault-rail ul {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .vault-rail li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.5rem;
+  }
+
+  .vault-rail li > b {
+    display: flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.35rem;
+    background: #0e7c66;
+    color: #fff;
+    font-size: 0.48rem;
+  }
+
+  .vault-rail li:first-child > b { background: #1f5fbf; }
+  .vault-rail li:nth-child(2) > b { background: #c2803b; }
+  .vault-rail li:nth-child(4) > b { background: #b45b7a; }
+  .vault-rail li:nth-child(5) > b { background: #6c63b5; }
+  .vault-rail li:nth-child(6) > b { background: #0f1b18; }
+
+  .vault-rail li > span {
+    min-width: 0;
+    font-size: 0.62rem;
+  }
+
+  .vault-rail li small {
+    display: block;
+    color: #54635e;
+    font-size: 0.52rem;
+  }
+
+  .walkthrough-tabs {
+    display: grid;
+    max-width: 62.5rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem auto 0;
+  }
+
+  .walkthrough-tabs button {
+    padding: 0.75rem 1rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    color: var(--cream);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color 220ms var(--ease-gm),
+      background 220ms var(--ease-gm);
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] {
+    border-color: var(--teal-line);
+    background: var(--teal-surface);
+  }
+
+  .walkthrough-tabs i {
+    display: block;
+    width: 100%;
+    height: 0.18rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--line);
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] i {
+    background: var(--teal);
+  }
+
+  .walkthrough-tabs span {
+    display: block;
+    color: var(--text-quiet);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] span {
+    color: var(--teal);
+  }
+
+  .walkthrough-tabs b {
+    display: block;
+    margin-top: 0.4rem;
+    color: rgb(232 250 248 / 60%);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] b {
+    color: var(--cream);
+  }
+
+  .mobile-walkthrough {
+    display: grid;
+    gap: 3rem;
+    padding-block: 3.5rem;
+  }
+
+  .mobile-walkthrough article > p {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .mobile-walkthrough h3 {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .mobile-walkthrough article > div {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  @keyframes fade-panel {
+    from { opacity: 0; transform: translateY(0.5rem); }
+  }
+
+  @keyframes grow-bar {
+    from { height: 6%; }
+  }
+
+  @media (min-width: 64rem) {
+    section {
+      display: flex;
+      min-height: calc(100svh - 4.75rem);
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .heading-wrap {
+      padding-top: 2rem;
+    }
+
+    .desktop-walkthrough {
+      display: block;
+    }
+
+    .mobile-walkthrough {
+      display: none;
+    }
+  }
+</style>
