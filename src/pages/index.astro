@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import WhyItMatters from '../components/WhyItMatters.astro';
 import HowItWorks from '../components/HowItWorks.astro';
+import MeetMina from '../components/MeetMina.astro';
 import OurPromise from '../components/OurPromise.astro';
 import About from '../components/About.astro';
 import EarlyAccess from '../components/EarlyAccess.astro';
@@ -14,8 +15,63 @@ import Footer from '../components/Footer.astro';
   <Hero />
   <WhyItMatters />
   <HowItWorks />
+  <MeetMina />
   <OurPromise />
   <About />
+  <section class="beta-facts section-edge" aria-label="Open beta availability">
+    <div class="wrap">
+      <article class="card">
+        <p class="card-eyebrow">In the UK</p>
+        <p>Connect your NHS record directly through our NHS partner.</p>
+      </article>
+      <article class="card">
+        <p class="card-eyebrow">Everywhere else</p>
+        <p>Download and build your vault from documents, emails, photos and notes.</p>
+      </article>
+      <article class="card">
+        <p class="card-eyebrow">Either way</p>
+        <p>The vault lives on your machine. Nothing leaves without you asking.</p>
+      </article>
+    </div>
+  </section>
   <EarlyAccess variant="close" />
   <Footer />
 </Base>
+
+<style>
+  .beta-facts {
+    background: var(--navy);
+  }
+
+  .beta-facts .wrap {
+    display: grid;
+    gap: 1rem;
+    padding-block: 3.5rem;
+  }
+
+  .beta-facts .card {
+    padding: 1.5rem;
+  }
+
+  .beta-facts .card > p:last-child {
+    margin: 1rem 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .card-eyebrow {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 48rem) {
+    .beta-facts .wrap {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

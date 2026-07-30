@@ -1,8 +1,8 @@
 <footer>
   <div class="wrap footer-main">
     <div>
-      <a class="wordmark" href="/#top" aria-label="GetMine.ai — home">
-        Get<span>Mine.</span><i>ai</i>
+      <a class="wordmark" href="/#top" aria-label="GetMine.ai home">
+        <span>Get</span><em>Mine.</em><span>ai</span>
       </a>
       <p class="tagline">
         <span>Your health.</span>
@@ -14,13 +14,14 @@
     <nav aria-label="Footer">
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
+      <a href="/trust">Trust</a>
       <a href="mailto:hello@getmine.ai">Contact</a>
     </nav>
   </div>
 
   <div class="wrap footer-meta">
     <p>GetMine is a local-first personal health vault for macOS and Windows.</p>
-    <p>© 2026 GetMine</p>
+    <p>© 2026 GetMine Ltd</p>
   </div>
 </footer>
 
@@ -40,24 +41,17 @@
   }
 
   .wordmark {
-    display: inline-flex;
-    align-items: baseline;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: 25px;
-    font-weight: 300;
-    letter-spacing: -0.035em;
+    font-size: 1.6rem;
+    letter-spacing: -0.025em;
+    line-height: 1;
     text-decoration: none;
   }
 
-  .wordmark span,
-  .wordmark i {
+  .wordmark em {
     color: var(--teal);
     font-style: italic;
-  }
-
-  .wordmark i {
-    font-size: 15px;
   }
 
   .tagline {
@@ -90,7 +84,7 @@
   }
 
   nav a {
-    color: rgb(232 250 248 / 70%);
+    color: var(--cream);
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
@@ -109,7 +103,7 @@
     gap: var(--space-3);
     border-top: 1px solid var(--line-quiet);
     padding-block: 20px;
-    color: rgb(232 250 248 / 52%);
+    color: var(--cream);
     font-size: 14px;
   }
 

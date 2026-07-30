@@ -21,6 +21,7 @@ function initialiseNavigation() {
     button?.setAttribute('aria-expanded', 'false');
     button?.setAttribute('aria-label', 'Open menu');
     menu?.setAttribute('aria-hidden', 'true');
+    menu?.setAttribute('inert', '');
     menu?.classList.remove('open');
     document.body.classList.remove('menu-open');
   };
@@ -30,6 +31,8 @@ function initialiseNavigation() {
     button.setAttribute('aria-expanded', String(open));
     button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     menu?.setAttribute('aria-hidden', String(!open));
+    if (open) menu?.removeAttribute('inert');
+    else menu?.setAttribute('inert', '');
     menu?.classList.toggle('open', open);
     document.body.classList.toggle('menu-open', open);
   });
@@ -78,58 +81,90 @@ function initialiseNavigation() {
   }
 }
 
+function createAutoAdvance(
+  advance: () => void,
+  interval: number | (() => number),
+  reducedMotion: boolean,
+) {
+  let timer: number | undefined;
+  let temporarilyPaused = false;
+  const delay = () => (typeof interval === 'function' ? interval() : interval);
+
+  const clear = () => {
+    if (timer !== undefined) window.clearTimeout(timer);
+    timer = undefined;
+  };
+
+  const tick = () => {
+    advance();
+    timer = window.setTimeout(tick, delay());
+  };
+
+  const start = () => {
+    if (reducedMotion || temporarilyPaused || timer !== undefined) return;
+    timer = window.setTimeout(tick, delay());
+  };
+
+  return {
+    start,
+    pauseTemporarily() {
+      temporarilyPaused = true;
+      clear();
+    },
+    resumeTemporarily() {
+      temporarilyPaused = false;
+      start();
+    },
+  };
+}
+
 function initialiseFrictionRotator() {
   const rotator = document.querySelector<HTMLElement>('[data-frictions]');
   if (!rotator) return;
 
   const question = rotator.querySelector<HTMLElement>('[data-friction-question]');
   const answer = rotator.querySelector<HTMLElement>('[data-friction-answer]');
-  const tabs = Array.from(rotator.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-  if (!question || !answer || !tabs.length) return;
+  const choices = Array.from(rotator.querySelectorAll<HTMLButtonElement>('[data-friction-choice]'));
+  const announcer = rotator.querySelector<HTMLElement>('[data-friction-announcer]');
+  if (!question || !answer || !choices.length) return;
 
   let active = 0;
-  let timer: number | undefined;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const select = (index: number) => {
-    active = (index + tabs.length) % tabs.length;
-    const selected = tabs[active];
+  const select = (index: number, announce = false) => {
+    active = (index + choices.length) % choices.length;
+    const selected = choices[active];
     question.textContent = selected.dataset.question || '';
     answer.textContent = selected.dataset.answer || '';
-    tabs.forEach((tab, tabIndex) => {
-      tab.setAttribute('aria-selected', String(tabIndex === active));
-      tab.tabIndex = tabIndex === active ? 0 : -1;
+    choices.forEach((choice, choiceIndex) => {
+      if (choiceIndex === active) choice.setAttribute('aria-current', 'true');
+      else choice.removeAttribute('aria-current');
     });
+    if (announce && announcer) {
+      announcer.textContent = `${question.textContent} ${answer.textContent}`;
+    }
   };
 
-  const stop = () => {
-    if (timer !== undefined) window.clearInterval(timer);
-    timer = undefined;
-  };
-  const start = () => {
-    if (reducedMotion || timer !== undefined) return;
-    timer = window.setInterval(() => select(active + 1), 4000);
-  };
+  const rotation = createAutoAdvance(() => select(active + 1), 4000, reducedMotion);
 
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      select(index);
-      stop();
-      start();
+  choices.forEach((choice, index) => {
+    choice.addEventListener('click', () => {
+      select(index, true);
     });
-    tab.addEventListener('keydown', (event) => {
+    choice.addEventListener('keydown', (event) => {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
-      select(active + (event.key === 'ArrowRight' ? 1 : -1));
-      tabs[active].focus();
+      select(active + (event.key === 'ArrowRight' ? 1 : -1), true);
+      choices[active].focus();
     });
   });
 
-  rotator.addEventListener('mouseenter', stop);
-  rotator.addEventListener('mouseleave', start);
-  rotator.addEventListener('focusin', stop);
-  rotator.addEventListener('focusout', start);
-  start();
+  rotator.addEventListener('mouseenter', rotation.pauseTemporarily);
+  rotator.addEventListener('mouseleave', rotation.resumeTemporarily);
+  rotator.addEventListener('focusin', rotation.pauseTemporarily);
+  rotator.addEventListener('focusout', rotation.resumeTemporarily);
+  select(0);
+  rotation.start();
 }
 
 function initialiseWalkthrough() {
@@ -141,23 +176,40 @@ function initialiseWalkthrough() {
   const heading = walkthrough.querySelector<HTMLElement>('.heading-wrap');
   const stage = walkthrough.querySelector<HTMLElement>('[data-walkthrough-stage]');
   const frame = walkthrough.querySelector<HTMLElement>('[data-walkthrough-frame]');
+  const desktop = walkthrough.querySelector<HTMLElement>('.desktop-walkthrough');
   const tabRail = walkthrough.querySelector<HTMLElement>('[data-walkthrough-tabs]');
+  const body = walkthrough.querySelector<HTMLElement>('[data-walkthrough-body]');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0;
 
   const select = (index: number) => {
+    active = (index + tabs.length) % tabs.length;
     tabs.forEach((tab, tabIndex) => {
-      const active = tabIndex === index;
-      tab.setAttribute('aria-selected', String(active));
-      tab.tabIndex = active ? 0 : -1;
+      const selected = tabIndex === active;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
     });
     panels.forEach((panel, panelIndex) => {
-      const active = panelIndex === index;
-      panel.hidden = !active;
-      panel.classList.toggle('active', active);
+      const selected = panelIndex === active;
+      panel.hidden = !selected;
+      panel.classList.toggle('active', selected);
     });
+    if (body) body.textContent = tabs[active]?.dataset.body || '';
   };
 
+  // Each stop lasts as long as its panel's animation: the vault cycles three
+  // views (6+5+5s), Ask Mina types and answers, Watching opens at 2.8s.
+  const walkthroughDwell = [17000, 17500, 6500, 7500];
+  const rotation = createAutoAdvance(
+    () => select(active + 1),
+    () => walkthroughDwell[active] ?? 6500,
+    reducedMotion,
+  );
+
   tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => select(index));
+    tab.addEventListener('click', () => {
+      select(index);
+    });
     tab.addEventListener('keydown', (event) => {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
@@ -167,10 +219,18 @@ function initialiseWalkthrough() {
     });
   });
 
+  walkthrough.addEventListener('mouseenter', rotation.pauseTemporarily);
+  walkthrough.addEventListener('mouseleave', rotation.resumeTemporarily);
+  walkthrough.addEventListener('focusin', rotation.pauseTemporarily);
+  walkthrough.addEventListener('focusout', rotation.resumeTemporarily);
+  select(0);
+  rotation.start();
+
   if (!stage || !frame) return;
 
   const fit = () => {
     if (!window.matchMedia('(min-width: 64rem)').matches) {
+      desktop?.classList.remove('scroll-fallback');
       stage.style.removeProperty('height');
       frame.style.removeProperty('transform');
       return;
@@ -182,6 +242,7 @@ function initialiseWalkthrough() {
         - 74
         - (heading?.offsetHeight ?? 0)
         - (tabRail?.offsetHeight ?? 0)
+        - (body?.offsetHeight ?? 0)
         - 56,
     );
     const availableWidth = stage.clientWidth - 64;
@@ -190,6 +251,14 @@ function initialiseWalkthrough() {
     const scale = Math.min(0.92, availableWidth / naturalWidth, availableHeight / naturalHeight);
     const safeScale = Number.isFinite(scale) && scale > 0 ? scale : 1;
 
+    if (safeScale < 0.55) {
+      desktop?.classList.add('scroll-fallback');
+      frame.style.removeProperty('transform');
+      stage.style.height = `${naturalHeight}px`;
+      return;
+    }
+
+    desktop?.classList.remove('scroll-fallback');
     frame.style.transform = `scale(${safeScale})`;
     stage.style.height = `${naturalHeight * safeScale}px`;
   };
@@ -200,6 +269,7 @@ function initialiseWalkthrough() {
   observer.observe(frame);
   if (heading) observer.observe(heading);
   if (tabRail) observer.observe(tabRail);
+  if (body) observer.observe(body);
   window.addEventListener('resize', fit);
 }
 
@@ -212,6 +282,134 @@ function recordAnonymousSubmission() {
   }).catch(() => undefined);
 }
 
+function initialiseInviteFriend() {
+  const instances = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-invite-friend]'),
+  );
+  if (!instances.length) return;
+
+  const revealConditionalTriggers = () => {
+    const requested = localStorage.getItem('gm_access_requested') === 'true';
+    instances.forEach((instance) => {
+      if (instance.dataset.inviteConditional === 'true') {
+        instance.hidden = !requested;
+      }
+    });
+  };
+
+  const closeInstance = (instance: HTMLElement, restoreFocus = false) => {
+    const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
+    const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
+    if (!trigger || !panel || panel.hidden) return;
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger.focus();
+  };
+
+  const closeAll = (except?: HTMLElement) => {
+    instances.forEach((instance) => {
+      if (instance !== except) closeInstance(instance);
+    });
+  };
+
+  instances.forEach((instance) => {
+    const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
+    const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
+    const message = instance.querySelector<HTMLTextAreaElement>('[data-invite-message]');
+    const copyButton = instance.querySelector<HTMLButtonElement>('[data-invite-copy]');
+    const announcer = instance.querySelector<HTMLElement>('[data-invite-announcer]');
+    if (!trigger || !panel || !message || !copyButton) return;
+
+    const resizeMessage = () => {
+      message.style.height = 'auto';
+      message.style.height = `${Math.max(message.scrollHeight, 120)}px`;
+    };
+
+    const fallbackCopy = () => {
+      const fallback = document.createElement('textarea');
+      fallback.value = message.value;
+      fallback.setAttribute('readonly', '');
+      fallback.style.position = 'fixed';
+      fallback.style.opacity = '0';
+      document.body.append(fallback);
+      fallback.select();
+      const legacyDocument = document as unknown as {
+        execCommand(commandId: string): boolean;
+      };
+      legacyDocument.execCommand('copy');
+      fallback.remove();
+    };
+
+    trigger.addEventListener('click', () => {
+      const opening = panel.hidden;
+      closeAll(instance);
+      panel.hidden = !opening;
+      trigger.setAttribute('aria-expanded', String(opening));
+      if (!opening) return;
+      resizeMessage();
+      message.focus();
+      message.select();
+    });
+
+    panel.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'textarea, button:not([hidden]), a[href]:not([hidden])',
+        ),
+      ).filter((element) => !element.hasAttribute('disabled'));
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    message.addEventListener('input', () => {
+      resizeMessage();
+    });
+
+    copyButton.addEventListener('click', async () => {
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(message.value);
+      } catch {
+        fallbackCopy();
+      }
+
+      copyButton.textContent = 'Copied';
+      if (announcer) announcer.textContent = 'Message copied';
+      window.setTimeout(() => {
+        copyButton.textContent = 'Copy message';
+      }, 1800);
+    });
+  });
+
+  document.addEventListener('pointerdown', (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    instances.forEach((instance) => {
+      if (!instance.contains(target)) closeInstance(instance);
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const open = instances.find(
+      (instance) => !instance.querySelector<HTMLElement>('[data-invite-panel]')?.hidden,
+    );
+    if (open) closeInstance(open, true);
+  });
+
+  window.addEventListener('gm:access-requested', revealConditionalTriggers);
+  revealConditionalTriggers();
+}
+
 function initialiseAccessForm() {
   const form = document.querySelector<HTMLFormElement>('[data-access-form]');
   if (!form) return;
@@ -221,6 +419,7 @@ function initialiseAccessForm() {
   const status = form.querySelector<HTMLElement>('[role="status"]');
   const copy = document.querySelector<HTMLElement>('[data-form-copy]');
   const success = document.querySelector<HTMLElement>('[data-form-success]');
+  const submittedEmail = success?.querySelector<HTMLElement>('[data-submitted-email]');
   if (!input || !button || !status || !copy || !success) return;
 
   const submitLabel = button.textContent || 'Request beta access';
@@ -256,6 +455,9 @@ function initialiseAccessForm() {
       if (!response.ok) throw new Error(`Request failed with ${response.status}`);
 
       recordAnonymousSubmission();
+      localStorage.setItem('gm_access_requested', 'true');
+      window.dispatchEvent(new Event('gm:access-requested'));
+      if (submittedEmail) submittedEmail.textContent = input.value;
       copy.hidden = true;
       form.hidden = true;
       success.hidden = false;
@@ -272,4 +474,5 @@ function initialiseAccessForm() {
 initialiseNavigation();
 initialiseFrictionRotator();
 initialiseWalkthrough();
+initialiseInviteFriend();
 initialiseAccessForm();

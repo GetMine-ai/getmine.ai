@@ -2,18 +2,19 @@
   <div class="hero-light" aria-hidden="true"></div>
   <div class="wrap-wide hero-grid">
     <div class="hero-copy">
+      <span class="beta-status">Open beta · Rolling out in waves</span>
       <h1>
         <span>Your health.</span>
         <span>Your data.</span>
         <span>Your rules.</span>
       </h1>
       <p>
-        Your health data, brought together in one private vault. Mina, your personal
-        health agent, helps you put it to work.
+        Your doctors’ records, hospital letters, health emails and your own notes.
+        All in one vault on your own computer. Ask Mina, your personal health agent,
+        anything about it.
       </p>
       <div class="hero-actions" id="hero-cta">
         <a class="primary-cta" href="/beta">Request beta access</a>
-        <span>Open beta · Rolling out in waves</span>
       </div>
     </div>
 
@@ -75,16 +76,16 @@
   }
 
   .hero-copy {
-    max-width: 35rem;
+    max-width: 39rem;
   }
 
   h1 {
-    margin: 0;
+    margin: 1.25rem 0 0;
     font-family: var(--font-display);
     font-size: var(--text-hero);
     font-weight: 300;
-    letter-spacing: -0.05em;
-    line-height: 0.94;
+    letter-spacing: -0.065em;
+    line-height: 0.93;
   }
 
   h1 span {
@@ -112,13 +113,23 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 1rem;
-    margin-top: 2.25rem;
+    margin-top: 2.85rem;
   }
 
-  .hero-actions > span {
-    color: var(--text-quiet);
-    font-size: 0.9375rem;
-    line-height: 1.5;
+  .beta-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.125rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    animation: beta-flash 2.4s var(--ease-gm) infinite;
+    background: rgb(29 191 176 / 14%);
+    color: var(--teal);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    line-height: 1.3;
   }
 
   .product-scene {
@@ -176,7 +187,7 @@
     position: relative;
     z-index: 3;
     margin: 0.75rem 0 0;
-    color: rgb(199 194 182 / 80%);
+    color: var(--cream);
     font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: 0.025em;
@@ -185,13 +196,16 @@
 
   @media (min-width: 64rem) {
     .hero-grid {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
       gap: 3.5rem;
-      padding-block: 3.5rem 5rem;
+      min-height: calc(min(57rem, 100svh) - 4.75rem);
+      padding-block: 3.75rem 3rem;
     }
 
     .product-scene {
-      margin-right: -2.5rem;
+      margin-right: -3.5rem;
+      transform: scale(1.055);
+      transform-origin: center right;
     }
   }
 
@@ -199,5 +213,28 @@
     .hero-copy > p {
       font-size: 1.1875rem;
     }
+  }
+
+  @keyframes beta-flash {
+    0%, 100% {
+      border-color: var(--teal-line);
+      background: rgb(29 191 176 / 10%);
+      box-shadow:
+        0 0 0 0 rgb(29 191 176 / 0%),
+        0 0 0.75rem rgb(29 191 176 / 8%);
+      filter: brightness(1);
+    }
+    50% {
+      border-color: var(--teal);
+      background: rgb(29 191 176 / 22%);
+      box-shadow:
+        0 0 0 0.125rem rgb(29 191 176 / 18%),
+        0 0 2rem 0 rgb(29 191 176 / 44%);
+      filter: brightness(1.18);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .beta-status { animation: none; }
   }
 </style>

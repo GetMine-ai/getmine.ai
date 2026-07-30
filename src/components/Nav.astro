@@ -1,4 +1,6 @@
 ---
+import InviteFriend from './InviteFriend.astro';
+
 interface Props {
   hideCta?: boolean;
 }
@@ -14,7 +16,7 @@ const nav = [
 <header class="site-header" data-site-header>
   <div class="nav-wrap wrap-wide">
     <div class="nav-left">
-      <a class="wordmark" href="/#top" aria-label="GetMine.ai — home">
+      <a class="wordmark" href="/#top" aria-label="GetMine.ai home">
         <span>Get</span><em>Mine.</em><span>ai</span>
       </a>
       <nav class="desktop-nav" aria-label="Primary">
@@ -25,9 +27,15 @@ const nav = [
     </div>
 
     <div class="nav-actions">
-      {hideCta ? (
-        <a class="back-link desktop-action" href="/#top">Back to GetMine</a>
-      ) : (
+      {!hideCta && (
+        <InviteFriend
+          variant="compact"
+          placement="menubar"
+          instanceId="menubar"
+          conditional
+        />
+      )}
+      {!hideCta && (
         <a class="primary-cta desktop-action header-cta" href="/beta" data-header-cta>Request beta access</a>
       )}
       <button
@@ -43,12 +51,10 @@ const nav = [
     </div>
   </div>
 
-  <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu>
+  <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu inert>
     <nav class="wrap" aria-label="Mobile">
       {nav.map(([label, id]) => <a href={`/#${id}`} data-menu-link>{label}</a>)}
-      {hideCta
-        ? <a href="/#top" data-menu-link>Back to GetMine</a>
-        : <a class="primary-cta" href="/beta">Request beta access</a>}
+      {!hideCta && <a class="primary-cta" href="/beta">Request beta access</a>}
     </nav>
   </div>
 </header>
@@ -88,6 +94,8 @@ const nav = [
   }
 
   .nav-left {
+    width: 100%;
+    flex: 1 1 auto;
     min-width: 0;
     gap: 2rem;
   }
@@ -116,20 +124,24 @@ const nav = [
   .desktop-nav {
     display: none;
     gap: 1.75rem;
+    margin-left: auto;
   }
 
   .desktop-nav a {
     position: relative;
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    font-weight: 500;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1;
     text-decoration: none;
     transition: color 180ms;
   }
 
   .desktop-nav a:hover,
   .desktop-nav a[aria-current="true"] {
-    color: var(--cream);
+    color: var(--teal);
   }
 
   .desktop-nav a > span {
@@ -153,26 +165,31 @@ const nav = [
   }
 
   .header-cta {
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding-right: 0;
+    padding-left: 0;
+    white-space: nowrap;
+    visibility: hidden;
     opacity: 0;
     pointer-events: none;
     transition:
+      max-width 300ms var(--ease-gm),
+      padding 300ms var(--ease-gm),
       opacity 260ms var(--ease-gm),
-      transform 180ms var(--ease-gm);
+      transform 180ms var(--ease-gm),
+      visibility 0s linear 260ms;
   }
 
   .header-cta.visible {
+    max-width: 13rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    visibility: visible;
     opacity: 1;
     pointer-events: auto;
-  }
-
-  .back-link {
-    color: var(--text-secondary);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .back-link:hover {
-    color: var(--teal);
+    transition-delay: 0s;
   }
 
   .menu-button {
@@ -240,8 +257,10 @@ const nav = [
   .mobile-menu a:not(.primary-cta) {
     border-radius: var(--radius-sm);
     padding: 0.75rem;
-    color: rgb(232 250 248 / 80%);
-    font-size: 1rem;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 300;
     text-decoration: none;
   }
 

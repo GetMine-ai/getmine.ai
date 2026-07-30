@@ -1,129 +1,207 @@
 ---
-// Standalone 404 page. Astro emits dist/404.html, which GitHub Pages serves on not-found.
-import '@fontsource-variable/dm-sans';
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/fraunces/wght-italic.css';
+// Astro always emits dist/404.html so GitHub Pages can serve this route.
+import Base from '../layouts/Base.astro';
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page not found — GetMine.ai</title>
-<meta name="robots" content="noindex">
-<meta name="theme-color" content="#060C14">
+<Base
+  title="Page not found | GetMine.ai"
+  description="The page you followed might be broken or may have moved."
+  canonical="https://getmine.ai/404.html"
+>
+  <div class="not-found">
+    <nav>
+      <a href="/" class="nav-logo" aria-label="GetMine.ai home">
+        Get<span>Mine.</span><i>ai</i>
+      </a>
+    </nav>
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <main>
+      <div class="code" aria-hidden="true">404</div>
+      <h1>This page is <em>off the map.</em></h1>
+      <p>
+        The link you followed might be broken, or the page may have moved. Either way, we’ll get you
+        back on track.
+      </p>
+      <div class="cta-row">
+        <a href="/" class="primary">Take me home →</a>
+        <a href="mailto:hello@getmine.ai" class="secondary">Get in touch</a>
+      </div>
+    </main>
 
-<style is:global>
-:root{
-  --navy:#060C14;
-  --teal:#1DDEC8;
-  --teal-deck:#1DBFB0;
-  --taupe:#C7C2B6;
-  --cream:#E8FAF8;
-  --orange:#FF8855;
-  --orange-hi:#FF9D6E;
-  --text:#F0F4F8;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{background:var(--navy);color:var(--text);font-family:'DM Sans Variable',sans-serif;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
-
-/* Soft radial glow behind the content — same vibe as the deck */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(ellipse at center,rgba(29,191,176,0.10) 0%,transparent 60%);
-}
-
-/* Nav */
-nav{
-  position:relative;z-index:10;padding:22px 36px;height:80px;
-  display:flex;align-items:center;justify-content:space-between
-}
-.nav-logo{
-  font-family:Georgia,'Times New Roman',serif;font-size:26px;
-  color:var(--cream);letter-spacing:-.01em;font-weight:400;
-  display:flex;align-items:baseline;text-decoration:none
-}
-.nav-logo .logo-mine{color:var(--teal-deck)}
-.nav-logo .logo-ai{color:var(--cream)}
-
-/* Centre stage */
-main{
-  position:relative;z-index:5;flex:1;display:flex;
-  flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:60px 32px
-}
-.code{
-  font-family:'Fraunces Variable',serif;font-style:italic;font-weight:300;
-  font-size:clamp(120px,22vw,220px);line-height:1;color:var(--teal-deck);
-  letter-spacing:-.02em;opacity:.95;margin-bottom:8px;
-}
-.heading{
-  font-family:'Fraunces Variable',serif;font-style:italic;font-weight:300;
-  font-size:clamp(28px,4vw,44px);color:var(--cream);
-  line-height:1.15;margin-bottom:20px;max-width:640px;
-}
-.heading em{font-style:italic;color:var(--taupe);font-weight:300}
-.lede{
-  font-family:'DM Sans Variable',sans-serif;font-weight:300;
-  font-size:clamp(15px,1.6vw,18px);color:rgba(240,244,248,.72);
-  line-height:1.6;max-width:480px;margin-bottom:36px;
-}
-.cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.btn{
-  background:var(--cream);color:var(--navy);border:none;border-radius:100px;
-  padding:14px 32px;font-family:'DM Sans Variable',sans-serif;font-size:15px;
-  font-weight:700;cursor:pointer;text-decoration:none;
-  letter-spacing:-.015em;
-  transition:all .22s cubic-bezier(.22,1,.36,1);
-  box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.2);
-}
-.btn:hover{background:#fff;transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 6px 20px rgba(0,0,0,.25)}
-.btn-secondary{
-  background:transparent;color:var(--text);
-  border:1px solid rgba(255,255,255,.2);
-}
-.btn-secondary:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.4)}
-
-/* Footer */
-footer{
-  position:relative;z-index:5;padding:32px;text-align:center;
-  border-top:1px solid rgba(255,255,255,.05);
-  font-size:12px;color:rgba(240,244,248,.35);
-}
-footer a{color:rgba(29,191,176,.7);text-decoration:none}
-footer a:hover{color:var(--teal)}
-
-@media(max-width:600px){
-  nav{padding:18px 24px;height:64px}
-  main{padding:40px 24px}
-  .code{font-size:clamp(96px,32vw,160px)}
-}
-</style>
-</head>
-<body>
-
-<nav>
-  <a href="/" class="nav-logo">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
-</nav>
-
-<main>
-  <div class="code">404</div>
-  <h1 class="heading">This page is <em>off the map.</em></h1>
-  <p class="lede">The link you followed might be broken, or the page may have moved. Either way — we&rsquo;ll get you back on track.</p>
-  <div class="cta-row">
-    <a href="/" class="btn">Take me home →</a>
-    <a href="mailto:hello@getmine.ai" class="btn btn-secondary">Get in touch</a>
+    <footer>
+      <span>© 2026 GetMine Ltd</span>
+      <span aria-hidden="true">·</span>
+      <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
+    </footer>
   </div>
-</main>
+</Base>
 
-<footer>
-  <span>&copy; 2026 GetMine.ai</span>  ·  <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
-</footer>
+<style>
+  .not-found {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--navy);
+    color: var(--cream);
+  }
 
-</body>
-</html>
+  .not-found::before {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgb(29 191 176 / 10%) 0%, transparent 60%);
+    content: '';
+    pointer-events: none;
+  }
+
+  nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 5rem;
+    align-items: center;
+    padding: 1.375rem 2.25rem;
+  }
+
+  .nav-logo {
+    display: inline-flex;
+    align-items: baseline;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .nav-logo span,
+  .nav-logo i {
+    color: var(--teal);
+    font-style: italic;
+  }
+
+  .nav-logo i {
+    color: var(--cream);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3.75rem 2rem;
+    text-align: center;
+  }
+
+  .code {
+    margin-bottom: 0.5rem;
+    color: var(--teal);
+    font-family: var(--font-display);
+    font-size: clamp(7.5rem, 22vw, 13.75rem);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    opacity: 0.95;
+  }
+
+  h1 {
+    max-width: 40rem;
+    margin: 0 0 1.25rem;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+
+  h1 em {
+    color: var(--taupe);
+    font-style: italic;
+  }
+
+  main p {
+    max-width: 30rem;
+    margin: 0 0 2.25rem;
+    color: var(--text-secondary);
+    font-size: clamp(15px, 1.6vw, 18px);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .cta-row a {
+    border-radius: var(--radius-pill);
+    padding: 0.875rem 2rem;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-decoration: none;
+    transition:
+      color var(--ease-fast),
+      border-color var(--ease-fast),
+      background var(--ease-fast),
+      transform var(--ease-fast);
+  }
+
+  .primary {
+    background: var(--cream);
+    color: var(--navy);
+  }
+
+  .secondary {
+    border: 1px solid var(--line);
+    color: var(--cream);
+  }
+
+  .cta-row a:hover,
+  .cta-row a:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .secondary:hover,
+  .secondary:focus-visible {
+    border-color: var(--teal-line);
+    background: rgb(255 255 255 / 5%);
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    border-top: 1px solid var(--line-quiet);
+    padding: 2rem;
+    color: var(--text-quiet);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  footer a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  @media (max-width: 37.5rem) {
+    nav {
+      height: 4rem;
+      padding: 1.125rem 1.5rem;
+    }
+
+    main {
+      padding: 2.5rem 1.5rem;
+    }
+  }
+</style>

@@ -7,7 +7,7 @@
   --ember: #e2703a;
 
   --text-secondary: rgb(232 250 248 / 70%);
-  --text-quiet: rgb(232 250 248 / 52%);
+  --text-quiet: rgb(232 250 248 / 88%);
   --surface: rgb(232 250 248 / 3.5%);
   --surface-raised: rgb(232 250 248 / 5.5%);
   --line: rgb(232 250 248 / 14%);
@@ -23,8 +23,8 @@
   --text-body: 1rem;
   --text-lead: clamp(1.0625rem, 1.4vw, 1.1875rem);
   --text-h3: clamp(1.45rem, 2.4vw, 2rem);
-  --text-h2: clamp(2.125rem, 5vw, 4rem);
-  --text-hero: clamp(3rem, 7vw, 6.25rem);
+  --text-h2: clamp(1.9375rem, 4.6vw, 3.375rem);
+  --text-hero: clamp(4.125rem, 7.3vw, 6.5rem);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -49,4 +49,5 @@
   --wrap: 70rem;
   --wrap-wide: 75rem;
   --ease-gm: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-fast: 180ms var(--ease-gm);
 }

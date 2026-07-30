@@ -1,28 +1,28 @@
 ---
 const scenarios = [
   {
-    title: 'The family caregiver',
+    title: 'Family caregiver',
     subtitle: 'You become their memory.',
     image: 'family-caregiver',
     alt: 'A family caregiver helping a relative manage medication',
     focus: '50% 40%',
   },
   {
-    title: 'The chronic condition loop',
+    title: 'Chronic condition',
     subtitle: 'You repeat your story.',
     image: 'chronic-condition',
     alt: 'A person managing health documents and appointments',
     focus: '50% 45%',
   },
   {
-    title: 'The urgent moment',
+    title: 'Urgent moment',
     subtitle: 'You lose the thread.',
     image: 'life-transition',
     alt: 'A person searching for health information during an urgent moment',
     focus: '50% 40%',
   },
   {
-    title: 'AI without your history',
+    title: 'AI with no context',
     subtitle: 'It sees the question, not your story.',
     image: 'best-from-ai',
     alt: 'A generic AI assistant answering without personal health context',
@@ -45,7 +45,8 @@ const frictions = [
       <p class="eyebrow">Why it matters</p>
       <h2 id="why-it-matters-heading">
         Your health memory,
-        <span>there when it matters — and working for what’s ahead.</span>
+        <span>there when it matters</span>
+        <em>and working for what’s ahead.</em>
       </h2>
     </header>
 
@@ -57,7 +58,7 @@ const frictions = [
               <source srcset={`/assets/redesign/${scenario.image}.avif`} type="image/avif" />
               <source srcset={`/assets/redesign/${scenario.image}.webp`} type="image/webp" />
               <img
-                src={`/assets/redesign/${scenario.image}.png`}
+                src={`/assets/redesign/${scenario.image}.webp`}
                 alt={scenario.alt}
                 width="1448"
                 height="1086"
@@ -79,22 +80,23 @@ const frictions = [
     <div class="frictions">
       <h3>The daily frictions <em>we all face.</em></h3>
       <div class="card friction-rotator" data-frictions>
-        <p aria-live="polite">
+        <p aria-live="off">
           <em data-friction-question>{frictions[0][0]}</em>
           <span data-friction-answer>{frictions[0][1]}</span>
         </p>
-        <div role="tablist" aria-label="Daily frictions">
+        <div class="friction-controls" role="group" aria-label="Daily frictions">
           {frictions.map(([question, answer], index) => (
             <button
               type="button"
-              role="tab"
-              aria-selected={index === 0 ? 'true' : 'false'}
-              aria-label={answer}
+              aria-current={index === 0 ? 'true' : undefined}
+              aria-label={`Show friction ${index + 1} of ${frictions.length}`}
               data-question={question}
               data-answer={answer}
-            ><span></span></button>
+              data-friction-choice
+            ><span aria-hidden="true"></span></button>
           ))}
         </div>
+        <span class="sr-only" aria-live="polite" data-friction-announcer></span>
       </div>
     </div>
   </div>
@@ -109,14 +111,14 @@ const frictions = [
   }
 
   .section-heading h2 span {
-    color: var(--taupe);
-    font-style: italic;
+    color: var(--teal);
+    font-style: normal;
   }
 
   .scenario-grid {
     display: grid;
     gap: 1.25rem;
-    margin: 3rem 0 0;
+    margin: 2rem 0 0;
     padding: 0;
     list-style: none;
   }
@@ -176,7 +178,7 @@ const frictions = [
   }
 
   .frictions {
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 
   .frictions h3 {
@@ -213,28 +215,31 @@ const frictions = [
   }
 
   .friction-rotator p span {
-    color: rgb(232 250 248 / 80%);
+    color: var(--cream);
   }
 
-  [role="tablist"] {
+  .friction-controls {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
-  [role="tab"] {
+  [data-friction-choice] {
     display: grid;
-    width: 1.5rem;
+    flex: 0 0 2.75rem;
+    width: 2.75rem;
     height: 2.75rem;
     place-items: center;
     padding: 0;
     border: 0;
+    border-radius: 50%;
     background: transparent;
+    color: var(--cream);
     cursor: pointer;
   }
 
-  [role="tab"] span {
+  [data-friction-choice] span {
     width: 0.75rem;
     height: 0.25rem;
     border-radius: var(--radius-pill);
@@ -244,10 +249,11 @@ const frictions = [
       background 260ms var(--ease-gm);
   }
 
-  [role="tab"][aria-selected="true"] span {
+  [data-friction-choice][aria-current="true"] span {
     width: 1.5rem;
     background: var(--teal);
   }
+
 
   @media (min-width: 40rem) {
     .scenario-grid {
