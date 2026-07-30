@@ -101,7 +101,7 @@ export const privacyPolicy = {
   },
   controller:
     'GetMine Ltd, registered in England and Wales, company number 17070331, is responsible for the personal data listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '[date]',
+  lastUpdated: '27 July 2026',
 } as const;
 
 
