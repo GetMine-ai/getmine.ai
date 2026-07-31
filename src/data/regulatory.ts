@@ -171,3 +171,56 @@ export const trustPage = {
   governing:
     'The privacy policy is the governing statement; where the two could be read differently, the privacy policy prevails.',
 } as const;
+
+
+/**
+ * The beta terms — ruled by Sabine 31 Jul 2026 (lawyer-lens pass applied).
+ * Rendered by /terms; joins the regulatory pack as document 10. The privacy
+ * policy governs data; these terms defer to it explicitly.
+ */
+export const termsPage = {
+  title: 'Plain terms for the open beta',
+  eyebrow: 'Terms',
+  organisation: 'GetMine Ltd',
+  lead:
+    'A short, plain-English set of terms for using GetMine during the open beta. GetMine Ltd, England and Wales, company number 17070331. The privacy policy governs everything about your data; where these terms and the policy could be read differently, the policy prevails.',
+  sections: [
+    {
+      heading: 'What the open beta is',
+      body: 'GetMine is early software, free to download and use during the beta. Features will evolve and parts of what you see today will change — when something meaningful changes, we tell you before it applies to you.',
+    },
+    {
+      heading: 'Who it’s for',
+      body: 'Adults, 18 or over. The app will ask you to confirm this.',
+    },
+    {
+      heading: 'Not a medical service',
+      body: 'GetMine organises your health information. Mina is not a doctor: she does not diagnose, assess or triage, and nothing in GetMine is medical advice. Check anything important with a clinician.',
+    },
+    {
+      heading: 'Your vault is yours',
+      body: 'Your records live in a folder on your computer. We never hold a copy. Deleting GetMine never deletes your vault — the app and Mina go; your folder stays, readable without us. Keep your own copies of anything you can’t afford to lose: your records are as safe as your computer.',
+    },
+    {
+      heading: 'The AI that’s included',
+      body: 'The beta includes a GetMine AI allowance — Mina works without any key or account of your own. Heavy users may later be asked to add their own API key; that’s a choice made in Settings. What Mina sends, and to whom, is described precisely in the privacy policy — and only happens after you’ve agreed on the first-open screen.',
+    },
+    {
+      heading: 'Use it responsibly',
+      body: 'Use GetMine for health information you have the right to hold, and don’t add someone else’s records without their consent. We can pause a beta place that’s clearly being misused — we’d tell you why.',
+    },
+    {
+      heading: 'As-is, while we build',
+      body: 'GetMine is provided as-is during the beta. We’ll do our best to fix problems quickly, but we can’t promise error-free software while it’s being built. Nothing in these terms limits the rights consumer law gives you.',
+    },
+    {
+      heading: 'Leaving, and endings',
+      body: 'You can leave whenever you like — the app has an exit, and the privacy policy describes the erasure you’re entitled to. If we ever end the beta, we’ll tell you clearly and in advance: Mina would stop working, but your vault is unaffected — it’s a folder of ordinary files on your computer, and it stays readable without us.',
+    },
+    {
+      heading: 'Questions',
+      body: 'Write to hello@getmine.ai. These terms are governed by the law of England and Wales.',
+    },
+  ],
+  lastUpdated: '31 July 2026',
+} as const;
