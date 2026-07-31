@@ -1,0 +1,931 @@
+---
+interface BuildInfo {
+  url: string;
+  version: string;
+  sizeMB: number;
+  filename: string;
+  minOs: string;
+  signedBy: string;
+  sha256: string;
+}
+
+interface Props {
+  builds: {
+    mac: BuildInfo;
+    windows: BuildInfo;
+  };
+}
+
+const { builds } = Astro.props;
+const inviteMessage =
+  'GetMine is in open beta — all your health records in one vault on your own computer, with Mina to ask about them. Free to download: https://getmine.ai/beta?src=invite';
+
+const platforms = [
+  {
+    key: 'mac',
+    tabLabel: 'macOS',
+    title: 'GetMine for macOS',
+    build: builds.mac,
+    trust:
+      'Your Mac verifies this before installing — signed by GETMINE LTD and notarised by Apple.',
+  },
+  {
+    key: 'windows',
+    tabLabel: 'Windows',
+    title: 'GetMine for Windows',
+    build: builds.windows,
+    trust:
+      'Windows verifies this before installing — publisher verified as GETMINE LTD.',
+  },
+] as const;
+---
+<main
+  class="download-page"
+  data-download-module
+  data-enhanced="false"
+  data-platform=""
+  data-detected-platform=""
+>
+  <script is:inline>
+    (()=>{const r=document.currentScript?.closest('[data-download-module]');if(!r)return;const p=navigator.userAgentData?.platform||navigator.platform||navigator.userAgent||'',i=/Mac/i.test(p)&&navigator.maxTouchPoints>1,d=!i&&/Win/i.test(p)?'windows':!i&&/Mac/i.test(p)?'mac':'unsupported';r.dataset.platform=d;r.dataset.detectedPlatform=d;r.dataset.enhanced='true'})();
+  </script>
+
+  <div class="download-glow" aria-hidden="true"></div>
+  <svg class="download-memory-line" viewBox="0 0 1600 300" aria-hidden="true">
+    <path d="M0 165 C175 35 295 285 465 165 S760 35 930 165 S1225 285 1400 165 S1545 80 1600 118" />
+    <circle cx="465" cy="165" r="6" />
+    <circle cx="930" cy="165" r="6" />
+    <circle cx="1400" cy="165" r="6" />
+  </svg>
+  <div class="wrap download-wrap">
+    <section class="download-card" aria-labelledby="download-title">
+      <p class="beta-badge">Open beta · Free to download</p>
+
+      <div class="mina-mark" aria-hidden="true"><span>M</span><i>.</i></div>
+      <h1 id="download-title">Download GetMine</h1>
+      <p class="download-lead">
+        No account, no email, nothing to fill in — the download just starts.
+        Everything else — who you are, what you agree to — happens in the app,
+        on your computer.
+      </p>
+
+      <div class="deal" aria-label="The GetMine beta deal">
+        <p><strong>Your vault lives on your computer.</strong> We never hold a copy.</p>
+        <p><strong>The beta is free</strong> — Mina’s AI is included, no key or account of your own needed.</p>
+        <p><strong>You can leave whenever you like</strong> — your records stay with you, readable without us.</p>
+        <a href="/terms" target="_blank" rel="noopener">Read the beta terms</a>
+      </div>
+
+      <aside class="unsupported-notice" data-unsupported-notice>
+        <p><strong>Sorry — the beta runs on macOS and Windows only.</strong> GetMine is a desktop
+          app, because your vault lives on your own computer. There’s no phone,
+          tablet or Linux version yet.
+        </p>
+        <p>
+          On your phone right now? Take the link with you:
+          <strong>getmine.ai/beta</strong>
+        </p>
+        <div class="notice-actions">
+          <button type="button" data-copy-beta-link>Copy link</button>
+          <a
+            href="mailto:?subject=GetMine%20download%20link&body=https%3A%2F%2Fgetmine.ai%2Fbeta"
+          >
+            Email it to yourself
+          </a>
+        </div>
+        <span class="sr-only" aria-live="polite" data-link-announcer></span>
+      </aside>
+
+      <div class="platform-tabs" data-platform-tabs aria-label="Choose your computer">
+        {platforms.map((platform) => (
+          <button
+            type="button"
+            data-platform-tab={platform.key}
+            aria-controls={`download-${platform.key}`}
+          >
+            {platform.tabLabel}
+          </button>
+        ))}
+      </div>
+
+      <div class="platform-panels">
+        {platforms.map((platform) => {
+          const available = Boolean(platform.build.url);
+          return (
+            <section
+              id={`download-${platform.key}`}
+              class="platform-panel"
+              data-platform-panel={platform.key}
+              data-available={String(available)}
+              aria-labelledby={`download-${platform.key}-heading`}
+            >
+              <h2 id={`download-${platform.key}-heading`}>{platform.title}</h2>
+
+              <div class="download-action" data-download-action>
+                <div class="download-start" data-download-start>
+                  {available ? (
+                    <a
+                      class="download-button"
+                      href={platform.build.url}
+                      download={platform.build.filename}
+                      data-download-link
+                      data-download-platform={platform.key}
+                    >
+                      Download for {platform.tabLabel}
+                    </a>
+                  ) : (
+                    <span class="download-button download-button--pending" aria-disabled="true">
+                      Signed installer coming next
+                    </span>
+                  )}
+                  {available ? (
+                    <p class="build-meta">
+                      {platform.build.filename}
+                      {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
+                      {' · '}<a href="/trust">Signed</a> by {platform.build.signedBy}
+                    </p>
+                  ) : (
+                    <p class="build-meta">Release links and verified build details are pending.</p>
+                  )}
+                </div>
+
+                <div
+                  class="download-confirmation"
+                  data-download-confirmation
+                  role="status"
+                  aria-live="polite"
+                >
+                  <p><strong>That’s the deal. Your download’s running.</strong></p>
+                  <p>
+                    Next: open the installer. Your computer will confirm the
+                    publisher — GETMINE LTD — before anything installs.
+                  </p>
+                  {available && (
+                    <a href={platform.build.url} download={platform.build.filename}>
+                      Download didn’t start? Use the direct link.
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {available && (
+                <>
+                  <p class="trust-line">
+                    {platform.trust}
+                    {' '}<a href="/trust">How verification works</a>
+                  </p>
+                  <p class="minimum-os">Requires {platform.build.minOs}</p>
+                </>
+              )}
+            </section>
+          );
+        })}
+      </div>
+
+    </section>
+
+    <section class="expectations" aria-label="What to expect after downloading">
+      <div>
+        <p class="eyebrow">What to expect</p>
+        <p>
+          Free during the open beta — <strong>Mina’s AI is included; no key or
+          account of your own needed.</strong> Heavy users may later be asked
+          to add their own API key — a choice made in Settings.
+        </p>
+      </div>
+
+      <div>
+        <p class="eyebrow">What happens next</p>
+        <ol>
+          <li><span>1</span><p><strong>Open the installer</strong> and agree to the beta terms — the usual install, nothing more. When you open it, your computer confirms the publisher — GETMINE LTD. That check is theirs, not ours.</p></li>
+          <li><span>2</span><p><strong>Tell GetMine who you are.</strong> Your name and date of birth stay on your computer; your email leaves once, to be verified.</p></li>
+          <li><span>3</span><p><strong>Click the link we email you</strong> and confirm it was you.</p></li>
+          <li><span>4</span><p><strong>Your vault opens.</strong> Your health. Your data. Your rules.</p></li>
+        </ol>
+      </div>
+
+      <div class="invite">
+        <button
+          type="button"
+          class="invite-trigger"
+          aria-expanded="false"
+          aria-controls="download-invite-panel"
+          data-download-invite-trigger
+        >
+          Invite a friend <span aria-hidden="true">→</span>
+        </button>
+        <div id="download-invite-panel" class="invite-panel" data-download-invite-panel hidden>
+          <h2>Invite a friend</h2>
+          <p>Here’s what they’ll get. Change it to sound like you.</p>
+          <label class="sr-only" for="download-invite-message">Message to share</label>
+          <textarea id="download-invite-message" rows="5" data-download-invite-message>{inviteMessage}</textarea>
+          <button type="button" data-download-invite-copy>Copy message</button>
+          <span class="sr-only" aria-live="polite" data-invite-announcer></span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  const roots = document.querySelectorAll<HTMLElement>(
+    '[data-download-module]:not([data-module-ready])',
+  );
+
+  roots.forEach((root) => {
+    root.dataset.moduleReady = 'true';
+    const tabs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-platform-tab]'),
+    );
+    const panels = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-platform-panel]'),
+    );
+    const selectPlatform = (platform: string, focus = false) => {
+      root.dataset.platform = platform;
+      tabs.forEach((tab) => {
+        const selected = tab.dataset.platformTab === platform;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.setAttribute('tabindex', selected ? '0' : '-1');
+        if (selected && focus) tab.focus();
+      });
+      panels.forEach((panel) => {
+        const selected = panel.dataset.platformPanel === platform;
+        panel.hidden = !selected;
+      });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      tab.addEventListener('click', () => {
+        const platform = tab.dataset.platformTab;
+        if (platform) selectPlatform(platform);
+      });
+      tab.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        const next = (index + direction + tabs.length) % tabs.length;
+        const platform = tabs[next]?.dataset.platformTab;
+        if (platform) selectPlatform(platform, true);
+      });
+    });
+
+    root.querySelector('[data-platform-tabs]')?.setAttribute('role', 'tablist');
+    panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
+
+    if (root.dataset.platform === 'mac' || root.dataset.platform === 'windows') {
+      selectPlatform(root.dataset.platform);
+    } else {
+      tabs.forEach((tab) => {
+        tab.setAttribute('aria-selected', 'false');
+        tab.setAttribute('tabindex', '0');
+      });
+      panels.forEach((panel) => {
+        panel.hidden = false;
+      });
+    }
+
+    root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const action = link.closest<HTMLElement>('[data-download-action]');
+        if (!action) return;
+        action.dataset.started = 'true';
+      });
+    });
+
+    const copyText = async (value: string) => {
+      if (!navigator.clipboard?.writeText) {
+        throw new Error('Clipboard access is unavailable');
+      }
+      await navigator.clipboard.writeText(value);
+    };
+
+    const linkButton = root.querySelector<HTMLButtonElement>('[data-copy-beta-link]');
+    const linkAnnouncer = root.querySelector<HTMLElement>('[data-link-announcer]');
+    linkButton?.addEventListener('click', async () => {
+      try {
+        await copyText('https://getmine.ai/beta');
+        linkButton.textContent = 'Copied';
+        if (linkAnnouncer) linkAnnouncer.textContent = 'Download link copied';
+      } catch {
+        linkButton.textContent = 'Copy unavailable';
+        if (linkAnnouncer) linkAnnouncer.textContent = 'Copy unavailable. Use the email link instead.';
+      }
+    });
+
+    const inviteTrigger = root.querySelector<HTMLButtonElement>(
+      '[data-download-invite-trigger]',
+    );
+    const invitePanel = root.querySelector<HTMLElement>('[data-download-invite-panel]');
+    const inviteMessage = root.querySelector<HTMLTextAreaElement>(
+      '[data-download-invite-message]',
+    );
+    const inviteCopy = root.querySelector<HTMLButtonElement>('[data-download-invite-copy]');
+    const inviteAnnouncer = root.querySelector<HTMLElement>('[data-invite-announcer]');
+
+    inviteTrigger?.addEventListener('click', () => {
+      if (!invitePanel) return;
+      const opening = invitePanel.hidden;
+      invitePanel.hidden = !opening;
+      inviteTrigger.setAttribute('aria-expanded', String(opening));
+      if (opening) inviteMessage?.focus();
+    });
+
+    inviteCopy?.addEventListener('click', async () => {
+      if (!inviteMessage) return;
+      try {
+        await copyText(inviteMessage.value);
+        inviteCopy.textContent = 'Copied';
+        if (inviteAnnouncer) inviteAnnouncer.textContent = 'Message copied';
+      } catch {
+        inviteMessage.focus();
+        inviteMessage.select();
+        inviteCopy.textContent = 'Select and copy';
+        if (inviteAnnouncer) inviteAnnouncer.textContent = 'Message selected. Copy it with your keyboard.';
+      }
+    });
+  });
+</script>
+
+<style>
+  .download-page {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding-top: 4.75rem;
+    background: var(--navy);
+  }
+
+  .download-glow {
+    position: absolute;
+    top: -12rem;
+    left: 50%;
+    width: 55rem;
+    height: 55rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(29 191 176 / 15%), transparent 72%);
+    filter: blur(5rem);
+    pointer-events: none;
+  }
+
+  .download-memory-line {
+    position: absolute;
+    top: 19rem;
+    left: 50%;
+    width: max(100%, 90rem);
+    height: 18rem;
+    transform: translateX(-50%);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  .download-memory-line path {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2;
+  }
+
+  .download-memory-line circle {
+    fill: var(--teal);
+  }
+
+  .download-wrap {
+    position: relative;
+    display: grid;
+    gap: 3.5rem;
+    padding-block: clamp(2rem, 5vw, 4.5rem) clamp(4rem, 8vw, 7rem);
+  }
+
+  .download-card {
+    width: min(100%, 48rem);
+    margin-inline: auto;
+    padding: clamp(1.35rem, 4vw, 3.25rem);
+    border: 1px solid var(--line);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    background: color-mix(in srgb, var(--navy-2) 94%, transparent);
+    box-shadow: 0 40px 100px -55px rgb(0 0 0 / 95%);
+    text-align: center;
+  }
+
+  .beta-badge {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: var(--teal-surface);
+    color: var(--teal);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .mina-mark {
+    display: flex;
+    width: clamp(4.5rem, 9vw, 6rem);
+    height: clamp(4.5rem, 9vw, 6rem);
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto 0;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-style: italic;
+  }
+
+  .mina-mark i {
+    color: var(--teal);
+  }
+
+  h1 {
+    margin: 1rem 0 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .download-lead {
+    max-width: 39rem;
+    margin: 1.25rem auto 0;
+    color: var(--cream);
+    font-size: clamp(1rem, 2.2vw, 1.125rem);
+    line-height: 1.65;
+  }
+
+  .platform-tabs {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 25rem);
+    margin: 1.5rem auto 0;
+    padding: 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--navy);
+  }
+
+  [data-enhanced='true'] .platform-tabs {
+    display: grid;
+  }
+
+  .platform-tabs button {
+    min-height: 2.75rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .platform-tabs button[aria-selected='true'] {
+    background: var(--teal);
+    color: var(--navy);
+  }
+
+  .unsupported-notice {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-md);
+    background: var(--teal-surface);
+    text-align: left;
+  }
+
+  [data-enhanced='true'][data-detected-platform='unsupported'] .unsupported-notice {
+    display: block;
+  }
+
+  .unsupported-notice[hidden] {
+    display: none;
+  }
+
+  .unsupported-notice p {
+    margin: 0;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .unsupported-notice p + p {
+    margin-top: 0.75rem;
+  }
+
+  .notice-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .notice-actions button,
+  .notice-actions a {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .platform-panels {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .platform-panel {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    text-align: left;
+  }
+
+  .platform-panel[hidden] {
+    display: none;
+  }
+
+  [data-enhanced='true'][data-platform='mac'] [data-platform-panel='windows'],
+  [data-enhanced='true'][data-platform='windows'] [data-platform-panel='mac'] {
+    display: none;
+  }
+
+  .platform-panel h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .deal {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .deal p,
+  .deal a,
+  .trust-line,
+  .minimum-os {
+    margin: 0;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .deal a,
+  .trust-line a {
+    width: fit-content;
+    color: var(--teal);
+  }
+
+  .download-action {
+    display: grid;
+    min-height: 9.25rem;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-block: 0.25rem;
+  }
+
+  .download-start,
+  .download-confirmation {
+    grid-area: 1 / 1;
+    transition: opacity 200ms var(--ease-gm);
+  }
+
+  .download-confirmation {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='true'] .download-start {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='true'] .download-confirmation {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .download-button {
+    display: flex;
+    width: 100%;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.25rem;
+    border-radius: var(--radius-pill);
+    background: var(--ember);
+    color: var(--navy);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .download-button--pending {
+    border: 1px solid var(--line);
+    background: var(--surface-raised);
+    color: var(--taupe);
+  }
+
+  .build-meta {
+    margin: 0.75rem 0 0;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .build-meta a {
+    color: inherit;
+  }
+
+  .download-confirmation p {
+    margin: 0;
+    color: var(--cream);
+    line-height: 1.55;
+  }
+
+  .download-confirmation p + p {
+    margin-top: 0.4rem;
+  }
+
+  .download-confirmation a {
+    display: inline-block;
+    margin-top: 0.65rem;
+    color: var(--teal);
+  }
+
+  .trust-line {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .minimum-os {
+    margin-top: 0.35rem;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+  }
+
+  .invite {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / -1;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .invite-trigger,
+  .invite-panel > button {
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .invite-panel {
+    position: absolute;
+    z-index: 3;
+    top: calc(100% + 0.75rem);
+    width: min(24rem, calc(100vw - 3rem));
+    padding: 1.25rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-lg);
+    background: var(--navy-2);
+    box-shadow: 0 30px 70px -20px rgb(0 0 0 / 90%);
+    text-align: left;
+  }
+
+  .invite-panel[hidden] {
+    display: none;
+  }
+
+  .invite-panel h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+
+  .invite-panel p {
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+  }
+
+  .invite-panel textarea {
+    width: 100%;
+    margin-top: 1rem;
+    resize: vertical;
+    padding: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--navy);
+    color: var(--cream);
+    font: inherit;
+    line-height: 1.5;
+  }
+
+  .invite-panel > button {
+    margin-top: 0.75rem;
+    border-color: var(--ember);
+    background: var(--ember);
+    color: var(--navy);
+  }
+
+  .expectations {
+    display: grid;
+    gap: 2rem;
+    width: min(100%, 62rem);
+    margin-inline: auto;
+  }
+
+  .expectations > div > p:not(.eyebrow) {
+    margin: 1rem 0 0;
+    color: var(--cream);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .expectations ol {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .expectations li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: start;
+    gap: 0.75rem;
+  }
+
+  .expectations li span {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .expectations li p {
+    margin: 0.25rem 0 0;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 48rem) {
+    .expectations {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 4rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .download-page {
+      padding-top: 4.25rem;
+    }
+
+    .download-wrap {
+      gap: 2.5rem;
+      padding: 1rem 0.75rem 4rem;
+    }
+
+    .download-card {
+      padding-block: 1.1rem 1.25rem;
+      padding-inline: 1rem;
+    }
+
+    .beta-badge {
+      min-height: 2rem;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+    }
+
+    .mina-mark {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin-top: 0.8rem;
+      font-size: 1.8rem;
+    }
+
+    h1 {
+      margin-top: 0.65rem;
+      font-size: 2.4rem;
+    }
+
+    .download-lead {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      line-height: 1.42;
+    }
+
+    .platform-tabs {
+      margin-top: 0.75rem;
+      padding: 0.125rem;
+    }
+
+    .platform-tabs button {
+      min-height: 2.5rem;
+    }
+
+    .platform-panel {
+      padding: 0.85rem;
+    }
+
+    .deal {
+      gap: 0.35rem;
+      margin-top: 0.65rem;
+    }
+
+    .deal p,
+    .deal a {
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .download-action {
+      min-height: 7rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .download-card {
+      animation: download-arrive 420ms var(--ease-gm) both;
+    }
+
+    .expectations {
+      animation: download-arrive 420ms 90ms var(--ease-gm) both;
+    }
+
+    .platform-panel {
+      position: relative;
+    }
+
+    .download-action[data-started='true']::after {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--teal);
+      border-radius: var(--radius-lg);
+      animation: download-ring 700ms var(--ease-gm) both;
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .download-start,
+    .download-confirmation {
+      transition: none;
+    }
+  }
+
+  @keyframes download-arrive {
+    from {
+      transform: translateY(0.75rem);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes download-ring {
+    from {
+      transform: scale(0.96);
+      opacity: 0.8;
+    }
+    to {
+      transform: scale(1.04);
+      opacity: 0;
+    }
+  }
+</style>

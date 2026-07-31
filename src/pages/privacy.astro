@@ -12,7 +12,7 @@ import { privacyPolicy as policy } from '../data/regulatory';
   <p class="policy-scope">{policy.scope}</p>
   <aside class="policy-summary">{policy.summary}</aside>
 
-  {[policy.beta, policy.vault, policy.mina].map((section) => (
+  {[policy.beta, policy.website, policy.vault, policy.mina].map((section) => (
     <section class="page-section">
       <h2>{section.heading}</h2>
       {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}

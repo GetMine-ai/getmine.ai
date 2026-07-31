@@ -6,6 +6,7 @@ import '../styles/tokens.css';
 
 interface Props {
   title?: string;
+  ogTitle?: string;
   description?: string;
   ogDescription?: string;
   canonical?: string;
@@ -16,7 +17,8 @@ interface Props {
 
 const {
   title = 'GetMine.ai | Your health. Your data. Your rules.',
-  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health agent, helping you organise and use your health information. Request access to the GetMine open beta.',
+  ogTitle = title,
+  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health agent, helping you organise and use your health information.',
   ogDescription = 'A desktop-native personal health vault for macOS and Windows. Bring records, emails and notes into one vault you control.',
   canonical = 'https://getmine.ai/',
   ogImage = 'https://getmine.ai/og-image.png',
@@ -36,7 +38,7 @@ const {
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="GetMine.ai" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
@@ -45,7 +47,7 @@ const {
     <meta property="og:image:alt" content="GetMine.ai | your health, your data, your rules" />
     <meta property="og:locale" content={locale} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="GetMine.ai | your health, your data, your rules" />

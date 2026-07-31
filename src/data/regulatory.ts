@@ -18,11 +18,18 @@ export const privacyPolicy = {
   reviewStatus: '',
   scope: 'This one policy covers the GetMine desktop app and the getmine.ai website.',
   summary:
-    'The short version: your health records live on your computer, in a folder you own. We never have a copy. The only personal data we hold about you is what it takes to run the beta: your email address and your status on the open beta.',
+    'The short version: your health records live on your computer, in a folder you own. We never have a copy. The website does not ask for an account or email before download and measures only anonymous page views and download clicks.',
   beta: {
     heading: 'The beta, plainly',
     paragraphs: [
       'GetMine is experimental software for adults (18+). Mina organises your health information; she is not a doctor and does not diagnose. Check anything important with a clinician, and keep your own copies of anything you can’t afford to lose.',
+    ],
+  },
+  website: {
+    heading: 'The website and downloads',
+    paragraphs: [
+      'You can download the open beta without creating an account or giving us an email address. The website sends two anonymous counts to GetMine: that the download page was viewed and that a download link was clicked. Those counts contain no email address, health information, cookie, account identifier or device identifier, and are not stored in your browser.',
+      'The installer itself comes from GetMine’s release service. Your computer verifies the publisher before it installs: GETMINE LTD, notarised by Apple on macOS and publisher-verified by Microsoft on Windows.',
     ],
   },
   vault: {
@@ -54,7 +61,7 @@ export const privacyPolicy = {
     heading: 'What we hold',
     introduction: 'GetMine holds exactly this, and nothing else:',
     summaryParagraph:
-      'GetMine holds exactly this, and nothing else: your email address and beta status, to run the beta; the code in your invite link, if you used one; your consent record, as proof we asked; and your AI usage counts, for the allowance included with the beta. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record, which we keep for 6 years. No health information appears anywhere in this list.',
+      'GetMine holds exactly this, and nothing else: anonymous website page-view and download-click totals; any email address and beta status kept from the earlier invitation-only beta; your consent record, as proof we asked; and your AI usage counts, for the allowance included with the beta. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record, which we keep for 6 years. No health information appears anywhere in this list.',
     columns: ['What', 'Why', 'Kept until'],
     rows: [
       ['Your email address', 'beta emails', 'you leave, or the beta ends'],
@@ -78,7 +85,7 @@ export const privacyPolicy = {
       ],
     ],
     paragraphs: [
-      'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider. Our own site stores nothing, and until you click the confirmation link, the address isn’t kept anywhere at all.',
+      'No health information appears in this table. The current website asks for no email before download. It counts only anonymous download-page views and download-link clicks. If you joined during the earlier invitation-only beta, the email and beta-status entries above still describe those records.',
       'Our lawful bases: running the beta you asked to join (contract), improving the product (legitimate interests), and your explicit consent for the AI processing of health information described above.',
     ],
   },
@@ -86,7 +93,7 @@ export const privacyPolicy = {
     heading: 'What we don’t do',
     bullets: [
       'We don’t sell personal data, and we never will.',
-      'We don’t run advertising or tracking on the product.',
+      'We don’t run advertising or personal tracking on the product or website.',
       'We don’t look at your vault. We built it so we can’t.',
       'We don’t send your data anywhere this page hasn’t told you about.',
       'We don’t change this page quietly: if it changes, we tell you before it applies to you.',
@@ -137,6 +144,12 @@ export const trustPage = {
       heading: 'The logins you grant',
       paragraphs: [
         'Credentials for the sources you connect are stored encrypted on your machine, with the key kept outside the vault folder. A copy of your vault folder, wherever it ends up, contains no usable login to anything.',
+      ],
+    },
+    {
+      heading: 'A verified installer',
+      paragraphs: [
+        'The installer is signed by GETMINE LTD — notarised by Apple, publisher-verified by Microsoft. Your computer checks that signature before anything installs.',
       ],
     },
     {

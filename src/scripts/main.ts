@@ -288,15 +288,6 @@ function initialiseInviteFriend() {
   );
   if (!instances.length) return;
 
-  const revealConditionalTriggers = () => {
-    const requested = localStorage.getItem('gm_access_requested') === 'true';
-    instances.forEach((instance) => {
-      if (instance.dataset.inviteConditional === 'true') {
-        instance.hidden = !requested;
-      }
-    });
-  };
-
   const closeInstance = (instance: HTMLElement, restoreFocus = false) => {
     const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
     const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
@@ -406,8 +397,6 @@ function initialiseInviteFriend() {
     if (open) closeInstance(open, true);
   });
 
-  window.addEventListener('gm:access-requested', revealConditionalTriggers);
-  revealConditionalTriggers();
 }
 
 function initialiseAccessForm() {
@@ -455,8 +444,6 @@ function initialiseAccessForm() {
       if (!response.ok) throw new Error(`Request failed with ${response.status}`);
 
       recordAnonymousSubmission();
-      localStorage.setItem('gm_access_requested', 'true');
-      window.dispatchEvent(new Event('gm:access-requested'));
       if (submittedEmail) submittedEmail.textContent = input.value;
       copy.hidden = true;
       form.hidden = true;
