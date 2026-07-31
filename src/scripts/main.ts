@@ -13,8 +13,6 @@ function initialiseNavigation() {
   const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
   const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
   const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
-  const heroCta = document.getElementById('hero-cta');
-  const headerCta = document.querySelector<HTMLElement>('[data-header-cta]');
   const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
 
   const closeMenu = () => {
@@ -45,14 +43,6 @@ function initialiseNavigation() {
   const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 16);
   updateHeader();
   window.addEventListener('scroll', updateHeader, { passive: true });
-
-  if (heroCta && headerCta) {
-    const observer = new IntersectionObserver(
-      ([entry]) => headerCta.classList.toggle('visible', !entry.isIntersecting),
-      { threshold: 0 },
-    );
-    observer.observe(heroCta);
-  }
 
   if (navLinks.length) {
     const sections = navLinks

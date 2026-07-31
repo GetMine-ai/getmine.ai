@@ -1,6 +1,4 @@
 ---
-import InviteFriend from './InviteFriend.astro';
-
 interface Props {
   hideCta?: boolean;
 }
@@ -9,6 +7,7 @@ const { hideCta = false } = Astro.props;
 const nav = [
   ['Why it matters', 'why-it-matters'],
   ['How it works', 'how-it-works'],
+  ['Meet Mina', 'meet-mina'],
   ['Our promise', 'our-promise'],
   ['About us', 'about-us'],
 ];
@@ -27,13 +26,8 @@ const nav = [
     </div>
 
     <div class="nav-actions">
-      <InviteFriend
-        variant="compact"
-        placement="menubar"
-        instanceId="menubar"
-      />
       {!hideCta && (
-        <a class="primary-cta desktop-action header-cta" href="/beta" data-header-cta>Download GetMine</a>
+        <a class="primary-cta desktop-action header-cta" href="/beta">Download GetMine</a>
       )}
       <button
         class="menu-button"
@@ -51,11 +45,6 @@ const nav = [
   <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu inert>
     <nav class="wrap" aria-label="Mobile">
       {nav.map(([label, id]) => <a href={`/#${id}`} data-menu-link>{label}</a>)}
-      <InviteFriend
-        variant="primary"
-        placement="menubar"
-        instanceId="mobile-menubar"
-      />
       {!hideCta && <a class="primary-cta" href="/beta">Download GetMine</a>}
     </nav>
   </div>
@@ -85,7 +74,9 @@ const nav = [
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 1rem;
-    min-height: 4.75rem;
+    width: min(100%, 96rem);
+    min-height: 5.25rem;
+    padding-inline: clamp(1.25rem, 3.5vw, 3.25rem);
   }
 
   .nav-left,
@@ -99,7 +90,7 @@ const nav = [
     width: 100%;
     flex: 1 1 auto;
     min-width: 0;
-    gap: 2rem;
+    gap: 1.75rem;
   }
 
   .nav-actions {
@@ -125,7 +116,7 @@ const nav = [
 
   .desktop-nav {
     display: none;
-    gap: 1.75rem;
+    gap: clamp(1rem, 1.65vw, 1.75rem);
     margin-left: auto;
   }
 
@@ -133,7 +124,7 @@ const nav = [
     position: relative;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1;
@@ -163,35 +154,16 @@ const nav = [
   }
 
   .desktop-action {
-    display: none;
+    display: inline-flex;
   }
 
   .header-cta {
-    max-width: 0;
-    min-width: 0;
-    overflow: hidden;
-    padding-right: 0;
-    padding-left: 0;
+    min-width: 12rem;
+    min-height: 3.125rem;
+    padding-inline: 1.5rem;
     white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      max-width 300ms var(--ease-gm),
-      padding 300ms var(--ease-gm),
-      opacity 260ms var(--ease-gm),
-      transform 180ms var(--ease-gm),
-      visibility 0s linear 260ms;
-  }
-
-  .header-cta.visible {
-    max-width: 13rem;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    transition-delay: 0s;
+    font-size: 1.125rem;
+    font-weight: 700;
   }
 
   .menu-button {
@@ -276,13 +248,13 @@ const nav = [
     margin-top: 0.75rem;
   }
 
-  @media (min-width: 40rem) {
+  @media (max-width: 39.9375rem) {
     .desktop-action {
-      display: inline-flex;
+      display: none;
     }
   }
 
-  @media (min-width: 64rem) {
+  @media (min-width: 72rem) {
     .desktop-nav {
       display: flex;
     }
