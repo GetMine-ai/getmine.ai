@@ -68,6 +68,7 @@ const message =
 <style>
   .invite-friend {
     position: relative;
+    z-index: 20;
     display: inline-flex;
     max-width: 100%;
   }
@@ -114,6 +115,14 @@ const message =
   .invite-friend--beta .invite-trigger {
     min-height: 3.5rem;
     font-size: 1.125rem;
+  }
+
+  .invite-friend--beta .invite-panel {
+    top: auto;
+    right: 0;
+    bottom: calc(100% + 0.75rem);
+    left: auto;
+    transform-origin: bottom right;
   }
 
   .invite-panel {
@@ -265,11 +274,31 @@ const message =
     }
 
     .invite-panel,
-    .invite-friend--menubar .invite-panel {
+    .invite-friend--menubar .invite-panel,
+    .invite-friend--beta .invite-panel {
       right: auto;
       left: 50%;
       transform: translateX(-50%);
+    }
+
+    .invite-friend--menubar .invite-panel {
+      top: calc(100% + 0.75rem);
+      bottom: auto;
       transform-origin: top center;
+    }
+
+    .invite-friend--beta .invite-panel {
+      position: fixed;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      left: 50%;
+      width: min(22rem, calc(100vw - 2rem));
+      max-height: calc(100dvh - 2rem);
+      overflow-y: auto;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+      animation: none;
     }
 
     @keyframes invite-panel-in {

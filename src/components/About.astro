@@ -14,9 +14,9 @@ const founders = [
     name: 'Mike Anderson',
     role: 'Co-founder & Architect',
     disciplineLineOne: 'Sovereign architecture and',
-    disciplineLineTwo: 'agentic layer.',
-    lineOne: 'Builds technology.',
-    lineTwo: 'Makes agency structural.',
+    disciplineLineTwo: 'agentic systems.',
+    lineOne: 'Builds the technology.',
+    lineTwo: 'Keeps people in control.',
     image: 'mike-color',
     extension: 'jpg',
   },
@@ -48,7 +48,7 @@ const founders = [
               <span class="join-line" aria-hidden="true"></span>
               <span class="mark-wrap" aria-hidden="false"><span class="mina-ring"></span><span class="mina-mark" role="img" aria-label="GetMine"><i>M</i><b>.</b></span></span>
               <p>Where the two meet</p>
-              <em>this becomes GetMine.</em>
+              <em>GetMine becomes possible.</em>
             </div>
           )}
           <article class:list={[index === 0 ? 'founder-left' : 'founder-right']}>
@@ -166,7 +166,7 @@ const founders = [
   .portrait {
     position: relative;
     width: 13.75rem;
-    height: 16.5rem;
+    height: 13.75rem;
     flex: 0 0 auto;
     border: 0;
     border-radius: 0;
@@ -294,7 +294,7 @@ const founders = [
     top: 50%;
     left: 50%;
     display: none;
-    width: calc(100% + 7rem);
+    width: calc(100% + 10rem);
     height: 1px;
     transform: translate(-50%, -50%);
     background: linear-gradient(
@@ -310,8 +310,8 @@ const founders = [
     position: relative;
     z-index: 1;
     display: grid;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 5.125rem;
+    height: 5.125rem;
     place-items: center;
   }
 
@@ -340,9 +340,10 @@ const founders = [
   }
 
   .mina-ring {
-    inset: -0.75rem;
+    inset: -0.875rem;
     border: 1px solid var(--teal-line);
-    opacity: 0.22;
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 12%);
+    opacity: 0.32;
   }
 
   .mina-mark {
@@ -354,7 +355,7 @@ const founders = [
     background: var(--navy-2);
     box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 
   .mina-mark i {
@@ -371,7 +372,7 @@ const founders = [
   .join p {
     position: absolute;
     z-index: 1;
-    top: calc(50% + 4.75rem);
+    top: calc(50% + 5.1rem);
     margin: 1rem 0 0;
     color: var(--teal);
     font-size: var(--text-xs);
@@ -383,7 +384,7 @@ const founders = [
   .join em {
     position: absolute;
     z-index: 1;
-    top: calc(50% + 7rem);
+    top: calc(50% + 7.35rem);
     font-family: var(--font-display);
     font-size: 1.125rem;
     font-style: italic;
@@ -393,6 +394,8 @@ const founders = [
   .closing {
     max-width: 47.5rem;
     margin: 4.5rem auto 0;
+    padding-top: 2.75rem;
+    border-top: 1px solid rgb(231 239 237 / 18%);
     font-family: var(--font-display);
     font-size: clamp(1.625rem, 3.4vw, 2.5rem);
     font-weight: 300;
@@ -419,9 +422,9 @@ const founders = [
 
   @media (min-width: 64rem) {
     .founders {
-      grid-template-columns: minmax(17rem, 1fr) 13rem minmax(17rem, 1fr);
+      grid-template-columns: minmax(17rem, 1fr) 17rem minmax(17rem, 1fr);
       align-items: start;
-      gap: clamp(2.25rem, 4vw, 4.75rem);
+      gap: clamp(1.75rem, 2.8vw, 2.75rem);
     }
 
     .founders article:first-child {
@@ -439,12 +442,7 @@ const founders = [
 
     article > div:last-child {
       width: min(100%, 23rem);
-      align-self: flex-end;
       text-align: right;
-    }
-
-    article .rule {
-      margin-left: auto;
     }
 
     .join-line {
@@ -456,25 +454,36 @@ const founders = [
       width: min(100%, 23rem);
     }
 
-    .founder-left .portrait,
-    .founder-right .portrait {
+    .founder-left .portrait {
       align-self: flex-end;
     }
 
-    .founder-left .rule,
-    .founder-right .rule {
+    .founder-left > div:last-child {
+      align-self: flex-end;
+    }
+
+    .founder-left .rule {
       margin-left: auto;
+    }
+
+    .founder-right .portrait,
+    .founder-right > div:last-child {
+      align-self: flex-start;
+    }
+
+    .founder-right > div:last-child {
+      text-align: left;
+    }
+
+    .founder-right .rule {
+      margin-right: auto;
+      margin-left: 0;
     }
   }
 
   @media (min-width: 64rem) and (max-height: 52rem) {
     .wrap.section-pad {
       padding-block: 2.5rem;
-    }
-
-    .section-heading h2 {
-      margin-top: 0.625rem;
-      font-size: clamp(1.875rem, 3.7vw, 2.75rem);
     }
 
     .intro {
@@ -494,7 +503,7 @@ const founders = [
 
     .portrait {
       width: 9.75rem;
-      height: 11.75rem;
+      height: 9.75rem;
     }
 
     h3 {

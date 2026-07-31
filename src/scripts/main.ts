@@ -49,25 +49,32 @@ function initialiseNavigation() {
       .map((link) => document.getElementById(link.dataset.navLink || ''))
       .filter((section): section is HTMLElement => Boolean(section));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const active = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]?.target.id;
+    let frame: number | undefined;
+    const updateActiveSection = () => {
+      frame = undefined;
+      const headerHeight = header?.offsetHeight || 0;
+      const readingLine = window.scrollY + headerHeight + window.innerHeight * 0.28;
+      const active = sections.reduce<HTMLElement | undefined>((current, section) => {
+        return section.offsetTop <= readingLine ? section : current;
+      }, undefined);
 
-        if (!active) return;
-        navLinks.forEach((link) => {
-          if (link.dataset.navLink === active) {
-            link.setAttribute('aria-current', 'true');
-          } else {
-            link.removeAttribute('aria-current');
-          }
-        });
-      },
-      { rootMargin: '-25% 0px -60%', threshold: [0, 0.2, 0.5] },
-    );
+      navLinks.forEach((link) => {
+        if (active && link.dataset.navLink === active.id) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
 
-    sections.forEach((section) => observer.observe(section));
+    const scheduleActiveSection = () => {
+      if (frame !== undefined) return;
+      frame = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', scheduleActiveSection, { passive: true });
+    window.addEventListener('resize', scheduleActiveSection);
   }
 }
 

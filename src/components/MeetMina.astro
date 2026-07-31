@@ -1,24 +1,26 @@
 ---
 const exchanges = [
-  [
-    'What did the consultant say about my knee?',
-    'Answers, and shows you the letter she read it in',
-  ],
-  [
-    'I’ve got a GP appointment, what should I flag?',
-    'Pulls together what’s changed since the last one',
-  ],
-  [
-    'My back pain is back.',
-    'She offers to log it, nudges only if you asked.',
-  ],
-  [
-    'File this with my supplements.',
-    'Updates your vault on the spot, from any source',
-  ],
+  {
+    prompt: 'What did the consultant say about my knee?',
+    action: 'Answers, and shows you the letter she read it in.',
+    delay: '800ms',
+  },
+  {
+    prompt: 'I’ve got a GP appointment, what should I flag?',
+    action: 'Pulls together what’s changed since the last one.',
+    delay: '2200ms',
+  },
+  {
+    prompt: 'My back pain is back.',
+    action: 'She offers to log it. She only nudges when asked.',
+    delay: '3600ms',
+  },
+  {
+    prompt: 'File this with my supplements.',
+    action: 'Updates your vault on the spot, from any source.',
+    delay: '5000ms',
+  },
 ];
-
-const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
 ---
 <section id="meet-mina" class="meet-mina section-edge" aria-labelledby="meet-mina-heading" data-meet-mina>
   <div class="about-glow" aria-hidden="true"></div>
@@ -27,7 +29,8 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
       <p class="eyebrow">Meet Mina</p>
       <h2 id="meet-mina-heading">
         Mina keeps your record straight.
-        <span>Your doctors</span> <em>keep the diagnoses.</em>
+        <span>Your doctors</span>
+        <em>make the diagnoses.</em>
       </h2>
     </header>
 
@@ -41,16 +44,24 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
 
     <p class="exchange-label reveal" style="--delay: 640ms">Say this. She does this.</p>
     <div class="exchanges">
-      {exchanges.map(([prompt, action], index) => (
-        <article class="exchange reveal" style={`--delay: ${pairDelays[index]}`}>
-          <p
-            class="speech typed-speech"
-            data-mina-typed={prompt}
-            data-mina-delay={pairDelays[index]}
-          >
-            “{prompt}”
-          </p>
-          <p class="mina-action"><i><span>M</span><b>.</b></i> {action}</p>
+      {exchanges.map(({ prompt, action, delay }) => (
+        <article class="exchange reveal" style={`--delay: ${delay}`}>
+          <div class="speech-row">
+            <svg class="speech-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5.5 5.5h13v9h-7l-4.25 3v-3H5.5z"></path>
+            </svg>
+            <p
+              class="speech typed-speech"
+              data-mina-typed={prompt}
+              data-mina-delay={delay}
+            >
+              “{prompt}”
+            </p>
+          </div>
+          <div class="mina-action">
+            <span class="response-mark" role="img" aria-label="Mina"><i>M</i><b>.</b></span>
+            <p>{action}</p>
+          </div>
         </article>
       ))}
     </div>
@@ -64,40 +75,68 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
     background: var(--navy);
   }
 
+  .section-pad {
+    padding-block: clamp(5rem, 8vw, 7.5rem);
+  }
+
   .about-glow {
     position: absolute;
     z-index: 0;
-    top: 48%;
-    left: 12%;
-    width: 52rem;
-    height: 38rem;
+    top: 42%;
+    left: 8%;
+    width: 48rem;
+    height: 48rem;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     background: radial-gradient(closest-side, var(--teal), transparent 72%);
-    filter: blur(9rem);
-    opacity: 0.12;
+    filter: blur(10rem);
+    opacity: 0.1;
     pointer-events: none;
   }
 
   .wrap {
     position: relative;
     z-index: 1;
-    max-width: 72rem;
+    width: min(calc(100% - 3rem), 82.5rem);
+    max-width: 82.5rem;
+  }
+
+  .section-heading {
+    max-width: 80rem;
+  }
+
+  .exchange-label {
+    color: var(--teal);
+    font-family: var(--font-ui);
+    font-size: clamp(1.125rem, 1.4vw, 1.25rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .section-heading h2 {
+    max-width: 80rem;
+  }
+
+  .section-heading h2 span {
+    color: var(--teal);
+    font-style: normal;
   }
 
   .mina-intro {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    gap: clamp(1.35rem, 2.2vw, 2rem);
+    margin-top: clamp(1.5rem, 2.5vw, 2rem);
   }
 
   .mark-wrap {
     position: relative;
     display: grid;
-    width: 4.5rem;
-    height: 4.5rem;
-    flex: 0 0 4.5rem;
+    width: clamp(5.375rem, 7vw, 6.5rem);
+    height: clamp(5.375rem, 7vw, 6.5rem);
+    flex: 0 0 clamp(5.375rem, 7vw, 6.5rem);
     place-items: center;
   }
 
@@ -108,9 +147,10 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
   }
 
   .mina-ring {
-    inset: -0.75rem;
+    inset: -0.6rem;
     border: 1px solid var(--teal-line);
-    opacity: 0.22;
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 12%);
+    opacity: 0.32;
   }
 
   .mina-mark {
@@ -120,9 +160,9 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
     justify-content: center;
     border: 1px solid var(--teal-line);
     background: var(--navy-2);
-    box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 20%);
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: clamp(2.4rem, 3.4vw, 3.2rem);
   }
 
   .mina-mark i {
@@ -137,91 +177,104 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
   }
 
   .mina-subtitle {
-    margin: 0.6rem 0 0;
-    color: var(--taupe);
-    font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
-    font-style: italic;
-    font-weight: 300;
-  }
-
-  .section-heading h2 {
-    max-width: none;
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: var(--text-h2);
-    font-weight: 300;
-    letter-spacing: normal;
-    line-height: 1.12;
-  }
-
-  .section-heading h2 span {
-    color: var(--teal);
-    font-style: normal;
-  }
-
-  .mina-boundary {
-    max-width: none;
-    margin: 1.25rem 0 0;
+    margin: 0;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: clamp(1.125rem, 1.85vw, 1.5rem);
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
     font-style: italic;
     font-weight: 300;
-    line-height: 1.45;
+    line-height: 1.2;
   }
 
   .exchange-label {
-    margin: 2.25rem 0 1.25rem;
-    color: var(--teal);
-    font-size: clamp(1rem, 1.3vw, 1.125rem);
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    margin: clamp(2.25rem, 3.4vw, 2.75rem) 0 clamp(1.4rem, 2.2vw, 1.75rem);
   }
 
   .exchanges {
     display: grid;
-    gap: 2.5rem 2.5rem;
+    gap: clamp(1.5rem, 2.4vw, 2rem);
   }
 
   .exchange {
-    max-width: none;
+    min-width: 0;
+    min-height: 14rem;
+    padding: clamp(1.75rem, 2.4vw, 2.125rem);
+    border: 1px solid rgb(90 146 148 / 30%);
+    border-radius: clamp(1.125rem, 1.6vw, 1.5rem);
+    background: rgb(14 24 33 / 58%);
+  }
+
+  .speech-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  .speech-icon {
+    width: 2.65rem;
+    height: 2.65rem;
+    flex: 0 0 2.65rem;
+    padding: 0.55rem;
+    border: 1px solid rgb(55 207 195 / 58%);
+    border-radius: 50%;
+    fill: none;
+    stroke: var(--teal);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.45;
   }
 
   .speech {
-    width: fit-content;
+    width: auto;
     max-width: 100%;
     margin: 0;
-    padding: 0.8rem 1.1rem;
-    border-radius: 1.375rem 1.375rem 1.375rem 0.5rem;
-    background: rgb(199 194 182 / 16%);
-    white-space: nowrap;
-    font-size: clamp(1rem, 1.6vw, 1.25rem);
-    line-height: 1.45;
+    padding: 0.72rem 1.1rem;
+    border-radius: 1.15rem 1.15rem 1.15rem 0.4rem;
+    background: rgb(199 194 182 / 12%);
+    color: var(--cream);
+    font-size: clamp(1.15rem, 1.5vw, 1.375rem);
+    line-height: 1.42;
   }
 
   .mina-action {
-    margin: 0.55rem 0 0 1rem;
+    display: grid;
+    margin-top: clamp(1.5rem, 2.4vw, 2rem);
+    grid-template-columns: 3rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.9rem;
     color: var(--cream);
-    font-size: clamp(1rem, 1.6vw, 1.25rem);
-    line-height: 1.45;
   }
 
-  .mina-action i {
-    margin-right: 0.35rem;
+  .response-mark {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(55 207 195 / 48%);
+    border-radius: 50%;
+    background: var(--navy-2);
     font-family: var(--font-display);
-    font-size: 1.1875rem;
-    font-style: italic;
+    font-size: 1.7rem;
+    line-height: 1;
   }
 
-  .mina-action i span {
+  .response-mark i {
     color: var(--cream);
+    font-style: italic;
+    font-weight: 300;
   }
 
-  .mina-action i b {
+  .response-mark b {
     color: var(--teal);
     font-weight: 300;
+  }
+
+  .mina-action p {
+    margin: 0.4rem 0 0;
+    color: var(--cream);
+    font-size: clamp(1.15rem, 1.5vw, 1.375rem);
+    line-height: 1.5;
   }
 
   .meet-mina.is-animated .reveal {
@@ -272,10 +325,6 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
   }
 
   @media (min-width: 64rem) {
-    .wrap {
-      max-width: var(--wrap);
-    }
-
     .exchanges {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -290,8 +339,72 @@ const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
     }
   }
 
-  @media (min-width: 64rem) {
-    .mina-boundary { white-space: nowrap; }
+  @media (max-width: 63.99rem) {
+    .exchange {
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .section-pad {
+      padding-block: clamp(4rem, 12vw, 5rem);
+    }
+
+    .wrap {
+      width: min(calc(100% - 2.5rem), 82.5rem);
+    }
+
+    .exchange-label {
+      font-size: 1rem;
+    }
+
+    .mina-intro {
+      align-items: center;
+    }
+
+    .mark-wrap {
+      width: 5rem;
+      height: 5rem;
+      flex-basis: 5rem;
+    }
+
+    .mina-mark {
+      font-size: 2.25rem;
+    }
+
+    .mina-subtitle {
+      font-size: clamp(1.375rem, 6vw, 1.7rem);
+    }
+
+    .exchange {
+      padding: 1.35rem;
+    }
+
+    .speech-row {
+      gap: 0.7rem;
+    }
+
+    .speech-icon {
+      width: 2.4rem;
+      height: 2.4rem;
+      flex-basis: 2.4rem;
+    }
+
+    .speech,
+    .mina-action p {
+      font-size: 1.125rem;
+    }
+
+    .mina-action {
+      grid-template-columns: 2.75rem minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+    .response-mark {
+      width: 2.75rem;
+      height: 2.75rem;
+      font-size: 1.55rem;
+    }
   }
 </style>
 
