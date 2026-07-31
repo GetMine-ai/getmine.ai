@@ -27,7 +27,7 @@ const nav = [
 
     <div class="nav-actions">
       {!hideCta && (
-        <a class="primary-cta desktop-action header-cta" href="/beta">Download GetMine</a>
+        <a class="primary-cta desktop-action header-cta" href="/beta">Request beta access</a>
       )}
       <button
         class="menu-button"
@@ -45,7 +45,7 @@ const nav = [
   <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu inert>
     <nav class="wrap" aria-label="Mobile">
       {nav.map(([label, id]) => <a href={`/#${id}`} data-menu-link>{label}</a>)}
-      {!hideCta && <a class="primary-cta" href="/beta">Download GetMine</a>}
+      {!hideCta && <a class="primary-cta" href="/beta">Request beta access</a>}
     </nav>
   </div>
 </header>

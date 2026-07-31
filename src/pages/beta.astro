@@ -1,19 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
-import Download from '../components/Download.astro';
+import EarlyAccess from '../components/EarlyAccess.astro';
 import Footer from '../components/Footer.astro';
-import { builds } from '../data/builds';
 ---
 <Base
-  title="Download GetMine | Open Beta"
-  ogTitle="Download GetMine — open beta"
-  description="Download the GetMine open beta for macOS or Windows. Your Health Vault lives on your own computer, with Mina AI included."
-  ogDescription="Download GetMine for macOS or Windows. One health vault on your own computer, with Mina to ask about it."
+  title="Request beta access | GetMine.ai"
+  ogTitle="Request access to the GetMine open beta"
+  description="Request access to the GetMine open beta. Your Health Vault lives on your own computer, with Mina AI included."
+  ogDescription="Request access to the GetMine open beta. One health vault on your own computer, with Mina to ask about it."
   canonical="https://getmine.ai/beta"
-  ogImage="https://getmine.ai/og-beta.png"
 >
   <Nav hideCta />
-  <Download {builds} />
+  <EarlyAccess variant="form" />
   <Footer />
 </Base>
