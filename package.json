@@ -10,8 +10,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:release": "pnpm assert:downloads && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "assert:downloads": "node --experimental-strip-types scripts/assert-download-links.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
