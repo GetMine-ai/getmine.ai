@@ -2,7 +2,7 @@
   <div class="hero-light" aria-hidden="true"></div>
   <div class="wrap-wide hero-grid">
     <div class="hero-copy">
-      <span class="beta-status">Open beta · Free to download</span>
+      <span class="beta-status-pill">Open beta · Free to download</span>
       <h1>
         <span>Your health.</span>
         <span>Your data.</span>
@@ -116,22 +116,6 @@
     margin-top: 2.85rem;
   }
 
-  .beta-status {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-    padding: 0.625rem 1.125rem;
-    border: 1px solid var(--teal-line);
-    border-radius: var(--radius-pill);
-    animation: beta-flash 2.4s var(--ease-gm) infinite;
-    background: rgb(29 191 176 / 14%);
-    color: var(--teal);
-    font-size: clamp(1rem, 1.8vw, 1.25rem);
-    font-weight: 700;
-    letter-spacing: 0.025em;
-    line-height: 1.3;
-  }
-
   .product-scene {
     position: relative;
     min-width: 0;
@@ -215,26 +199,4 @@
     }
   }
 
-  @keyframes beta-flash {
-    0%, 100% {
-      border-color: var(--teal-line);
-      background: rgb(29 191 176 / 10%);
-      box-shadow:
-        0 0 0 0 rgb(29 191 176 / 0%),
-        0 0 0.75rem rgb(29 191 176 / 8%);
-      filter: brightness(1);
-    }
-    50% {
-      border-color: var(--teal);
-      background: rgb(29 191 176 / 22%);
-      box-shadow:
-        0 0 0 0.125rem rgb(29 191 176 / 18%),
-        0 0 2rem 0 rgb(29 191 176 / 44%);
-      filter: brightness(1.18);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .beta-status { animation: none; }
-  }
 </style>
