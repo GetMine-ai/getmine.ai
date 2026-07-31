@@ -298,9 +298,23 @@ const platforms = [
 </main>
 
 <script>
+  // The site's only measurement (ruled, spec §1.6a): two anonymous first-party
+  // counts — page view and download click. No identity, no cookie, no storage;
+  // fire-and-forget so a failure can never affect the page. Disclosed in /privacy.
+  const COUNT_ENDPOINT = 'https://api.getmine.ai/access/v1/request-submitted';
+  const count = (event: string) => {
+    void fetch(`${COUNT_ENDPOINT}?event=${event}`, {
+      method: 'POST',
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+      keepalive: true,
+    }).catch(() => undefined);
+  };
+
   const roots = document.querySelectorAll<HTMLElement>(
     '[data-download-module]:not([data-module-ready])',
   );
+  if (roots.length) count('page-view');
 
   roots.forEach((root) => {
     root.dataset.moduleReady = 'true';
@@ -357,6 +371,7 @@ const platforms = [
 
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
+        count('download-click');
         const action = link.closest<HTMLElement>('[data-download-action]');
         if (!action) return;
         action.dataset.started = 'true';
