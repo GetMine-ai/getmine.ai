@@ -1,0 +1,84 @@
+---
+import LegalPage from '../layouts/LegalPage.astro';
+import { termsPage } from '../data/regulatory';
+---
+<LegalPage
+  title="Terms | GetMine.ai"
+  description="Plain-English terms for using GetMine during the open beta."
+  canonical="https://getmine.ai/terms"
+>
+  <p class="page-eyebrow">{termsPage.eyebrow}</p>
+  <h1 class="page-headline">{termsPage.title}</h1>
+
+  <p class="policy-meta">
+    {termsPage.organisation} · Open beta · Last updated: {termsPage.lastUpdated}
+  </p>
+
+  <aside class="policy-summary">
+    <strong>The short version:</strong> the beta is free, Mina is not a doctor,
+    and your vault is yours &mdash; on your computer, and it stays there whatever
+    you decide about us.
+  </aside>
+
+  <p class="page-lead">
+    A short, plain-English set of terms for using GetMine during the open beta.
+    GetMine Ltd, England and Wales, company number 17070331. The
+    <a href="/privacy">privacy policy</a> governs everything about your data;
+    where these terms and the policy could be read differently, the policy
+    prevails.
+  </p>
+
+  {termsPage.sections.map((section) => (
+    <section class="page-section">
+      <h2>{section.heading}</h2>
+      <p>{section.body}</p>
+    </section>
+  ))}
+
+  <p class="policy-updated">
+    Last updated: {termsPage.lastUpdated} · {termsPage.organisation} ·
+    <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
+  </p>
+</LegalPage>
+
+<style>
+  .policy-meta,
+  .policy-updated {
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .policy-meta {
+    margin-top: 1.5rem;
+  }
+
+  .policy-summary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--teal-deck);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--teal-deck) 9%, transparent);
+    color: var(--cream);
+    font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+    line-height: 1.65;
+  }
+
+  .page-lead a {
+    color: var(--teal-deck);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--teal-deck) 40%, transparent);
+    padding-bottom: 1px;
+  }
+
+  .policy-updated {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--cream) 18%, transparent);
+  }
+
+  .policy-updated a {
+    color: var(--teal-deck);
+    text-decoration: none;
+  }
+</style>
