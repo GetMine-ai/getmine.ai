@@ -1,0 +1,259 @@
+---
+// Where Brevo sends someone the moment they click the confirmation link in the
+// double-opt-in email — the paste-this-URL destination for the form's
+// "Confirmation page after clicking on the validation link in the email".
+//
+// This is a WELCOME, not a document (Sabine, 2026-07-26): centred, the M. mark
+// introduced properly, and short. Three jobs, in this order:
+//   1. Congratulate — they're in, and it should feel like it.
+//   2. One sentence on waves, so the wait afterwards reads as intended.
+//   3. The one useful thing they can do while they wait: PKB registration, for
+//      anyone with an NHS number who wants their GP record on day one.
+//
+// Deliberately NOT here: computer requirements. They belong at signup (before an
+// email is given) and at the installer preflight, not in a congratulation.
+//
+// The mark is the M. monogram — never a mascot (branding ruling, 2026-07-07:
+// one mark for product and agent; Mina's warmth lives in language, not imagery).
+//
+// COPY IS SABINE'S. Drafted in her ruled voice; the PKB paragraph in particular
+// is the parked open-beta prerequisite she has now placed here, and its exact
+// wording is hers to rule.
+import LegalPage from '../layouts/LegalPage.astro';
+---
+<LegalPage
+  title="You're on the list — GetMine.ai"
+  description="Your email is confirmed and you have a place in the queue for the GetMine open beta."
+  canonical="https://getmine.ai/welcome.html"
+  noindex={true}>
+
+  <div class="welcome">
+
+    <!-- Mina's speaking mark — the same circular M. that sits beside her in the
+         app (src/desktop/components.tsx MMark): navy disc, italic serif M, teal
+         full stop. Not the squared launcher icon; this is the one that means
+         "Mina is talking". -->
+    <div class="welcome-mark" aria-hidden="true">
+      <span class="welcome-mark-disc">M<span class="welcome-mark-dot">.</span></span>
+    </div>
+
+    <p class="welcome-hello">Hi, I&rsquo;m Mina.</p>
+    <h1 class="welcome-headline">You&rsquo;re in.</h1>
+
+    <p class="welcome-lead">Your email is confirmed &mdash; that&rsquo;s everything we need for now. You have a place in the queue for the open beta.</p>
+
+    <p class="welcome-next">We&rsquo;re opening the beta in waves. When yours opens, we&rsquo;ll email you a personal invitation with your download link.</p>
+
+    <p class="welcome-inbox">My invitation will come from <strong>beta@getmine.ai</strong> &mdash; adding it to your contacts now keeps it out of your spam folder.</p>
+
+    <div class="welcome-card">
+      <p class="welcome-card-eyebrow">While you wait</p>
+      <h2>Have an NHS number?</h2>
+      <p>Register with Patients Know Best, the NHS service that gives you your own copy of your records. It takes a couple of minutes, and it&rsquo;s what lets me work with your NHS GP record from your very first day.</p>
+      <p class="welcome-card-action">
+        <a class="welcome-button" href="https://patientsknowbest.com" target="_blank" rel="noopener noreferrer">
+          Register with Patients Know Best <span aria-hidden="true">&#8599;</span>
+        </a>
+      </p>
+      <p class="welcome-card-second">No NHS number, or not in the UK? Nothing to do &mdash; I&rsquo;ll work from your own letters, emails and photos.</p>
+    </div>
+
+    <p class="welcome-signoff">I&rsquo;ll be here when you arrive.<br />&mdash; Mina</p>
+
+  </div>
+
+  <style>
+    .welcome { text-align: center; }
+
+    /* The mark, introduced. Rises once on load; the spark keeps a slow breath so
+       the page feels alive without ever becoming a character. */
+    .welcome-mark {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+      animation: mark-rise 700ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+    .welcome-mark-disc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(104px, 13vw, 124px);
+      height: clamp(104px, 13vw, 124px);
+      border-radius: 50%;
+      background: var(--navy);
+      border: 1px solid color-mix(in srgb, var(--cream) 12%, transparent);
+      box-shadow: 0 16px 44px color-mix(in srgb, var(--brand-spark) 12%, transparent);
+      font-family: 'Fraunces Variable', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(50px, 6.4vw, 60px);
+      line-height: 1;
+      color: var(--cream);
+      user-select: none;
+    }
+    .welcome-mark-dot {
+      color: var(--teal-deck);
+      animation: dot-breathe 3.6s ease-in-out infinite;
+    }
+
+    @keyframes mark-rise {
+      from { opacity: 0; transform: translateY(14px) scale(.94); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes dot-breathe {
+      0%, 100% { opacity: .7; }
+      50%      { opacity: 1; }
+    }
+
+    /* Mina introduces herself in her own serif voice — the persona lives in the
+       language, never in the mark, which stays institutional. */
+    .welcome-hello {
+      color: var(--cream);
+      font-family: 'Fraunces Variable', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(34px, 4.6vw, 50px);
+      letter-spacing: -.04em;
+      line-height: 1.05;
+      margin-bottom: 2px;
+      animation: fade-up 700ms 90ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    .welcome-headline {
+      color: var(--cream);
+      font-family: 'Fraunces Variable', serif;
+      font-size: clamp(46px, 6.2vw, 70px);
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+      animation: fade-up 700ms 120ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    .welcome-lead {
+      margin: 22px auto 0;
+      max-width: 30em;
+      color: color-mix(in srgb, var(--cream) 84%, transparent);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: clamp(17px, 1.7vw, 19px);
+      line-height: 1.6;
+      animation: fade-up 700ms 220ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    .welcome-next {
+      margin: 16px auto 0;
+      max-width: 30em;
+      color: color-mix(in srgb, var(--cream) 68%, transparent);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      animation: fade-up 700ms 300ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    /* The one practical thing — set apart so it reads as help, not homework. */
+    .welcome-card {
+      margin: 46px auto 0;
+      max-width: 34em;
+      padding: 26px 28px;
+      text-align: left;
+      border: 1px solid color-mix(in srgb, var(--teal-deck) 26%, transparent);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--teal-deck) 6%, transparent);
+      animation: fade-up 700ms 400ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+    .welcome-card-eyebrow {
+      color: var(--teal-deck);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .welcome-card h2 {
+      color: var(--cream);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      margin-bottom: 10px;
+    }
+    .welcome-card p {
+      color: color-mix(in srgb, var(--cream) 78%, transparent);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .welcome-card a {
+      color: var(--teal-deck);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--teal-deck) 45%, transparent);
+      transition: color .2s, border-color .2s;
+    }
+    .welcome-card a:hover { color: var(--cream); border-color: color-mix(in srgb, var(--cream) 50%, transparent); }
+    /* Equal weight to the NHS paragraph, deliberately: someone without an NHS
+       number should read "nothing to do" as an answer, not as small print. */
+    .welcome-card-second { margin-top: 18px !important; }
+
+    .welcome-card-action { margin: 16px 0 0 !important; }
+    .welcome-button {
+      display: inline-block;
+      padding: 11px 18px;
+      border-radius: 8px;
+      border: 1px solid color-mix(in srgb, var(--teal-deck) 55%, transparent) !important;
+      background: color-mix(in srgb, var(--teal-deck) 14%, transparent);
+      color: var(--cream) !important;
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .welcome-button:hover {
+      background: color-mix(in srgb, var(--teal-deck) 24%, transparent);
+      border-color: var(--teal-deck) !important;
+    }
+
+    /* Same weight as the waves sentence it follows: knowing which address the
+       invitation arrives from is practical information, not fine print. */
+    .welcome-inbox {
+      margin: 16px auto 0;
+      max-width: 30em;
+      color: color-mix(in srgb, var(--cream) 68%, transparent);
+      font-family: 'DM Sans Variable', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      animation: fade-up 700ms 350ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+    .welcome-inbox strong { color: var(--cream); font-weight: 600; }
+
+    .welcome-signoff {
+      margin: 44px auto 0;
+      color: color-mix(in srgb, var(--cream) 56%, transparent);
+      font-family: 'Fraunces Variable', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.6;
+      animation: fade-up 700ms 480ms cubic-bezier(.2, .7, .3, 1) both;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Motion is decoration here; anyone who has asked for less gets the page still. */
+    @media (prefers-reduced-motion: reduce) {
+      .welcome-mark, .welcome-headline, .welcome-lead,
+      .welcome-next, .welcome-card, .welcome-signoff { animation: none; }
+      .spark-halo, .spark-core { animation: none; }
+    }
+
+    @media (max-width: 680px) {
+      .welcome-card { padding: 22px 20px; }
+    }
+  </style>
+
+</LegalPage>

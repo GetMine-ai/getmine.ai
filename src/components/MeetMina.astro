@@ -1,0 +1,340 @@
+---
+const exchanges = [
+  [
+    'What did the consultant say about my knee?',
+    'Answers, and shows you the letter she read it in',
+  ],
+  [
+    'I’ve got a GP appointment, what should I flag?',
+    'Pulls together what’s changed since the last one',
+  ],
+  [
+    'My back pain is back.',
+    'She offers to log it, nudges only if you asked.',
+  ],
+  [
+    'File this with my supplements.',
+    'Updates your vault on the spot, from any source',
+  ],
+];
+
+const pairDelays = ['900ms', '2600ms', '4300ms', '6000ms'];
+---
+<section id="meet-mina" class="meet-mina section-edge" aria-labelledby="meet-mina-heading" data-meet-mina>
+  <div class="about-glow" aria-hidden="true"></div>
+  <div class="wrap section-pad">
+    <header class="section-heading reveal" style="--delay: 0ms">
+      <p class="eyebrow">Meet Mina</p>
+      <h2 id="meet-mina-heading">
+        Mina keeps your record straight.
+        <span>Your doctors</span> <em>keep the diagnoses.</em>
+      </h2>
+    </header>
+
+    <div class="mina-intro reveal" style="--delay: 220ms">
+      <div class="mark-wrap" aria-hidden="true">
+        <span class="mina-ring"></span>
+        <span class="mina-mark"><i>M</i><b>.</b></span>
+      </div>
+      <p class="mina-subtitle">Your personal health agent</p>
+    </div>
+
+    <p class="exchange-label reveal" style="--delay: 640ms">Say this. She does this.</p>
+    <div class="exchanges">
+      {exchanges.map(([prompt, action], index) => (
+        <article class="exchange reveal" style={`--delay: ${pairDelays[index]}`}>
+          <p
+            class="speech typed-speech"
+            data-mina-typed={prompt}
+            data-mina-delay={pairDelays[index]}
+          >
+            “{prompt}”
+          </p>
+          <p class="mina-action"><i><span>M</span><b>.</b></i> {action}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  .about-glow {
+    position: absolute;
+    z-index: 0;
+    top: 48%;
+    left: 12%;
+    width: 52rem;
+    height: 38rem;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--teal), transparent 72%);
+    filter: blur(9rem);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 72rem;
+  }
+
+  .mina-intro {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .mark-wrap {
+    position: relative;
+    display: grid;
+    width: 4.5rem;
+    height: 4.5rem;
+    flex: 0 0 4.5rem;
+    place-items: center;
+  }
+
+  .mina-ring,
+  .mina-mark {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .mina-ring {
+    inset: -0.75rem;
+    border: 1px solid var(--teal-line);
+    opacity: 0.22;
+  }
+
+  .mina-mark {
+    display: inline-flex;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--teal-line);
+    background: var(--navy-2);
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
+    font-family: var(--font-display);
+    font-size: 2rem;
+  }
+
+  .mina-mark i {
+    color: var(--cream);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .mina-mark b {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  .mina-subtitle {
+    margin: 0.6rem 0 0;
+    color: var(--taupe);
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .section-heading h2 {
+    max-width: none;
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 300;
+    letter-spacing: normal;
+    line-height: 1.12;
+  }
+
+  .section-heading h2 span {
+    color: var(--teal);
+    font-style: normal;
+  }
+
+  .mina-boundary {
+    max-width: none;
+    margin: 1.25rem 0 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1.85vw, 1.5rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.45;
+  }
+
+  .exchange-label {
+    margin: 2.25rem 0 1.25rem;
+    color: var(--teal);
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .exchanges {
+    display: grid;
+    gap: 2.5rem 2.5rem;
+  }
+
+  .exchange {
+    max-width: none;
+  }
+
+  .speech {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0;
+    padding: 0.8rem 1.1rem;
+    border-radius: 1.375rem 1.375rem 1.375rem 0.5rem;
+    background: rgb(199 194 182 / 16%);
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .mina-action {
+    margin: 0.55rem 0 0 1rem;
+    color: var(--cream);
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .mina-action i {
+    margin-right: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 1.1875rem;
+    font-style: italic;
+  }
+
+  .mina-action i span {
+    color: var(--cream);
+  }
+
+  .mina-action i b {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  .meet-mina.is-animated .reveal {
+    animation: mina-rise 620ms var(--ease-gm) var(--delay, 0ms) both;
+  }
+
+  .meet-mina.is-animated .mina-mark {
+    animation: mina-breathe 5.2s ease-in-out infinite;
+  }
+
+  .meet-mina.is-animated .mina-ring {
+    animation: mina-halo 5.2s ease-in-out infinite;
+  }
+
+  .typed-speech.is-typing::after {
+    color: var(--teal);
+    content: "│";
+    animation: caret-blink 720ms steps(1) infinite;
+  }
+
+  @keyframes mina-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.875rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mina-breathe {
+    50% {
+      transform: scale(1.035);
+      box-shadow: 0 0 3.5rem rgb(29 191 176 / 34%);
+    }
+  }
+
+  @keyframes mina-halo {
+    50% {
+      transform: scale(1.14);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes caret-blink {
+    50% { opacity: 0; }
+  }
+
+  @media (min-width: 64rem) {
+    .wrap {
+      max-width: var(--wrap);
+    }
+
+    .exchanges {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meet-mina .reveal,
+    .meet-mina .mina-mark,
+    .meet-mina .mina-ring,
+    .typed-speech::after {
+      animation: none !important;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .mina-boundary { white-space: nowrap; }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-meet-mina]');
+
+  if (section && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const typedLines = Array.from(
+      section.querySelectorAll<HTMLElement>('[data-mina-typed]'),
+    );
+
+    const startTyping = (typed: HTMLElement) => {
+      const copy = typed.dataset.minaTyped ?? '';
+      if (!copy) return;
+      typed.textContent = '“';
+      typed.classList.add('is-typing');
+      let position = 0;
+      const timer = window.setInterval(() => {
+        typed.textContent = `“${copy.slice(0, position + 1)}`;
+        position += 1;
+        if (position >= copy.length) {
+          window.clearInterval(timer);
+          typed.textContent = `“${copy}”`;
+          typed.classList.remove('is-typing');
+        }
+      }, 40);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        section.classList.add('is-animated');
+        typedLines.forEach((typed) => {
+          const delay = Number.parseInt(typed.dataset.minaDelay ?? '0', 10);
+          window.setTimeout(() => startTyping(typed), Number.isFinite(delay) ? delay : 0);
+        });
+        observer.disconnect();
+      },
+      { threshold: 0, rootMargin: '0px 0px -15% 0px' },
+    );
+    typedLines.forEach((typed) => {
+      if (typed.dataset.minaTyped) typed.textContent = '“';
+    });
+    observer.observe(section);
+  }
+</script>

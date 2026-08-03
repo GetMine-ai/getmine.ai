@@ -11,9 +11,12 @@ interface Props {
   title: string;
   description: string;
   canonical: string;
+  /** Keep a page out of search results — for pages that only make sense when
+   *  you arrived from somewhere specific (e.g. the post-confirmation welcome). */
+  noindex?: boolean;
 }
 
-const { title, description, canonical } = Astro.props;
+const { title, description, canonical, noindex = false } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +26,7 @@ const { title, description, canonical } = Astro.props;
 <title>{title}</title>
 <meta name="description" content={description}>
 <meta name="theme-color" content="#060C14">
-<meta name="robots" content="index,follow">
+<meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow'}>
 <link rel="canonical" href={canonical}>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -33,8 +36,8 @@ const { title, description, canonical } = Astro.props;
 <body>
 
 <header class="page-nav">
-  <a class="page-logo" href="index.html">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
-  <a class="page-back" href="index.html">&larr; Back to home</a>
+  <a class="page-logo" href="/">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
+  <a class="page-back" href="/">&larr; Back to home</a>
 </header>
 
 <main>
@@ -43,7 +46,7 @@ const { title, description, canonical } = Astro.props;
   </article>
 </main>
 
-<footer>&copy; 2026 GetMine. All rights reserved.</footer>
+<footer>&copy; 2026 GetMine Ltd. All rights reserved.</footer>
 
 </body>
 </html>

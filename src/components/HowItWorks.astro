@@ -1,0 +1,1627 @@
+---
+const steps = [
+  {
+    id: 'build',
+    nav: 'Vault',
+    eyebrow: 'Step one',
+    title: 'Connect your sources',
+    body: 'Bring your records, letters, emails, photos and notes into one vault on your own computer.',
+  },
+  {
+    id: 'ask',
+    nav: 'Ask Mina',
+    eyebrow: 'Step two',
+    title: 'Engage in conversations',
+    body: 'Like any AI assistant, except she’s read all nineteen years of it and shows her source every time.',
+  },
+  {
+    id: 'topics',
+    nav: 'Topics',
+    eyebrow: 'Step three',
+    title: 'Name what matters to you.',
+    body: 'Supplements, longevity, menopause. Your words. Tag records from any source and the topic builds its own memory.',
+  },
+  {
+    id: 'watching',
+    nav: 'Watching',
+    eyebrow: 'Step four',
+    title: 'Track what changes.',
+    body: 'A symptom, a pattern, a habit. Log it as it happens, ready when someone asks how long.',
+  },
+];
+
+const sources = [
+  ['NHS', 'NHS records', '699 records'],
+  ['UP', 'Uploads', '71 documents'],
+  ['@', 'Health emails', '45 emails'],
+  ['◉', 'Snaps', '12 snaps'],
+  ['You', 'Self-reported', '25 items'],
+  ['M.', 'Made by Mina', '12 items'],
+];
+
+const sourceCards = [
+  ['NH', '699', 'NHS records', 'Your electronic health record', 'Synced 6 days ago'],
+  ['UP', '71', 'Uploads', 'Files and documents you add', 'Added 4 days ago'],
+  ['@', '45', 'Health emails', 'Health mail, scanned locally', 'Scanned 4 days ago'],
+  ['◉', '12', 'Snaps', 'Photos of paper and packaging', 'Added 20 Jul'],
+  ['YO', '25', 'Self-reported', 'What only you can tell', 'Added by you'],
+  ['M.', '12', 'Made by Mina', 'Summaries Mina writes for you', 'By Mina'],
+];
+
+const appNavItems = [
+  { label: 'Home', path: 'M3 10.5 12 3l9 7.5M5.5 9.5V21h13V9.5' },
+  { label: 'Topics & Watching', path: 'M3 16l5-6 4 4 4-7 5 5' },
+  { label: 'Vault', path: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z' },
+  { label: 'Sources', path: 'M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5' },
+  { label: 'Insights', path: 'M5 20V10M12 20V4M19 20v-7' },
+  { label: 'Sharing', path: 'M9 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
+];
+
+// Tag tones mirror the Lovable reference (per-source colour identity).
+const categoryCards: [string, string, [string, string][]][] = [
+  ['363', 'Clinical notes', [['Uploads 1', 'amber'], ['NHS 362', 'nhs']]],
+  ['218', 'Appointments', [['Uploads 8', 'amber'], ['Emails 23', 'email']]],
+  ['137', 'Test results', [['Uploads 9', 'amber'], ['NHS 126', 'nhs']]],
+  ['44', 'Letters & docs', [['Uploads 30', 'amber'], ['Emails 14', 'email']]],
+  ['20', 'Topics & watching', [['You 20', 'you']]],
+  ['19', 'Medications', [['Snaps 6', 'snap'], ['NHS 12', 'nhs']]],
+  ['15', 'Vaccinations', [['Uploads 5', 'amber'], ['NHS 8', 'nhs']]],
+  ['12', 'Summaries & reports', [['Mina 12', 'mina']]],
+  ['8', 'Assessments', [['Uploads 8', 'amber']]],
+  ['7', 'Insurance', [['Uploads 3', 'amber'], ['Emails 3', 'email']]],
+  ['5', 'Supplements', [['Snaps 4', 'snap'], ['Uploads 1', 'amber']]],
+  ['3', 'Conditions', [['NHS 3', 'nhs']]],
+  ['2', 'Unfiled', [['Uploads 2', 'amber']]],
+  ['2', 'Family history', [['You 2', 'you']]],
+  ['2', 'Scans & imaging', [['Uploads 2', 'amber']]],
+];
+
+const categoryIconPaths: Record<string, string> = {
+  'Clinical notes': 'M6 3h9l3 3v15H6zM9 10h6M9 14h6M9 18h4',
+  Appointments: 'M5 5h14v16H5zM8 3v4M16 3v4M5 9h14M9 13h2M13 13h2M9 17h2',
+  'Test results': 'M9 3v6l-4 8a3 3 0 0 0 3 4h8a3 3 0 0 0 3-4l-4-8V3M8 9h8M8 16h8',
+  'Letters & docs': 'M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6',
+  'Topics & watching': 'M5 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 6h4a4 4 0 0 1 4 4v4',
+  Medications: 'M8.5 4.5a4.95 4.95 0 0 1 7 7l-4 4a4.95 4.95 0 0 1-7-7zM8 12l4 4',
+  Vaccinations: 'M14 4l6 6M13 7l4 4M5 19l8-8M4 20l3-1-2-2zM16 3l5 5',
+  'Summaries & reports': 'M5 3h14v18H5zM8 16l3-3 2 2 3-5M8 8h5',
+  Assessments: 'M8 4h8M9 3h6v3H9zM6 5h12v16H6zM9 11h6M9 15h6',
+  Insurance: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.2 2.2 4.8-5',
+  Supplements: 'M19 4C10 4 5 9 5 18c9 0 14-5 14-14zM5 18c3-4 7-7 12-10',
+  Conditions: 'M12 21S4 16 4 9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 7-6 12-6 12zM8 12h3l1-3 2 6 1-3h2',
+  Unfiled: 'M3 7h7l2 2h9v11H3zM3 7V5h7l2 2',
+  'Family history': 'M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 21c0-4 2-7 5-7s5 3 5 7M11 21c0-4 2-7 5-7s5 3 5 7',
+  'Scans & imaging': 'M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5M8 12h8',
+};
+
+const askExchanges = [
+  {
+    question: 'What is the current status of my vaccinations?',
+    lead: 'Here’s the complete picture of your vaccinations, pulled from your NHS record, letters, emails and snaps:',
+    lines: [
+      ['Routine immunisations:', 'your NHS record shows three COVID-19 doses plus the bivalent booster, and a flu vaccine from November 2022.'],
+      ['Shingles:', 'you received Shingrix on 30 January 2026. This is confirmed by three independent sources.'],
+      ['Gaps:', 'I did not find a recorded pneumococcal vaccine. You may want to ask your GP whether you are eligible.'],
+    ],
+    chips: ['NHS 4', 'Letters 2', 'Snaps 1', 'Emails 1'],
+  },
+  {
+    question: 'What do my health assessments show?',
+    lead: 'You have eight health assessments on file, spanning 2015 to 2026. Here is what stands out:',
+    lines: [
+      ['Most recent, April 2026:', 'total cholesterol and HbA1c both improved compared with the prior year. BMI increased to 25.5, which is just inside the overweight range.'],
+      ['January 2025:', 'cardiovascular metrics were optimal, but CRP was slightly raised. No follow-up blood test was recorded after this.'],
+      ['Key trend:', 'grip strength has been flagged as below average for your profile in three consecutive assessments.'],
+    ],
+    chips: ['Assessments 8', 'NHS 3', 'Uploads 5'],
+  },
+  {
+    question: 'I am going to see my GP. What should I flag?',
+    lead: 'Here are the items from your vault that are most relevant to your GP check-up in July 2026:',
+    lines: [
+      ['ECG result:', 'your January 2026 scan noted borderline ST changes. The report recommended a cardiology review, but I cannot find confirmation that it was booked.'],
+      ['White cell count:', 'a raised count was flagged in February 2026. I do not see the follow-up result.'],
+      ['Recent bloods:', 'cholesterol, hsCRP and a urinary infection were all flagged in February 2026.'],
+    ],
+    chips: ['Test results 6', 'Letters 3', 'NHS 2'],
+  },
+  {
+    question: 'What is my current medication and supplement regime?',
+    lead: 'Based on your NHS record, uploaded letters, snaps and self-reported notes, here is your current regime:',
+    lines: [
+      ['Active medications:', 'Oestrogel, ZymaD vitamin D drops and DACRYO eye drops appear consistently across multiple sources.'],
+      ['Supplements you have logged:', 'creatine, omega-3, marine collagen, electrolytes and magnesium.'],
+      ['Completed prescriptions:', 'Utrogestan is marked as completed on your NHS record, so it is no longer active.'],
+    ],
+    chips: ['Medications 9', 'Snaps 4', 'You 3'],
+  },
+];
+---
+<section id="how-it-works" class="section-edge" aria-labelledby="how-it-works-heading" data-walkthrough>
+  <div class="wrap-wide heading-wrap">
+    <header class="section-heading">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-it-works-heading">
+        A self-sovereign vault
+        <span>powered by Mina,</span>
+        <em>your personal health agent.</em>
+      </h2>
+    </header>
+  </div>
+
+  <div class="desktop-walkthrough">
+    <div class="app-stage" data-walkthrough-stage>
+      <div class="app-window" data-walkthrough-frame>
+        <div class="titlebar">
+          <span class="traffic red"></span><span class="traffic yellow"></span><span class="traffic green"></span>
+          <b>● Open Beta</b>
+          <small>GetMine</small>
+        </div>
+        <div class="app-body">
+          <nav class="app-nav" aria-label="GetMine app preview">
+            {appNavItems.map((item) => (
+              <span
+                class="app-nav-item"
+                data-app-nav-item={item.label}
+                aria-current={item.label === 'Home' ? 'page' : undefined}
+              >
+                <span class="app-nav-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d={item.path} />
+                  </svg>
+                </span>
+                <span class="app-nav-label">{item.label}</span>
+              </span>
+            ))}
+          </nav>
+
+          <div class="screen-stack">
+            <div id="walkthrough-build" class="product-screen active build-screen" data-walkthrough-panel="0">
+              <div class="build-view active" data-build-view="0">
+                <div class="brandline">Get<span>Mine</span>.ai</div>
+                <p class="tagline">Your health, your data, <em>your rules.</em></p>
+                <h3>Good evening, Helen.</h3>
+                <div class="composer">
+                  <i>M.</i><span data-home-prompt>Ask Mina</span><button aria-label="Send" tabindex="-1">↑</button>
+                </div>
+                <div class="health-story" data-health-story>
+                  <div><b>Your health story · 864 records across 19 years</b><a>See your story →</a></div>
+                  <div class="story-bars" aria-hidden="true">
+                    {Array.from({length: 34}, (_, index) => (
+                      <span style={`height:${16 + ((index * 29) % 68)}%;--delay:${index * 12}ms`}></span>
+                    ))}
+                  </div>
+                  <div class="years"><span>2008</span><span>2026</span></div>
+                  <p><b>Topics</b> <em>Longevity</em> <em>Supplements</em> <em>Menopause</em></p>
+                  <p><b>Watching</b> <em>Sleep</em> <em>Balanced Nutrition</em></p>
+                </div>
+              </div>
+
+              <div class="build-view vault-preview" data-build-view="1" aria-hidden="true">
+                <div class="screen-title">
+                  <div><h3>Your Vault</h3><p>864 records · 6 sources</p></div>
+                  <span class="nhs-id"><b>NHS</b> 485 902 1736 · Riverside Health Centre</span>
+                </div>
+                <div class="mina-read">
+                  <i>M.</i><p><b>Mina’s read on your vault</b><br />864 records across 19 years, your whole health memory in one place. 6 of 6 sources up to date.</p>
+                </div>
+                <div class="browse-row"><b>Browse</b><span><em>By source</em><i>By category</i></span><small>6 sources · where it came from</small></div>
+                <div class="vault-card-grid source-grid">
+                  {sourceCards.map(([tag, count, name, description, status], index) => (
+                    <article style={`--item-delay:${index * 80}ms`}>
+                      <b>{tag}</b><div><strong>{count} <span>{name}</span></strong><p>{description}</p><small>● {status}</small></div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div class="build-view vault-preview" data-build-view="2" aria-hidden="true">
+                <div class="screen-title">
+                  <div><h3>Your Vault</h3><p>864 records · 6 sources</p></div>
+                  <span class="nhs-id"><b>NHS</b> 485 902 1736 · Riverside Health Centre</span>
+                </div>
+                <div class="mina-read">
+                  <i>M.</i><p><b>Mina’s read on your vault</b><br />864 records across 19 years, your whole health memory in one place. 6 of 6 sources up to date.</p>
+                </div>
+                <div class="browse-row"><b>Browse</b><span><i>By source</i><em>By category</em></span><small>15 categories · what it is</small></div>
+                <div class="vault-card-grid category-grid">
+                  {categoryCards.map(([count, name, tags], index) => (
+                    <article style={`--item-delay:${index * 45}ms`}>
+                      <span class="cat-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <path d={categoryIconPaths[name]} />
+                        </svg>
+                      </span>
+                      <strong>{count} <span>{name}</span></strong>
+                      <small class="cat-tags">{tags.map(([label, tone]) => <em class={`tag tag-${tone}`}>{label}</em>)}</small>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div id="walkthrough-ask" class="product-screen" data-walkthrough-panel="1" hidden>
+              <div class="conversation-head">
+                <span>CONVERSATIONS</span><a>+ New</a>
+              </div>
+              <div class="ask-exchanges" data-ask-exchanges aria-live="polite">
+                {askExchanges.map((exchange, index) => (
+                  <article
+                    class:list={['ask-exchange', index === 0 && 'active']}
+                    data-ask-exchange={index}
+                    aria-hidden={index === 0 ? 'false' : 'true'}
+                  >
+                    <div class="question">{exchange.question}</div>
+                    <div class="mina-answer">
+                      <i>M.</i>
+                      <div>
+                        <p>{exchange.lead}</p>
+                        {exchange.lines.map(([label, text]) => (
+                          <p><b>{label}</b> {text}</p>
+                        ))}
+                        <div class="source-chips">
+                          {exchange.chips.map((chip) => <span>{chip}</span>)}
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div id="walkthrough-topics" class="product-screen" data-walkthrough-panel="2" hidden>
+              <div class="screen-title"><div><h3>Topics</h3><p>What you’re attending to, in your own words</p></div><button tabindex="-1">+ New topic</button></div>
+              <div class="mina-read"><i>M.</i><p><b>Mina’s read on your topics</b><br />3 topics over your vault. Each one gathers records you tag from every source, and keeps its own context and memory.</p></div>
+              <div class="topic-grid">
+                <article><b>⌗ Supplements</b><div class="meter"></div><small>NHS 1 · ◉ 5</small><p>6 items · Feb 2026 to Jul 2026 · <em>6 new</em></p></article>
+                <article><b>⌗ Longevity</b><div class="meter orange"></div><small>NHS 1 · ▤ 9 · ◉ 1</small><p>11 items · Dec 2015 to Jul 2026 · <em>11 new</em></p></article>
+                <article><b>⌗ Menopause</b><div class="meter pink"></div><small>NHS 6 · ▤ 1 · ◉ 1</small><p>8 items · May 2024 to Jul 2026 · <em>2 new</em></p></article>
+              </div>
+            </div>
+
+            <div id="walkthrough-watching" class="product-screen" data-walkthrough-panel="3" hidden>
+              <div class="screen-title"><div><h3>Watching</h3><p>Things you keep an eye on · in your own words, private by default</p></div><button tabindex="-1">+ Watch something</button></div>
+              <div class="watch-list">
+                <article>
+                  <div><b>◉ Sleep</b><span>Daily diary</span><small>5 logs ⌃</small></div>
+                  <p>Sleep, 5× since Jul, last 23 Jul</p>
+                  <div class="timeline"><i></i><i></i><i></i><i></i></div>
+                  <ul><li><b>23 Jul</b> “today my sleep score is 79 and my sleep debt is 3h30”</li><li><b>22 Jul</b> “Sleep score 71, 3 hours sleep debt going down”</li></ul>
+                </article>
+                <article><div><b>◉ Balanced Nutrition</b><span>Daily diary</span><small>4 logs ⌄</small></div><p>Balanced Nutrition, 4× since Jul, last 23 Jul</p><div class="timeline short"><i></i><i></i><i></i></div></article>
+                <article><div><b>◉ Blood vessel on my right eye</b><small>2 logs ⌄</small></div><p>Blood vessel on my right eye, 2× since Jul, last 20 Jul</p></article>
+              </div>
+            </div>
+          </div>
+
+          <aside class="vault-rail">
+            <p>YOUR VAULT · UPDATED 4 DAYS AGO</p>
+            <div class="vault-totals"><strong>864<small>Records</small></strong><strong>6<small>Sources</small></strong></div>
+            <p>SOURCES</p>
+            <ul>
+              {sources.map(([tag, name, detail]) => (
+                <li><b>{tag}</b><span>{name}<small>{detail}</small></span></li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="walkthrough-tabs" role="tablist" aria-label="Product walkthrough" data-walkthrough-tabs>
+      {steps.map((step, index) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-controls={`walkthrough-${step.id}`}
+          data-walkthrough-tab={index}
+          data-body={step.body}
+        >
+          <i></i>
+          <span>{String(index + 1).padStart(2, '0')} {step.nav}</span>
+          <b>{step.title}</b>
+        </button>
+      ))}
+    </div>
+    <p class="walkthrough-body" data-walkthrough-body></p>
+  </div>
+
+  <div class="mobile-walkthrough wrap">
+    {steps.map((step, index) => (
+      <article>
+        <picture>
+          <source
+            srcset={`/assets/redesign/how-it-works-0${index + 1}-${step.id === 'build' ? 'vault' : step.id === 'ask' ? 'ask-mina' : step.id}.avif`}
+            type="image/avif"
+          />
+          <source
+            srcset={`/assets/redesign/how-it-works-0${index + 1}-${step.id === 'build' ? 'vault' : step.id === 'ask' ? 'ask-mina' : step.id}.webp`}
+            type="image/webp"
+          />
+          <img
+            src={`/assets/redesign/how-it-works-0${index + 1}-${step.id === 'build' ? 'vault' : step.id === 'ask' ? 'ask-mina' : step.id}.jpg`}
+            alt=""
+            width="982"
+            height="511"
+            loading="lazy"
+          />
+        </picture>
+        <p>{String(index + 1).padStart(2, '0')} {step.nav}</p>
+        <h3>{step.title}</h3>
+        <div>{step.body}</div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  .heading-wrap {
+    padding-top: 3.5rem;
+  }
+
+  .section-heading h2 span {
+    color: var(--teal);
+    font-style: normal;
+  }
+
+  .desktop-walkthrough {
+    position: relative;
+    display: none;
+    padding: 1.75rem 2rem 1.25rem;
+  }
+
+  .app-stage {
+    display: flex;
+    margin-inline: auto;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .app-window {
+    width: 61.25rem;
+    flex: 0 0 61.25rem;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--radius-md);
+    background: #fbf8f1;
+    box-shadow: 0 40px 120px -40px rgb(0 0 0 / 85%);
+    color: #0f1b18;
+    transform-origin: top center;
+  }
+
+  .titlebar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid rgb(15 27 24 / 10%);
+    background: #f3ecdc;
+  }
+
+  .traffic {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+  }
+
+  .traffic + .traffic {
+    margin-left: -0.15rem;
+  }
+
+  .red { background: #ff5f57; }
+  .yellow { background: #febc2e; }
+  .green { background: #28c840; }
+
+  .titlebar b {
+    justify-self: center;
+    padding: 0.2rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: #e8763a;
+    color: #fff;
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .titlebar small {
+    color: #54635e;
+    font-size: 0.625rem;
+  }
+
+  .app-body {
+    display: grid;
+    grid-template-columns: 5.375rem minmax(0, 1fr) 13.75rem;
+    min-height: 29.375rem;
+  }
+
+  .app-nav {
+    display: flex;
+    width: 5.375rem;
+    flex: 0 0 5.375rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.0625rem;
+    padding: 1rem 0;
+    border-right: 1px solid rgb(255 255 255 / 10%);
+    background: #0f1b18;
+  }
+
+  .app-nav-item {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.25rem;
+    color: rgb(251 248 241 / 60%);
+    text-align: center;
+  }
+
+  .app-nav-item[aria-current='page'] {
+    color: #6fd3b8;
+  }
+
+  .app-nav-icon {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+
+  .app-nav-item[aria-current='page'] .app-nav-icon {
+    background: rgb(111 211 184 / 16%);
+  }
+
+  .app-nav-icon svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .app-nav-icon path {
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .app-nav-label {
+    max-width: 4.75rem;
+    font-size: 0.5625rem;
+    line-height: 1.15;
+  }
+
+  .screen-stack {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    padding: 1.25rem;
+    background: #fbf8f1;
+  }
+
+  .product-screen {
+    min-width: 0;
+    animation: fade-panel 420ms var(--ease-gm);
+  }
+
+  .product-screen[hidden] {
+    display: none;
+  }
+
+  .build-screen {
+    min-height: 26.875rem;
+  }
+
+  .build-view {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.625rem) scale(0.985);
+    transition:
+      opacity 700ms var(--ease-gm),
+      transform 700ms var(--ease-gm);
+  }
+
+  .build-view.active {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .build-view[aria-hidden="true"] {
+    visibility: hidden;
+  }
+
+  .brandline {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .brandline span {
+    color: #0e7c66;
+  }
+
+  .tagline {
+    margin: 0.2rem 0 0;
+    color: #54635e;
+    font-size: 0.68rem;
+    text-align: center;
+  }
+
+  .product-screen > h3 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .composer {
+    display: flex;
+    max-width: 32.5rem;
+    min-height: 4.5rem;
+    margin: 1rem auto 0;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+    font-size: 0.8rem;
+  }
+
+  .composer [data-home-prompt]::after {
+    display: inline-block;
+    width: 1px;
+    height: 0.8rem;
+    margin-left: 0.16rem;
+    background: #0e7c66;
+    content: "";
+    transform: translateY(0.1rem);
+    animation: cursor-blink 1s steps(2) infinite;
+  }
+
+  .composer i,
+  .mina-answer > i,
+  .mina-read > i {
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #0f1b18;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+  }
+
+  .composer button {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: auto 0 0 auto;
+    border: 0;
+    border-radius: 50%;
+    background: #0e7c66;
+    color: #fff;
+  }
+
+  .health-story {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+    opacity: 0.25;
+    transform: translateY(0.625rem);
+    transition:
+      opacity 700ms var(--ease-gm),
+      transform 700ms var(--ease-gm);
+  }
+
+  .health-story.ready {
+    opacity: 1;
+    transform: none;
+  }
+
+  .health-story > div:first-child,
+  .years,
+  .conversation-head,
+  .screen-title,
+  .watch-list article > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .health-story b {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .health-story a {
+    color: #0e7c66;
+    font-size: 0.62rem;
+  }
+
+  .story-bars {
+    display: flex;
+    height: 4rem;
+    align-items: flex-end;
+    gap: 0.18rem;
+    margin-top: 0.75rem;
+  }
+
+  .story-bars span {
+    flex: 1;
+    border-radius: var(--radius-pill);
+    background: #0e7c66;
+    transform: scaleY(0.06);
+    transform-origin: bottom;
+    transition: transform 700ms var(--ease-gm) var(--delay);
+  }
+
+  .health-story.ready .story-bars span {
+    transform: scaleY(1);
+  }
+
+  .story-bars span:nth-child(3n) {
+    background: #8fa4c8;
+  }
+
+  .years {
+    margin-top: 0.15rem;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+  }
+
+  .health-story p {
+    margin: 0.45rem 0 0;
+    color: #54635e;
+    font-size: 0.58rem;
+  }
+
+  .health-story p em,
+  .source-chips span {
+    display: inline-block;
+    margin-left: 0.25rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-pill);
+    background: #f0eaf6;
+    color: #6c4e8c;
+    font-style: normal;
+  }
+
+  .conversation-head {
+    color: #54635e;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .conversation-head a {
+    color: #0e7c66;
+    letter-spacing: normal;
+  }
+
+  .question {
+    max-width: 29rem;
+    margin: 1rem 0 0 auto;
+    padding: 0.75rem 1rem;
+    border-radius: 0.8rem;
+    background: #0f1b18;
+    color: #fff;
+    font-size: 0.75rem;
+  }
+
+  .ask-exchanges {
+    position: relative;
+    min-height: 18rem;
+  }
+
+  .ask-exchange {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(0.5rem);
+    visibility: hidden;
+    transition:
+      opacity 380ms var(--ease-gm),
+      transform 380ms var(--ease-gm);
+  }
+
+  .ask-exchange.active {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  .mina-answer {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+    padding: 0.8rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.8rem;
+    background: #fff;
+    opacity: 0;
+    transform: translateY(0.375rem);
+    transition:
+      opacity 500ms var(--ease-gm),
+      transform 500ms var(--ease-gm);
+  }
+
+  .product-screen.answer-ready .mina-answer {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mina-answer p {
+    margin: 0 0 0.5rem;
+    font-size: 0.66rem;
+    line-height: 1.5;
+  }
+
+  .source-chips span {
+    margin: 0 0.25rem 0 0;
+    background: #e6f2ee;
+    color: #0e7c66;
+    font-size: 0.55rem;
+  }
+
+  .screen-title h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+
+  .screen-title p {
+    margin: 0.2rem 0 0;
+    color: #54635e;
+    font-size: 0.66rem;
+  }
+
+  .screen-title button {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: #0f1b18;
+    font-size: 0.62rem;
+  }
+
+  .nhs-id {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: #0f1b18;
+    font-size: 0.56rem;
+  }
+
+  .nhs-id b {
+    padding: 0.08rem 0.25rem;
+    border-radius: 0.2rem;
+    background: #1f5fbf;
+    color: #fff;
+    font-size: 0.48rem;
+  }
+
+  .browse-row {
+    display: flex;
+    margin-top: 0.8rem;
+    align-items: center;
+    gap: 0.65rem;
+    color: #54635e;
+    font-size: 0.56rem;
+  }
+
+  .browse-row > b {
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .browse-row > span {
+    display: inline-flex;
+    gap: 0.15rem;
+    padding: 0.18rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: var(--radius-pill);
+    background: #fff;
+  }
+
+  .browse-row em,
+  .browse-row i {
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-pill);
+    font-style: normal;
+  }
+
+  .browse-row em {
+    background: #0e7c66;
+    color: #fff;
+  }
+
+  .vault-card-grid {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+  }
+
+  .source-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .vault-card-grid article {
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.5rem;
+    background: #fff;
+    opacity: 0;
+    transform: translateY(0.875rem) scale(0.97);
+    transition:
+      opacity 500ms var(--ease-gm) var(--item-delay),
+      transform 500ms var(--ease-gm) var(--item-delay);
+  }
+
+  .build-view.active .vault-card-grid article {
+    opacity: 1;
+    transform: none;
+  }
+
+  .source-grid article {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.5rem;
+  }
+
+  .source-grid article > b,
+  .category-grid article > .cat-icon {
+    display: inline-flex;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.28rem;
+    background: #0e7c66;
+    color: #fff;
+    font-size: 0.42rem;
+  }
+
+  .source-grid article:first-child > b { background: #1f5fbf; }
+  .source-grid article:nth-child(2) > b { background: #c2803b; }
+  .source-grid article:nth-child(4) > b { background: #b45b7a; }
+  .source-grid article:nth-child(5) > b { background: #6c63b5; }
+  .source-grid article:nth-child(6) > b { background: #0f1b18; }
+
+  .source-grid strong,
+  .category-grid strong {
+    display: block;
+    color: #0f1b18;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .source-grid strong span,
+  .category-grid strong span {
+    font-family: var(--font-sans);
+    font-size: 0.52rem;
+    font-weight: 400;
+  }
+
+  .source-grid p,
+  .source-grid small,
+  .category-grid small {
+    display: block;
+    margin: 0.25rem 0 0;
+    color: #54635e;
+    font-size: 0.45rem;
+  }
+
+  .source-grid small {
+    color: #0e7c66;
+  }
+
+  .category-grid article {
+    min-height: 3.4rem;
+    padding: 0.45rem;
+  }
+
+  .category-grid article > .cat-icon {
+    margin-bottom: 0.25rem;
+    background: #e6f2ee;
+    color: #0e7c66;
+  }
+
+  .category-grid .cat-icon svg {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  .category-grid .cat-icon path {
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .mina-read {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.8rem;
+    border: 1px solid #cfe6dd;
+    border-radius: 0.75rem;
+    background: #f2f9f6;
+  }
+
+  .mina-read p {
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+  }
+
+  .topic-grid article,
+  .watch-list article {
+    padding: 0.75rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #fff;
+    opacity: 0;
+    transform: translateY(0.875rem);
+    transition:
+      opacity 500ms var(--ease-gm),
+      transform 500ms var(--ease-gm);
+  }
+
+  .product-screen.active .topic-grid article,
+  .product-screen.active .watch-list article {
+    opacity: 1;
+    transform: none;
+  }
+
+  .product-screen.active .topic-grid article:nth-child(2),
+  .product-screen.active .watch-list article:nth-child(2) {
+    transition-delay: 110ms;
+  }
+
+  .product-screen.active .topic-grid article:nth-child(3),
+  .product-screen.active .watch-list article:nth-child(3) {
+    transition-delay: 220ms;
+  }
+
+  .topic-grid article > b {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: #eaf1fa;
+    color: #2a5b99;
+    font-size: 0.6rem;
+  }
+
+  .meter {
+    height: 0.35rem;
+    margin-top: 0.65rem;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(90deg, #2a5b99 14%, #3f8f63 14% 80%, #7fb98c 80%);
+  }
+
+  .meter.orange {
+    background: linear-gradient(90deg, #2a5b99 8%, #c2803b 8% 70%, #3f8f63 70%);
+  }
+
+  .meter.pink {
+    background: linear-gradient(90deg, #2a5b99 34%, #b45b7a 34% 64%, #3f8f63 64%);
+  }
+
+  .topic-grid small,
+  .topic-grid p,
+  .watch-list p {
+    color: #54635e;
+    font-size: 0.56rem;
+  }
+
+  .topic-grid p em {
+    color: #0e7c66;
+  }
+
+  .watch-list {
+    display: grid;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+  }
+
+  .watch-list article:first-child {
+    border-color: #0e7c66;
+    box-shadow: 0 0 0 3px #e6f2ee;
+  }
+
+  .watch-list b {
+    font-size: 0.7rem;
+  }
+
+  .watch-list span,
+  .watch-list small {
+    margin-left: auto;
+    padding: 0.18rem 0.4rem;
+    border-radius: var(--radius-pill);
+    background: #e6f2ee;
+    color: #0e7c66;
+    font-size: 0.52rem;
+  }
+
+  .timeline {
+    position: relative;
+    display: flex;
+    height: 0.8rem;
+    margin-top: 0.5rem;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid #e4ddd1;
+  }
+
+  .timeline i {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #0e7c66;
+  }
+
+  .watch-list ul {
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 500ms var(--ease-gm),
+      opacity 500ms var(--ease-gm);
+  }
+
+  .product-screen.watch-open .watch-list article:first-child ul {
+    max-height: 5rem;
+    opacity: 1;
+  }
+
+  .watch-list li {
+    padding-block: 0.2rem;
+    color: #54635e;
+    font-size: 0.56rem;
+    font-style: italic;
+  }
+
+  .watch-list li b {
+    display: inline-block;
+    min-width: 2.5rem;
+    color: #0f1b18;
+    font-size: inherit;
+    font-style: normal;
+  }
+
+  .vault-rail {
+    padding: 1rem 0.75rem;
+    border-left: 1px solid rgb(15 27 24 / 10%);
+    background: #fff;
+  }
+
+  .vault-rail > p {
+    color: #54635e;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+
+  .vault-totals {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0.75rem 0 1rem;
+    padding: 0.75rem 0.4rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.75rem;
+    background: #f7fbf9;
+  }
+
+  .vault-totals strong {
+    color: #0e7c66;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .vault-totals small {
+    display: block;
+    color: #54635e;
+    font-family: var(--font-sans);
+    font-size: 0.55rem;
+  }
+
+  .vault-rail ul {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .vault-rail li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem;
+    border: 1px solid rgb(15 27 24 / 10%);
+    border-radius: 0.5rem;
+  }
+
+  .vault-rail li > b {
+    display: flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.35rem;
+    background: #0e7c66;
+    color: #fff;
+    font-size: 0.48rem;
+  }
+
+  .vault-rail li:first-child > b { background: #1f5fbf; }
+  .vault-rail li:nth-child(2) > b { background: #c2803b; }
+  .vault-rail li:nth-child(4) > b { background: #b45b7a; }
+  .vault-rail li:nth-child(5) > b { background: #6c63b5; }
+  .vault-rail li:nth-child(6) > b { background: #0f1b18; }
+
+  .vault-rail li > span {
+    min-width: 0;
+    font-size: 0.62rem;
+  }
+
+  .vault-rail li small {
+    display: block;
+    color: #54635e;
+    font-size: 0.52rem;
+  }
+
+  .heading-wrap .section-heading {
+    max-width: none;
+  }
+
+  .walkthrough-tabs {
+    display: grid;
+    max-width: 66rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem auto 0;
+  }
+
+  .walkthrough-tabs button {
+    padding: 0.75rem 1rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    color: var(--cream);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color 220ms var(--ease-gm),
+      background 220ms var(--ease-gm);
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] {
+    border-color: var(--teal-line);
+    background: var(--teal-surface);
+  }
+
+  .walkthrough-tabs i {
+    display: block;
+    width: 100%;
+    height: 0.18rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--line);
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] i {
+    background: var(--teal);
+  }
+
+  .walkthrough-tabs span {
+    display: block;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] span {
+    color: var(--teal);
+  }
+
+  .walkthrough-tabs b {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .walkthrough-tabs button[aria-selected="true"] b {
+    color: var(--cream);
+  }
+
+  .walkthrough-body {
+    max-width: 86ch;
+    text-wrap: balance;
+    margin: 1rem auto 0;
+    color: var(--cream);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .mobile-walkthrough {
+    display: grid;
+    gap: 3rem;
+    padding-block: 3.5rem;
+  }
+
+  .mobile-walkthrough article > p {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .mobile-walkthrough h3 {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .mobile-walkthrough article > div {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .mobile-walkthrough picture {
+    display: block;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--radius-md);
+    background: #fbf8f1;
+    box-shadow: 0 1.5rem 4rem -2rem rgb(0 0 0 / 80%);
+  }
+
+  .mobile-walkthrough img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @keyframes fade-panel {
+    from { opacity: 0; transform: translateY(0.5rem); }
+  }
+
+  @keyframes cursor-blink {
+    50% { opacity: 0; }
+  }
+
+  @media (min-width: 40rem) {
+    .desktop-walkthrough {
+      display: block;
+    }
+
+    .desktop-walkthrough::after {
+      position: absolute;
+      z-index: 3;
+      top: 1.75rem;
+      right: 1.75rem;
+      width: 3.5rem;
+      height: 32rem;
+      background: linear-gradient(90deg, transparent, var(--navy));
+      content: "";
+      pointer-events: none;
+    }
+
+    .app-stage {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-color: var(--teal-line) transparent;
+    }
+
+    .walkthrough-tabs {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      overflow: visible;
+      padding-bottom: 0.5rem;
+    }
+
+    .mobile-walkthrough {
+      display: none;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    section {
+      display: flex;
+      min-height: calc(100svh - 4.75rem);
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .heading-wrap {
+      padding-top: 2rem;
+    }
+
+    .desktop-walkthrough {
+      display: block;
+    }
+
+    .desktop-walkthrough::after {
+      display: none;
+    }
+
+    .app-stage {
+      justify-content: center;
+      overflow: hidden;
+      padding-bottom: 0;
+    }
+
+    .desktop-walkthrough.scroll-fallback::after {
+      display: block;
+    }
+
+    .desktop-walkthrough.scroll-fallback .app-stage {
+      justify-content: flex-start;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .build-view,
+    .health-story,
+    .story-bars span,
+    .vault-card-grid article,
+    .mina-answer,
+    .topic-grid article,
+    .watch-list article,
+    .watch-list ul {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+
+    .composer [data-home-prompt]::after {
+      animation: none;
+    }
+  }
+
+  .category-grid .cat-icon {
+    background: rgb(29 191 176 / 14%);
+    color: #0c7a6e;
+  }
+
+  .cat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+
+  .cat-tags .tag {
+    padding: 0.05rem 0.3rem;
+    border-radius: 0.25rem;
+    font-size: 0.55em;
+    font-style: normal;
+  }
+
+  .tag-amber { background: #fbeedc; color: #8a5a1c; }
+  .tag-nhs { background: #1f5fbf; color: #ffffff; }
+  .tag-email { background: #fbe7dc; color: #9c4b22; }
+  .tag-you { background: rgb(29 191 176 / 16%); color: #0c7a6e; }
+  .tag-snap { background: #f7e4ec; color: #8c3e5c; }
+  .tag-mina { background: #10201d; color: #e8faf8; }
+</style>
+
+<script>
+  const initialiseHowItWorksMotion = () => {
+    document.querySelectorAll<HTMLElement>('[data-walkthrough]').forEach((walkthrough) => {
+      if (walkthrough.dataset.motionInitialised === 'true') return;
+      walkthrough.dataset.motionInitialised = 'true';
+
+      const panels = Array.from(walkthrough.querySelectorAll<HTMLElement>('[data-walkthrough-panel]'));
+      const buildPanel = panels[0];
+      const buildViews = Array.from(buildPanel?.querySelectorAll<HTMLElement>('[data-build-view]') ?? []);
+      const askPanel = panels[1];
+      const askExchanges = Array.from(askPanel?.querySelectorAll<HTMLElement>('[data-ask-exchange]') ?? []);
+      const appNavItems = Array.from(walkthrough.querySelectorAll<HTMLElement>('[data-app-nav-item]'));
+      const prompt = buildPanel?.querySelector<HTMLElement>('[data-home-prompt]');
+      const story = buildPanel?.querySelector<HTMLElement>('[data-health-story]');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const promptCopy = 'What is in my vault?';
+      const dwell = [6000, 5000, 5000];
+      let visible = false;
+      let buildPhase = 0;
+      let askIndex = 0;
+      let buildTimer = 0;
+      let typeTimer = 0;
+      let answerTimer = 0;
+      let askTimer = 0;
+      let watchTimer = 0;
+
+      const clearTimers = () => {
+        window.clearTimeout(buildTimer);
+        window.clearInterval(typeTimer);
+        window.clearTimeout(answerTimer);
+        window.clearTimeout(askTimer);
+        window.clearTimeout(watchTimer);
+      };
+
+      const animateHome = () => {
+        if (!prompt || !story) return;
+        window.clearInterval(typeTimer);
+        prompt.textContent = reduceMotion ? promptCopy : 'Ask Mina';
+        story.classList.toggle('ready', reduceMotion);
+        if (reduceMotion) return;
+
+        let chars = 0;
+        typeTimer = window.setInterval(() => {
+          chars += 1;
+          prompt.textContent = promptCopy.slice(0, chars);
+          if (chars >= promptCopy.length) {
+            window.clearInterval(typeTimer);
+            story.classList.add('ready');
+          }
+        }, 55);
+      };
+
+      const setActiveAppNav = (label: string) => {
+        appNavItems.forEach((item) => {
+          if (item.dataset.appNavItem === label) item.setAttribute('aria-current', 'page');
+          else item.removeAttribute('aria-current');
+        });
+      };
+
+      const setBuildPhase = (phase: number) => {
+        buildPhase = phase;
+        buildViews.forEach((view, index) => {
+          const active = index === phase;
+          view.classList.toggle('active', active);
+          view.setAttribute('aria-hidden', String(!active));
+        });
+        setActiveAppNav(phase === 0 ? 'Home' : 'Vault');
+        if (phase === 0) animateHome();
+      };
+
+      const scheduleBuild = () => {
+        window.clearTimeout(buildTimer);
+        if (!visible || buildPanel?.hidden || reduceMotion) return;
+        buildTimer = window.setTimeout(() => {
+          setBuildPhase((buildPhase + 1) % buildViews.length);
+          scheduleBuild();
+        }, dwell[buildPhase]);
+      };
+
+      const schedulePanelMotion = () => {
+        window.clearTimeout(answerTimer);
+        window.clearTimeout(askTimer);
+        window.clearTimeout(watchTimer);
+
+        const watchingPanel = panels[3];
+        askPanel?.classList.remove('answer-ready');
+        watchingPanel?.classList.remove('watch-open');
+        if (!visible || reduceMotion) {
+          if (reduceMotion) {
+            askPanel?.classList.add('answer-ready');
+            watchingPanel?.classList.add('watch-open');
+          }
+          return;
+        }
+
+        if (askPanel && !askPanel.hidden) {
+          askIndex = 0;
+          const showAskExchange = () => {
+            askExchanges.forEach((exchange, index) => {
+              const active = index === askIndex;
+              exchange.classList.toggle('active', active);
+              exchange.setAttribute('aria-hidden', String(!active));
+            });
+            askPanel.classList.remove('answer-ready');
+            answerTimer = window.setTimeout(() => askPanel.classList.add('answer-ready'), 550);
+            askTimer = window.setTimeout(() => {
+              askIndex = (askIndex + 1) % askExchanges.length;
+              showAskExchange();
+            }, 4200);
+          };
+          showAskExchange();
+        }
+        if (watchingPanel && !watchingPanel.hidden) {
+          watchTimer = window.setTimeout(() => watchingPanel.classList.add('watch-open'), 2800);
+        }
+      };
+
+      const sync = () => {
+        if (!visible) {
+          clearTimers();
+          return;
+        }
+        if (buildPanel && !buildPanel.hidden) {
+          setBuildPhase(buildPhase);
+          scheduleBuild();
+        } else {
+          window.clearTimeout(buildTimer);
+          window.clearInterval(typeTimer);
+          if (panels[2] && !panels[2].hidden) setActiveAppNav('Topics & Watching');
+          else if (panels[3] && !panels[3].hidden) setActiveAppNav('Topics & Watching');
+          else setActiveAppNav('Home');
+        }
+        schedulePanelMotion();
+      };
+
+      const panelObserver = new MutationObserver(sync);
+      panels.forEach((panel) => panelObserver.observe(panel, { attributes: true, attributeFilter: ['hidden'] }));
+
+      const visibilityObserver = new IntersectionObserver(
+        ([entry]) => {
+          visible = Boolean(entry?.isIntersecting);
+          if (visible && buildPanel && !buildPanel.hidden) setBuildPhase(0);
+          sync();
+        },
+        { threshold: 0.25 },
+      );
+      visibilityObserver.observe(walkthrough);
+    });
+  };
+
+  initialiseHowItWorksMotion();
+  document.addEventListener('astro:page-load', initialiseHowItWorksMotion);
+</script>

@@ -1,40 +1,277 @@
-<!-- WHY IT MATTERS (was: Problem) -->
-<section id="why-it-matters">
-  <div class="why-inner reveal-stagger">
-    <p class="why-eyebrow">Why it matters</p>
-    <h2 class="why-headline">Life happens. <span class="beat-teal">Your health history</span> <span class="beat-taupe">fails you when you need it most.</span></h2>
+---
+const scenarios = [
+  {
+    title: 'Family caregiver',
+    subtitle: 'You become their memory.',
+    image: 'family-caregiver',
+    alt: 'A family caregiver helping a relative manage medication',
+    focus: '50% 40%',
+  },
+  {
+    title: 'Chronic condition',
+    subtitle: 'You repeat your story.',
+    image: 'chronic-condition',
+    alt: 'A person managing health documents and appointments',
+    focus: '50% 45%',
+  },
+  {
+    title: 'Urgent moment',
+    subtitle: 'You lose the thread.',
+    image: 'life-transition',
+    alt: 'A person searching for health information during an urgent moment',
+    focus: '50% 40%',
+  },
+  {
+    title: 'AI with no context',
+    subtitle: 'It sees the question, not your story.',
+    image: 'best-from-ai',
+    alt: 'A generic AI assistant answering without personal health context',
+    focus: '50% 45%',
+  },
+];
 
-    <div class="why-cards">
-      <article class="why-card">
-        <p class="why-card-label">The family caregiver</p>
-        <img src="/assets/family-caregiver.jpg" loading="lazy" decoding="async" alt="A family caregiver helping a relative manage medication">
-        <h3>You become the memory.</h3>
-        <p class="why-card-subtitle">Caring for family</p>
-      </article>
-      <article class="why-card">
-        <p class="why-card-label">The chronic condition loop</p>
-        <img src="/assets/chronic-condition-loop.jpg" loading="lazy" decoding="async" alt="A person managing health documents and appointments">
-        <h3>You repeat your story.</h3>
-        <p class="why-card-subtitle">Managing a condition</p>
-      </article>
-      <article class="why-card">
-        <p class="why-card-label">The life transition</p>
-        <img src="/assets/life-transition-moment.jpg" loading="lazy" decoding="async" alt="A person navigating healthcare during a life transition">
-        <h3>You lose the thread.</h3>
-        <p class="why-card-subtitle">Your health history in urgent moments</p>
-      </article>
-    </div>
+const frictions = [
+  ['What?', 'What was that test result?'],
+  ['When?', 'When did I have that vaccine?'],
+  ['How?', 'What dosage was I taking?'],
+  ['Who?', 'Who did I see for this?'],
+  ['Where?', 'Where is that report?'],
+  ['Share?', 'What should I share?'],
+];
+---
+<section id="why-it-matters" class="section-edge" aria-labelledby="why-it-matters-heading">
+  <div class="wrap section-pad">
+    <header class="section-heading">
+      <p class="eyebrow">Why it matters</p>
+      <h2 id="why-it-matters-heading">
+        Your health memory,
+        <span>there when it matters</span>
+        <em>and working for what’s ahead.</em>
+      </h2>
+    </header>
 
-    <div class="why-frictions">
-      <p class="why-frictions-title">The daily frictions we all face.</p>
-      <div class="why-frictions-scroll">
-        <div class="why-friction"><strong>What?</strong><span>What was that test result?</span></div>
-        <div class="why-friction"><strong>When?</strong><span>When did I have that vaccine?</span></div>
-        <div class="why-friction"><strong>How?</strong><span>What dosage was I taking?</span></div>
-        <div class="why-friction"><strong>Who?</strong><span>Who did I see for this?</span></div>
-        <div class="why-friction"><strong>Where?</strong><span>Where is that report?</span></div>
-        <div class="why-friction"><strong>Share?</strong><span>What should I share?</span></div>
+    <ul class="scenario-grid">
+      {scenarios.map((scenario) => (
+        <li>
+          <article class="card scenario-card">
+            <picture>
+              <source srcset={`/assets/redesign/${scenario.image}.avif`} type="image/avif" />
+              <source srcset={`/assets/redesign/${scenario.image}.webp`} type="image/webp" />
+              <img
+                src={`/assets/redesign/${scenario.image}.webp`}
+                alt={scenario.alt}
+                width="1448"
+                height="1086"
+                loading="lazy"
+                decoding="async"
+                style={`object-position:${scenario.focus}`}
+              />
+            </picture>
+            <div class="picture-shade" aria-hidden="true"></div>
+            <div class="scenario-copy">
+              <h3>{scenario.title}</h3>
+              <p>{scenario.subtitle}</p>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+
+    <div class="frictions">
+      <h3>The daily frictions <em>we all face.</em></h3>
+      <div class="card friction-rotator" data-frictions>
+        <p aria-live="off">
+          <em data-friction-question>{frictions[0][0]}</em>
+          <span data-friction-answer>{frictions[0][1]}</span>
+        </p>
+        <div class="friction-controls" role="group" aria-label="Daily frictions">
+          {frictions.map(([question, answer], index) => (
+            <button
+              type="button"
+              aria-current={index === 0 ? 'true' : undefined}
+              aria-label={`Show friction ${index + 1} of ${frictions.length}`}
+              data-question={question}
+              data-answer={answer}
+              data-friction-choice
+            ><span aria-hidden="true"></span></button>
+          ))}
+        </div>
+        <span class="sr-only" aria-live="polite" data-friction-announcer></span>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+    color: var(--cream);
+  }
+
+  .section-heading h2 span {
+    color: var(--teal);
+    font-style: normal;
+  }
+
+  .scenario-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .scenario-card {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .scenario-card picture {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .scenario-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.02) saturate(0.9);
+  }
+
+  .picture-shade {
+    position: absolute;
+    inset: 0 0 auto;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(
+      to top,
+      #060c14 6%,
+      rgb(6 12 20 / 35%) 55%,
+      rgb(6 12 20 / 8%) 100%
+    );
+    pointer-events: none;
+  }
+
+  .scenario-copy {
+    padding: 1.25rem;
+  }
+
+  .scenario-copy h3,
+  .frictions h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .scenario-copy h3 {
+    font-size: clamp(1.1875rem, 2vw, 1.3125rem);
+  }
+
+  .scenario-copy p {
+    margin: 0.5rem 0 0;
+    color: var(--text-secondary);
+    font-size: clamp(0.9375rem, 1.4vw, 1rem);
+    line-height: 1.45;
+  }
+
+  .frictions {
+    margin-top: 2.5rem;
+  }
+
+  .frictions h3 {
+    font-size: clamp(1.75rem, 3vw, 2rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  .frictions h3 em,
+  .friction-rotator p em {
+    color: var(--teal);
+    font-style: italic;
+  }
+
+  .friction-rotator {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .friction-rotator p {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    align-items: baseline;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    line-height: 1.25;
+  }
+
+  .friction-rotator p span {
+    color: var(--cream);
+  }
+
+  .friction-controls {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  [data-friction-choice] {
+    display: grid;
+    flex: 0 0 2.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--cream);
+    cursor: pointer;
+  }
+
+  [data-friction-choice] span {
+    width: 0.75rem;
+    height: 0.25rem;
+    border-radius: var(--radius-pill);
+    background: rgb(232 250 248 / 25%);
+    transition:
+      width 260ms var(--ease-gm),
+      background 260ms var(--ease-gm);
+  }
+
+  [data-friction-choice][aria-current="true"] span {
+    width: 1.5rem;
+    background: var(--teal);
+  }
+
+
+  @media (min-width: 40rem) {
+    .scenario-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .friction-rotator {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-inline: 1.75rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .scenario-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

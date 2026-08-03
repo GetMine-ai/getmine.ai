@@ -1,44 +1,70 @@
 ---
 import LegalPage from '../layouts/LegalPage.astro';
+// Ratified draft 29 Jul 2026 — document 09 of the regulatory pack (the pack is
+// canonical; this page renders it). Pending advisory-board review; the
+// vault-encryption paragraph awaits Mike's engineering confirmation.
 ---
-<LegalPage title="Trust & Security — GetMine.ai" description="How GetMine.ai approaches trust and security — honest about today, deliberate about what we’re building toward." canonical="https://getmine.ai/trust.html">
-    <p class="page-eyebrow">Trust &amp; Security</p>
+<LegalPage title="Trust &amp; security — GetMine.ai" description="How GetMine approaches security today, what we are building toward, and what we do not yet claim." canonical="https://getmine.ai/trust">
+    <p class="page-eyebrow">Trust &amp; security</p>
     <h1 class="page-headline">Your vault stays with you.</h1>
 
-    <p class="page-lead">GetMine is built so your health information can work for you without giving up control. This is how we approach trust and security today, and what we&rsquo;re building toward.</p>
+    <aside class="policy-summary"><strong>The short version:</strong> your vault lives on your computer and we hold no copy. What leaves is decided by your question, relayed but never kept by us &mdash; and where security is still being built, this page says so plainly.</aside>
+
+    <p class="page-lead">GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and &mdash; just as important &mdash; <strong>what we do not yet claim</strong>.</p>
 
     <div class="page-section">
       <h2>Local-first by design</h2>
-      <p>Your vault lives on your device. The day-to-day work of organising and recalling your information happens locally, on hardware you own.</p>
+      <p>Your vault lives on your device. The day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no copy of your records, and nothing leaves your device on its own.</p>
     </div>
 
     <div class="page-section">
-      <h2>Minimum necessary exposure</h2>
-      <p>We aim to send only the smallest slice of context needed for each task, and only when you ask. Your full health record never has to leave your vault.</p>
+      <h2>Your question decides what is shared</h2>
+      <p>When Mina answers, only the slice of your records that the question needs is sent to the AI provider &mdash; relayed through GetMine&rsquo;s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.</p>
     </div>
 
     <div class="page-section">
-      <h2>You decide what leaves</h2>
-      <p>Sharing happens by choice. You decide what is shared, with whom, and for how long. You can revoke access at any time.</p>
+      <h2>You set the terms</h2>
+      <p>Sharing happens by choice, per source and per permission, and what you have chosen is always visible in the app. You can disconnect a source or withdraw a consent whenever you choose, and doing so stops any further use immediately. An answer already given cannot be unsaid &mdash; so what changes is what happens next, which is the honest shape of any consent.</p>
     </div>
 
     <div class="page-section">
-      <h2>Transparency matters</h2>
-      <p>We want you to be able to see how GetMine works, what it does with your information, and what is changing. We&rsquo;ll continue to publish plain-English documentation as the product matures.</p>
+      <h2>The logins you grant</h2>
+      <p>Credentials for the sources you connect are stored encrypted on your machine, with the key kept outside the vault folder. A copy of your vault folder, wherever it ends up, contains no usable login to anything.</p>
+    </div>
+
+    <div class="page-section">
+      <h2>What we do not claim today</h2>
+      <p>Being useful about security means being exact about its limits.</p>
+      <ul>
+        <li><strong>The vault folder is not encrypted by the app.</strong> It relies on your operating system&rsquo;s own disk encryption (FileVault on macOS, BitLocker on Windows) &mdash; which we recommend you switch on. Application-level encryption of the vault is future work, not a property we have today.</li>
+        <li><strong>Your records are as safe as your computer.</strong> Keeping it protected, and being careful where you copy or share your vault folder, is in your hands, as it would be with paper records.</li>
+        <li><strong>We hold no formal certifications.</strong> We have not sought SOC&nbsp;2 or ISO&nbsp;27001, and we do not make claims we cannot back up. We will pursue the right ones as the product and the team grow.</li>
+      </ul>
     </div>
 
     <div class="page-section">
       <h2>A foundation, not a destination</h2>
-      <p>Security is foundational and we treat it that way. As GetMine matures, our security posture will continue to deepen &mdash; more controls, more transparency, and progressively more of the architecture running at the edge.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>Honest about today</h2>
-      <p>We&rsquo;re a small team in closed beta. We have not yet sought formal certifications (such as SOC 2 or ISO 27001) and we don&rsquo;t make claims we can&rsquo;t back up. We will pursue the right ones as the product and the team grow. Until then, what we promise is what we build: a local-first vault, minimum necessary exposure, and your data under your control.</p>
+      <p>We are a small team in open beta. Security is foundational and we treat it that way: as GetMine matures our posture will deepen &mdash; more controls, more transparency, and progressively more of the architecture running at the edge. We will keep publishing plain-English documentation as that happens, and we will say when something changes.</p>
     </div>
 
     <div class="page-section">
       <h2>Questions</h2>
-      <p>Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a> for any trust or security question. We&rsquo;ll answer honestly.</p>
+      <p>Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a> for any trust or security question. We will answer honestly &mdash; and if our answer is &ldquo;not yet&rdquo;, we will say so.</p>
+      <p>The <a href="/privacy">privacy policy</a> is the governing statement; where the two could be read differently, the privacy policy prevails.</p>
     </div>
+
+    <p class="page-lead" style="font-size:.85em;opacity:.75">GetMine Ltd &middot; Version 1.0 &middot; 29 July 2026</p>
 </LegalPage>
+
+<style>
+  .policy-summary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--teal-deck);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--teal-deck) 9%, transparent);
+    color: var(--cream);
+    font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+    line-height: 1.65;
+  }
+</style>

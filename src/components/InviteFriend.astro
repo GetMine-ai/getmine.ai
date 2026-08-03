@@ -1,0 +1,271 @@
+---
+interface Props {
+  variant?: 'primary' | 'compact';
+  placement?: 'beta' | 'menubar';
+  conditional?: boolean;
+  instanceId?: string;
+}
+
+const {
+  variant = 'primary',
+  placement = 'beta',
+  conditional = false,
+  instanceId = placement,
+} = Astro.props;
+
+const panelId = `invite-friend-${instanceId}`;
+const message =
+  'Have a look at this — all your health records in one place, on your own machine, and you can ask it anything. https://getmine.ai/?src=invite';
+---
+<div
+  class:list={[
+    'invite-friend',
+    `invite-friend--${variant}`,
+    `invite-friend--${placement}`,
+  ]}
+  data-invite-friend
+  data-invite-placement={placement}
+  data-invite-conditional={conditional ? 'true' : undefined}
+  hidden={conditional}
+>
+  <button
+    class="invite-trigger"
+    type="button"
+    aria-expanded="false"
+    aria-controls={panelId}
+    data-invite-trigger
+  >
+    <span>Invite a friend</span>
+    <span aria-hidden="true">→</span>
+  </button>
+
+  <div
+    id={panelId}
+    class="invite-panel"
+    role="dialog"
+    aria-label="Invite a friend"
+    data-invite-panel
+    hidden
+  >
+    <h2>Invite a friend</h2>
+    <p>Here’s what they’ll get. Change it to sound like you.</p>
+
+    <label class="sr-only" for={`${panelId}-message`}>Message to share</label>
+    <textarea
+      id={`${panelId}-message`}
+      rows="4"
+      data-invite-message
+    >{message}</textarea>
+
+    <div class="invite-actions">
+      <button class="copy-action" type="button" data-invite-copy>Copy message</button>
+    </div>
+
+    <span class="sr-only" aria-live="polite" data-invite-announcer></span>
+  </div>
+</div>
+
+<style>
+  .invite-friend {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  .invite-friend[hidden] {
+    display: none;
+  }
+
+  .invite-trigger {
+    display: inline-flex;
+    min-height: 3.125rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid color-mix(in srgb, var(--ember) 75%, transparent);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: #f2a07c;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background 180ms var(--ease-gm),
+      border-color 180ms var(--ease-gm),
+      color 180ms var(--ease-gm),
+      transform 180ms var(--ease-gm);
+  }
+
+  .invite-trigger:hover,
+  .invite-trigger[aria-expanded='true'] {
+    border-color: var(--ember);
+    background: color-mix(in srgb, var(--ember) 18%, transparent);
+    color: #ffd9c6;
+    transform: translateY(-1px);
+  }
+
+  .invite-friend--compact .invite-trigger {
+    min-height: 3.25rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .invite-panel {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    width: min(23.75rem, calc(100vw - 2.5rem));
+    padding: 1.375rem;
+    border: 1px solid color-mix(in srgb, var(--ember) 40%, transparent);
+    border-radius: 1.125rem;
+    background: var(--navy-2);
+    box-shadow: 0 30px 70px -20px rgb(0 0 0 / 85%);
+    text-align: left;
+    transform-origin: top left;
+    animation: invite-panel-in 220ms var(--ease-gm);
+  }
+
+  .invite-panel[hidden] {
+    display: none;
+  }
+
+  .invite-friend--menubar .invite-panel {
+    right: 0;
+    left: auto;
+    transform-origin: top right;
+  }
+
+  .invite-panel h2 {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: 1.3125rem;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+
+  .invite-panel > p {
+    margin: 0.5rem 0 0;
+    color: var(--cream);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    min-height: 7.5rem;
+    margin-top: 1rem;
+    resize: vertical;
+    overflow-y: hidden;
+    padding: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--navy);
+    color: var(--cream);
+    font: inherit;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  textarea:focus {
+    border-color: var(--teal);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(29 191 176 / 20%);
+  }
+
+  .invite-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .invite-actions button {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .invite-actions .copy-action {
+    border-color: var(--ember);
+    background: var(--ember);
+    color: var(--navy);
+  }
+
+  .invite-actions button:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+
+  .invite-actions .copy-action:hover {
+    border-color: var(--ember);
+    color: var(--navy);
+    filter: brightness(1.06);
+  }
+
+  @keyframes invite-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .invite-friend--compact {
+      display: none;
+    }
+
+    .invite-friend--primary {
+      width: 100%;
+    }
+
+    .invite-friend--primary .invite-trigger {
+      width: 100%;
+    }
+
+    .invite-panel,
+    .invite-friend--menubar .invite-panel {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      transform-origin: top center;
+    }
+
+    @keyframes invite-panel-in {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -0.5rem);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .invite-panel {
+      animation: none;
+    }
+  }
+</style>

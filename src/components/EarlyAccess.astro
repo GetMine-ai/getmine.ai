@@ -1,57 +1,449 @@
-<!-- EARLY ACCESS + PRODUCT PREVIEW -->
-<section id="early-access-preview">
-  <div class="early-access-intro reveal-stagger">
-    <p class="early-access-eyebrow">Early access</p>
-    <h2 class="early-access-headline">GetMine is live <span class="beat-teal">in closed beta.</span> <span class="beat-taupe">Putting your data to work.</span></h2>
-    <p class="early-access-copy">Join a small group helping us shape what comes next.</p>
-  </div>
+---
+import InviteFriend from './InviteFriend.astro';
 
-  <div class="early-access-shell reveal">
-    <div class="early-access-invite">
-      <div class="early-access-proof">
-        <div>
-          <strong>Live beta</strong>
-          <span>Early users are already engaging with Mina.</span>
+interface Props {
+  variant?: 'close' | 'form';
+}
+
+const { variant = 'close' } = Astro.props;
+---
+{variant === 'close' ? (
+  <section class="closing-cta section-edge" aria-labelledby="closing-title">
+    <div class="closing-glow" aria-hidden="true"></div>
+    <svg class="memory-line" viewBox="0 0 1200 110" aria-hidden="true">
+      <path d="M0 60 C150 10 230 105 360 55 S560 10 680 55 S900 105 1020 55 S1150 15 1200 55" />
+      <circle cx="360" cy="55" r="4" /><circle cx="680" cy="55" r="4" /><circle cx="1020" cy="55" r="4" />
+    </svg>
+    <div class="wrap section-pad">
+      <div>
+        <p>Open beta · Rolling out in waves</p>
+        <h2 id="closing-title">Build a health memory that stays yours.</h2>
+        <a class="primary-cta" href="/beta">Request beta access</a>
+        <small>GetMine for macOS and Windows</small>
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="beta-form-section" id="beta">
+    <div class="closing-glow" aria-hidden="true"></div>
+    <svg class="memory-line" viewBox="0 0 1200 110" aria-hidden="true">
+      <path d="M0 60 C150 10 230 105 360 55 S560 10 680 55 S900 105 1020 55 S1150 15 1200 55" />
+    </svg>
+    <div class="wrap beta-wrap">
+      <div class="card beta-card">
+        <a class="back" href="/">← Back</a>
+        <div class="form-heading">
+          <span class="beta-badge">Open beta · Rolling out in waves</span>
+          <span class="mark-wrap"><span class="mina-ring"></span><span class="mina-mark" role="img" aria-label="Mina"><i>M</i><b>.</b></span></span>
         </div>
-        <div>
-          <strong>Sovereign vault</strong>
-          <span>On-device, encrypted. The key stays with you.</span>
+
+        <div data-form-copy>
+          <h1>Request beta access</h1>
+          <p>
+            Enter and confirm your email. Access opens in waves. When yours is
+            ready, we’ll send your download link. The beta starts free with a
+            GetMine AI allowance. Heavy users may later be asked to add their own
+            API key.
+          </p>
         </div>
-        <div>
-          <strong>Sources connected</strong>
-          <span>NHS App records, letters, health emails, snaps and wearables.</span>
-        </div>
-        <div>
-          <strong>Intelligence ready</strong>
-          <span>Mina captures, organises and retrieves your health information.</span>
+
+        <form class="access-form" data-access-form novalidate>
+          <label for="beta-email">Email address</label>
+          <input
+            id="beta-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            placeholder="you@example.com"
+            required
+            aria-describedby="beta-form-status beta-form-privacy"
+          />
+          <p id="beta-form-status" class="form-status" role="status" aria-live="polite"></p>
+          <button class="primary-cta" type="submit">Request beta access</button>
+          <p id="beta-form-privacy" class="privacy-line">
+            We’ll use your email only to manage beta access.
+            <a href="/privacy">Read our Privacy Policy</a>.
+          </p>
+          <div class="invite-placement invite-placement--resting">
+            <span>Already on the list?</span>
+            <InviteFriend
+              variant="primary"
+              placement="beta"
+              instanceId="beta-resting"
+            />
+          </div>
+        </form>
+
+        <div class="success card" data-form-success hidden>
+          <h1 tabindex="-1">You’re on the list.</h1>
+          <p>
+            Check your inbox. We’ve sent a confirmation to
+            <strong data-submitted-email></strong>.
+          </p>
+          <p>We open access in waves and will email you when yours is ready.</p>
+          <p>Nothing after a few minutes? Check your spam folder.</p>
+          <div class="invite-placement invite-placement--success">
+            <span>Know someone who’d find this useful?</span>
+            <InviteFriend
+              variant="primary"
+              placement="beta"
+              instanceId="beta-success"
+            />
+          </div>
         </div>
       </div>
-
-      <div class="early-access-actions">
-        <button class="early-access-cta" onclick="openWaitlist()" aria-controls="waitlist mobile-waitlist" aria-expanded="false">Request beta access</button>
-      </div>
-      <p class="early-access-note">Request access to the GetMine open beta. We’re admitting testers in stages.</p>
     </div>
-
-    <div class="product-preview">
-      <video class="phone-video"
-             controls playsinline
-             preload="metadata"
-             poster="/assets/getmine-demo-poster.jpg">
-        <source src="/assets/getmine-demo.mp4" type="video/mp4">
-        Your browser doesn&rsquo;t support the product preview video.
-      </video>
-    </div>
-  </div>
-</section>
+  </section>
+)}
 
 <style>
-  .early-access-cta {
-    background: var(--teal-deck);
-    color: #060c14;
+  section {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
   }
 
-  .early-access-cta:hover {
-    background: var(--teal);
+  .closing-glow {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 52rem;
+    height: 26rem;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--teal), transparent 72%);
+    filter: blur(8.75rem);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .memory-line {
+    position: absolute;
+    z-index: 0;
+    top: 1.5rem;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 6rem;
+    opacity: 0.12;
+  }
+
+  .memory-line path {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2;
+  }
+
+  .memory-line circle {
+    fill: var(--teal);
+  }
+
+  .closing-cta .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .closing-cta .wrap > div {
+    max-width: 42.5rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .closing-cta p {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0.625rem 1.125rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: var(--teal-surface);
+    color: var(--teal);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+  }
+
+  .closing-cta h2 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .closing-cta .primary-cta {
+    margin-top: 2.25rem;
+  }
+
+  .closing-cta small {
+    display: block;
+    margin-top: 1.25rem;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+  }
+
+  .beta-form-section {
+    display: flex;
+    min-height: calc(100svh - 4.75rem);
+    align-items: center;
+    padding-top: 4.75rem;
+  }
+
+  .beta-wrap {
+    position: relative;
+    z-index: 1;
+    padding-block: 3.5rem;
+  }
+
+  .beta-card {
+    position: relative;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
+    padding: 5rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .back {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--cream);
+    border-radius: var(--radius-pill);
+    color: var(--cream);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--teal);
+  }
+
+  .form-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .beta-badge {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    padding: 0.625rem 1.125rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: var(--teal-surface);
+    color: var(--teal);
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    text-transform: none;
+    animation: beta-breathe 3.2s var(--ease-gm) infinite;
+  }
+
+  .mark-wrap {
+    position: relative;
+    display: inline-grid;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-top: 1.5rem;
+    place-items: center;
+  }
+
+  .mina-ring {
+    position: absolute;
+    inset: -0.75rem;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    opacity: 0.22;
+  }
+
+  .mina-mark {
+    position: absolute;
+    display: inline-flex;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    background: var(--navy-2);
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
+    font-family: var(--font-display);
+    font-size: 2rem;
+  }
+
+  .mina-mark i {
+    color: var(--cream);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .mina-mark b {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  h1 {
+    margin: 1.75rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.125rem, 5vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  [data-form-copy] > p,
+  .success > p {
+    max-width: 32rem;
+    margin: 1.25rem auto 0;
+    color: var(--cream);
+    font-size: var(--text-lead);
+    line-height: 1.6;
+  }
+
+  .access-form {
+    max-width: 28rem;
+    margin: 2.25rem auto 0;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--navy);
+    color: var(--cream);
+    font-size: 1rem;
+    transition:
+      border-color 180ms,
+      box-shadow 180ms;
+  }
+
+  input::placeholder {
+    color: var(--cream);
+  }
+
+  input:focus {
+    border-color: var(--teal);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(29 191 176 / 20%);
+  }
+
+  input[aria-invalid="true"] {
+    border-color: var(--ember);
+  }
+
+  .form-status {
+    min-height: 1.35rem;
+    margin: 0.5rem 0 0;
+    color: var(--ember);
+    font-size: 0.875rem;
+  }
+
+  .access-form .primary-cta {
+    width: 100%;
+    margin-top: 0.75rem;
+    cursor: pointer;
+  }
+
+  .access-form .primary-cta:disabled {
+    cursor: wait;
+    filter: saturate(0.5);
+    opacity: 0.7;
+  }
+
+  .privacy-line {
+    margin: 1rem 0 0;
+    color: var(--cream);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .privacy-line a,
+  .success a {
+    color: var(--teal);
+    text-underline-offset: 0.2rem;
+  }
+
+  .success {
+    margin-top: 2.25rem;
+    padding: 1.75rem;
+    border-color: var(--teal-line);
+    background: var(--teal-surface);
+  }
+
+  .success h1 {
+    margin-top: 0;
+  }
+
+  .success > p:last-of-type {
+    font-size: 1rem;
+  }
+
+  .success strong {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .invite-placement {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.375rem;
+    padding-top: 1.375rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .invite-placement > span {
+    color: var(--cream);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .invite-placement--success {
+    justify-content: center;
+    text-align: left;
+  }
+
+  @media (max-width: 39.99rem) {
+    .invite-placement {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .beta-card {
+      padding: 5.5rem 3rem 3rem;
+    }
+  }
+
+  @keyframes beta-breathe {
+    0%, 100% { border-color: var(--teal-line); box-shadow: 0 0 0 0 rgb(29 191 176 / 0%); }
+    50% { border-color: var(--teal); box-shadow: 0 0 1.5rem 0 rgb(29 191 176 / 26%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .beta-badge { animation: none; }
   }
 </style>

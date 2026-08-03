@@ -1,34 +1,142 @@
 ---
 import LegalPage from '../layouts/LegalPage.astro';
+import { privacyPolicy as policy } from '../data/regulatory';
 ---
-<LegalPage title="Privacy — GetMine.ai" description="A short, plain-English summary of how GetMine.ai handles your health information." canonical="https://getmine.ai/privacy.html">
-    <p class="page-eyebrow">Privacy</p>
-    <h1 class="page-headline">Your health information belongs to you.</h1>
+<LegalPage title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app and getmine.ai website." canonical="https://getmine.ai/privacy">
+  <p class="page-eyebrow">Privacy</p>
+  <h1 class="page-headline">{policy.title}</h1>
 
-    <p class="page-lead">This is a short, plain-English summary of how we handle your information at GetMine. A fuller privacy notice will accompany the public launch &mdash; until then, this is what to expect.</p>
+  <p class="policy-meta">
+    {policy.organisation} · {policy.version} · {policy.published}
+  </p>
+  <p class="policy-scope">{policy.scope}</p>
+  <aside class="policy-summary">{policy.summary}</aside>
 
-    <div class="page-section">
-      <h2>What we collect</h2>
-      <p>We only collect what we need to run the service and improve it: the information you choose to add or connect to your vault, contact details for your account, and the product feedback you give us during Early Access. Where information has to pass through the cloud (for example, to answer an AI query), it does so only as needed to complete the task.</p>
-    </div>
+  {[policy.beta, policy.vault, policy.mina].map((section) => (
+    <section class="page-section">
+      <h2>{section.heading}</h2>
+      {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </section>
+  ))}
 
-    <div class="page-section">
-      <h2>We don&rsquo;t sell your data</h2>
-      <p>GetMine does not sell personal information. We don&rsquo;t trade access to your vault for partnerships or revenue. We grow by deepening what stays with you &mdash; not by leveraging your data.</p>
-    </div>
+  <section class="page-section">
+    <h2>{policy.sources.heading}</h2>
+    <ul>{policy.sources.bullets.map((item) => <li>{item}</li>)}</ul>
+  </section>
 
-    <div class="page-section">
-      <h2>You stay in control</h2>
-      <p>You decide what is shared, with whom, and for how long. You can change your mind, and you can ask us to delete information you&rsquo;ve added. Our role is to organise and help &mdash; not to keep something you no longer want kept.</p>
-    </div>
+  <section class="page-section">
+    <h2>{policy.holdings.heading}</h2>
+    <p>{policy.holdings.summaryParagraph}</p>
+    {policy.holdings.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  </section>
 
-    <div class="page-section">
-      <h2>During Early Access</h2>
-      <p>As a closed-beta participant you may share contact details, give us product feedback, and choose what to add or connect to your vault. We treat all of that as your information, on your terms.</p>
-    </div>
+  <section class="page-section">
+    <h2>{policy.exclusions.heading}</h2>
+    <ul>{policy.exclusions.bullets.map((item) => <li>{item}</li>)}</ul>
+  </section>
 
-    <div class="page-section">
-      <h2>Access, deletion, questions</h2>
-      <p>Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a> for any privacy question &mdash; including requests to access or delete the information we hold about you.</p>
-    </div>
+  <section class="page-section">
+    <h2>{policy.rights.heading}</h2>
+    {policy.rights.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  </section>
+
+  <aside class="controller-notice">{policy.controller}</aside>
+  <p class="policy-updated">
+    Last updated: {policy.lastUpdated} · {policy.organisation} ·
+    <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a>
+  </p>
 </LegalPage>
+
+<style>
+  .policy-meta,
+  .policy-scope,
+  .policy-updated {
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .policy-meta {
+    margin-top: 1.5rem;
+  }
+
+  .policy-meta strong {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  .policy-scope {
+    margin-top: 0.75rem;
+  }
+
+  .policy-summary,
+  .controller-notice {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--teal-deck);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--teal-deck) 9%, transparent);
+    color: var(--cream);
+    font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+    line-height: 1.65;
+  }
+
+  .page-section ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--cream);
+  }
+
+  .page-section li {
+    padding-left: 0.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .policy-table-wrap {
+    margin: 1.25rem 0 1.5rem;
+    overflow-x: auto;
+    border: 1px solid color-mix(in srgb, var(--cream) 22%, transparent);
+    border-radius: 0.875rem;
+  }
+
+  table {
+    width: 100%;
+    min-width: 38rem;
+    border-collapse: collapse;
+    color: var(--cream);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  th,
+  td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--cream) 14%, transparent);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: color-mix(in srgb, var(--teal-deck) 13%, transparent);
+    font-weight: 700;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .policy-updated {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--cream) 18%, transparent);
+  }
+
+  .policy-updated a {
+    color: var(--teal-deck);
+  }
+</style>

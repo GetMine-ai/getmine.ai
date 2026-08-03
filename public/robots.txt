@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getmine.ai/sitemap-index.xml
