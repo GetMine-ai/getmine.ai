@@ -8,7 +8,13 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://getmine.ai',
   build: { format: 'file' },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // /welcome is noindexed (post-confirmation destination), so advertising
+      // it in the sitemap would contradict the robots meta tag.
+      filter: (page) => !page.includes('/welcome'),
+    }),
+  ],
   // Default dev/preview port (matches the sibling getmine app).
   server: { port: 3000 },
 });
