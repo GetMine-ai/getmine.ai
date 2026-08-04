@@ -20,14 +20,12 @@
       </h1>
 
       <p class="hero-intro">
-        Your health records, hospital letters, health emails and notes — brought
-        together in one private vault on your computer. Mina, your personal health
-        agent, helps you make sense of it all.
+        Your health records, <span class="hero-intro-accent">finally together</span> in one
+        private vault on your computer. Mina, your personal health agent, helps make
+        sense of it all.
       </p>
 
       <a class="primary-cta hero-download" href="/beta">Request beta access</a>
-
-      <p class="platform-note">Free for macOS and Windows · No account required</p>
 
       <div class="privacy-note">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -36,8 +34,8 @@
           <path d="M12 14.5v2.5"></path>
         </svg>
         <p>
-          <strong>Your vault lives on your computer.</strong>
-          <span>We never hold a copy.</span>
+          <strong>Free for macOS and Windows</strong>
+          <span>Your vault stays on your computer. We never hold a copy.</span>
         </p>
       </div>
     </div>
@@ -108,7 +106,7 @@
     flex: 0 0 auto;
     border-radius: 50%;
     background: var(--teal);
-    box-shadow: 0 0 0.8rem rgb(55 207 195 / 48%);
+    box-shadow: 0 0 0.8rem rgb(55 207 195 / 35%);
   }
 
   h1 {
@@ -149,11 +147,8 @@
     padding-inline: 2.25rem;
   }
 
-  .platform-note {
-    margin: 1rem 0 0;
-    color: var(--cream);
-    font-size: 1.0625rem;
-    line-height: 1.45;
+  .hero-intro-accent {
+    color: var(--teal);
   }
 
   .privacy-note {
@@ -188,6 +183,10 @@
 
   .privacy-note strong {
     font-weight: 600;
+  }
+
+  .privacy-note span {
+    opacity: 0.82;
   }
 
   .product-visual {
@@ -242,7 +241,7 @@
       box-shadow: 0 0 0 rgb(55 207 195 / 0%);
     }
     50% {
-      box-shadow: 0 0 1.1rem rgb(55 207 195 / 17%);
+      box-shadow: 0 0 1.1rem rgb(55 207 195 / 12%);
     }
   }
 

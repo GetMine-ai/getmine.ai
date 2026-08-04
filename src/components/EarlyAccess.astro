@@ -8,7 +8,7 @@ interface Props {
 const { variant = 'close' } = Astro.props;
 ---
 {variant === 'close' ? (
-  <section class="closing-cta section-edge" aria-labelledby="closing-title">
+  <section class="closing-cta section-edge" aria-label="Request beta access">
     <div class="closing-glow" aria-hidden="true"></div>
     <svg class="memory-line" viewBox="0 0 1200 110" aria-hidden="true">
       <path d="M0 60 C150 10 230 105 360 55 S560 10 680 55 S900 105 1020 55 S1150 15 1200 55" />
@@ -17,9 +17,7 @@ const { variant = 'close' } = Astro.props;
     <div class="wrap section-pad">
       <div>
         <p>Open beta · Rolling out in waves</p>
-        <h2 id="closing-title">Build a health memory that stays yours.</h2>
         <a class="primary-cta" href="/beta">Request beta access</a>
-        <small>GetMine for macOS and Windows</small>
       </div>
     </div>
   </section>
@@ -39,10 +37,9 @@ const { variant = 'close' } = Astro.props;
 
         <div data-form-copy>
           <h1>Request beta access</h1>
-          <p>
-            Enter and confirm your email. Access opens in waves. When yours is
-            ready, we’ll send your download link. The beta starts free with a
-            GetMine AI allowance. Heavy users may later be asked to add their own
+          <p>Enter your email. We’ll send your download link when your wave opens.</p>
+          <p class="form-secondary">
+            Free during the beta. Heavy users may later be asked to add their own
             API key.
           </p>
         </div>
@@ -62,11 +59,10 @@ const { variant = 'close' } = Astro.props;
           <p id="beta-form-status" class="form-status" role="status" aria-live="polite"></p>
           <button class="primary-cta" type="submit">Request beta access</button>
           <p id="beta-form-privacy" class="privacy-line">
-            We’ll use your email only to manage beta access.
-            <a href="/privacy">Read our Privacy Policy</a>.
+            We’ll only use your email to manage beta access.
+            <a href="/privacy">Privacy policy</a>
           </p>
           <div class="invite-placement invite-placement--resting">
-            <span>Already on the list?</span>
             <InviteFriend
               variant="primary"
               placement="beta"
@@ -146,7 +142,10 @@ const { variant = 'close' } = Astro.props;
   }
 
   .closing-cta .wrap > div {
+    display: flex;
     max-width: 42.5rem;
+    flex-direction: column;
+    align-items: center;
     margin-inline: auto;
     text-align: center;
   }
@@ -165,26 +164,14 @@ const { variant = 'close' } = Astro.props;
     letter-spacing: 0.025em;
   }
 
-  .closing-cta h2 {
-    margin: 1rem 0 0;
-    font-family: var(--font-display);
-    font-size: var(--text-h2);
-    font-weight: 300;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
+  /* Badge and button only — the About closing statement stays the one big
+     thesis of the ending (ruled 4 Aug), so this block keeps a lighter pad. */
+  .closing-cta .section-pad {
+    padding-block: 2.5rem 3.5rem;
   }
 
   .closing-cta .primary-cta {
-    margin-top: 2.25rem;
-  }
-
-  .closing-cta small {
-    display: block;
-    margin-top: 1.25rem;
-    color: var(--cream);
-    font-size: 0.9375rem;
-    font-weight: 500;
-    letter-spacing: 0.025em;
+    margin-top: 1.75rem;
   }
 
   .beta-form-section {
@@ -309,6 +296,12 @@ const { variant = 'close' } = Astro.props;
     line-height: 1.6;
   }
 
+  [data-form-copy] > .form-secondary {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
   .access-form {
     max-width: 28rem;
     margin: 2.25rem auto 0;
@@ -412,6 +405,11 @@ const { variant = 'close' } = Astro.props;
     margin-top: 1.375rem;
     padding-top: 1.375rem;
     border-top: 1px solid var(--line-quiet);
+  }
+
+  /* Label removed (ruled 4 Aug) — the bare action sits centred on its row. */
+  .invite-placement--resting {
+    justify-content: center;
   }
 
   .invite-placement > span {

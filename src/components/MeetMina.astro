@@ -39,7 +39,7 @@ const exchanges = [
         <span class="mina-ring"></span>
         <span class="mina-mark"><i>M</i><b>.</b></span>
       </div>
-      <p class="mina-subtitle">Your personal health agent</p>
+      <p class="mina-subtitle">Mina, your personal health agent</p>
     </div>
 
     <p class="exchange-label reveal" style="--delay: 640ms">Say this. She does this.</p>
@@ -47,9 +47,6 @@ const exchanges = [
       {exchanges.map(({ prompt, action, delay }) => (
         <article class="exchange reveal" style={`--delay: ${delay}`}>
           <div class="speech-row">
-            <svg class="speech-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5.5 5.5h13v9h-7l-4.25 3v-3H5.5z"></path>
-            </svg>
             <p
               class="speech typed-speech"
               data-mina-typed={prompt}
@@ -198,7 +195,7 @@ const exchanges = [
   .exchange {
     min-width: 0;
     min-height: 14rem;
-    padding: clamp(1.75rem, 2.4vw, 2.125rem);
+    padding: clamp(1.75rem, 2.4vw, 2.125rem) clamp(1.25rem, 1.8vw, 1.5rem);
     border: 1px solid rgb(90 146 148 / 30%);
     border-radius: clamp(1.125rem, 1.6vw, 1.5rem);
     background: rgb(14 24 33 / 58%);
@@ -210,22 +207,8 @@ const exchanges = [
     gap: 0.9rem;
   }
 
-  .speech-icon {
-    width: 2.65rem;
-    height: 2.65rem;
-    flex: 0 0 2.65rem;
-    padding: 0.55rem;
-    border: 1px solid rgb(55 207 195 / 58%);
-    border-radius: 50%;
-    fill: none;
-    stroke: var(--teal);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.45;
-  }
-
   .speech {
-    width: auto;
+    width: fit-content;
     max-width: 100%;
     margin: 0;
     padding: 0.72rem 1.1rem;
@@ -382,12 +365,6 @@ const exchanges = [
 
     .speech-row {
       gap: 0.7rem;
-    }
-
-    .speech-icon {
-      width: 2.4rem;
-      height: 2.4rem;
-      flex-basis: 2.4rem;
     }
 
     .speech,

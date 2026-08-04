@@ -2,21 +2,17 @@
 const founders = [
   {
     name: 'Sabine Azancot',
-    role: 'Co-founder & CEO',
-    disciplineLineOne: 'AI, product development and',
-    disciplineLineTwo: 'human behavior.',
-    lineOne: 'Turns intelligence into',
-    lineTwo: 'meaningful consumer value.',
+    role: 'Co founder & CEO',
+    discipline: 'AI, product development and human behaviour.',
+    line: 'Turns intelligence into meaningful consumer value.',
     image: 'sabine-color',
     extension: 'jpg',
   },
   {
     name: 'Mike Anderson',
-    role: 'Co-founder & Architect',
-    disciplineLineOne: 'Sovereign architecture and',
-    disciplineLineTwo: 'agentic systems.',
-    lineOne: 'Builds the technology.',
-    lineTwo: 'Keeps people in control.',
+    role: 'Co founder & Chief Architect',
+    discipline: 'Sovereign architecture and agentic systems.',
+    line: 'Builds the technology that keeps people in control.',
     image: 'mike-color',
     extension: 'jpg',
   },
@@ -34,10 +30,9 @@ const founders = [
       </h2>
     </header>
     <p class="intro">
-      Your health record is scattered across systems that were never built for you,
-      and the rest of it lives only in your head. The missing piece is a single
-      record you own outright and an agent, Mina, who makes it work for you.
-      That’s the whole company.
+      Your health record is scattered across systems never built for you, and much
+      of it lives only in your head. GetMine is one record you own outright, with
+      Mina working across it. That’s the whole company.
     </p>
 
     <div class="founders">
@@ -72,14 +67,8 @@ const founders = [
               <h3>{founder.name}</h3>
               <p class="role">{founder.role}</p>
               <span class="rule"></span>
-              <p class="discipline">
-                {founder.disciplineLineOne}<br />
-                {founder.disciplineLineTwo}
-              </p>
-              <p class="line">
-                {founder.lineOne}<br />
-                {founder.lineTwo}
-              </p>
+              <p class="discipline">{founder.discipline}</p>
+              <p class="line">{founder.line}</p>
             </div>
           </article>
         </>
@@ -159,14 +148,21 @@ const founders = [
     text-align: center;
   }
 
+  /* One shared column width for portrait and text at every breakpoint, so the
+     two always share a centre line (ruled 4 Aug). */
+  article {
+    --portrait-size: 13.75rem;
+    --founder-column: 23rem;
+  }
+
   article > div:last-child {
-    width: min(100%, 13.75rem);
+    width: min(100%, var(--founder-column));
   }
 
   .portrait {
     position: relative;
-    width: 13.75rem;
-    height: 13.75rem;
+    width: var(--portrait-size);
+    height: var(--portrait-size);
     flex: 0 0 auto;
     border: 0;
     border-radius: 0;
@@ -413,11 +409,6 @@ const founders = [
     article {
       flex-direction: column;
     }
-
-    .portrait {
-      width: 13.75rem;
-      height: 13.75rem;
-    }
   }
 
   @media (min-width: 64rem) {
@@ -440,44 +431,36 @@ const founders = [
       order: 3;
     }
 
+    /* Both text blocks sit centred beneath their portraits (ruled 4 Aug):
+       same width, same hierarchy, sentences wrap naturally onto centred lines. */
     article > div:last-child {
       width: min(100%, 23rem);
-      text-align: right;
+      text-align: center;
     }
 
     .join-line {
       display: block;
     }
 
-    .founder-left > div:last-child,
-    .founder-right > div:last-child {
-      width: min(100%, 23rem);
-    }
-
-    .founder-left .portrait {
-      align-self: flex-end;
-    }
-
+    /* The text block hugs the join; the portrait is then inset by half the
+       difference, which puts the two on one centre line — and because the
+       inset is a calc on the live column width, it survives shrinking. */
     .founder-left > div:last-child {
       align-self: flex-end;
     }
 
-    .founder-left .rule {
-      margin-left: auto;
+    .founder-left .portrait {
+      align-self: flex-end;
+      margin-right: calc((min(100%, var(--founder-column)) - var(--portrait-size)) / 2);
     }
 
-    .founder-right .portrait,
     .founder-right > div:last-child {
       align-self: flex-start;
     }
 
-    .founder-right > div:last-child {
-      text-align: left;
-    }
-
-    .founder-right .rule {
-      margin-right: auto;
-      margin-left: 0;
+    .founder-right .portrait {
+      align-self: flex-start;
+      margin-left: calc((min(100%, var(--founder-column)) - var(--portrait-size)) / 2);
     }
   }
 
@@ -501,9 +484,8 @@ const founders = [
       gap: 1rem;
     }
 
-    .portrait {
-      width: 9.75rem;
-      height: 9.75rem;
+    article {
+      --portrait-size: 9.75rem;
     }
 
     h3 {

@@ -22,15 +22,15 @@ import Footer from '../components/Footer.astro';
     <div class="wrap">
       <article class="card">
         <p class="card-eyebrow">In the UK</p>
-        <p>Connect your NHS record directly through our NHS partner.</p>
+        <p>Connect your NHS record through our NHS partner.</p>
       </article>
       <article class="card">
         <p class="card-eyebrow">Everywhere else</p>
-        <p>Download and build your vault from documents, emails, photos and notes.</p>
+        <p>Build your vault from documents, emails, photos and notes.</p>
       </article>
       <article class="card">
         <p class="card-eyebrow">Either way</p>
-        <p>The vault lives on your machine. Nothing leaves without you asking.</p>
+        <p>Your vault stays on your computer. Nothing leaves without your say.</p>
       </article>
     </div>
   </section>
@@ -46,7 +46,8 @@ import Footer from '../components/Footer.astro';
   .beta-facts .wrap {
     display: grid;
     gap: 1rem;
-    padding-block: 3.5rem;
+    /* Bottom trimmed so the cards hand straight into the closing CTA. */
+    padding-block: 3.5rem 2rem;
   }
 
   .beta-facts .card {
