@@ -3,27 +3,26 @@ const exchanges = [
   {
     prompt: 'What did the consultant say about my knee?',
     action: 'Answers, and shows you the letter she read it in.',
-    delay: '800ms',
+    delay: '0ms',
   },
   {
     prompt: 'I’ve got a GP appointment, what should I flag?',
     action: 'Pulls together what’s changed since the last one.',
-    delay: '2200ms',
+    delay: '600ms',
   },
   {
     prompt: 'My back pain is back.',
     action: 'She offers to log it. She only nudges when asked.',
-    delay: '3600ms',
+    delay: '1200ms',
   },
   {
     prompt: 'File this with my supplements.',
     action: 'Updates your vault on the spot, from any source.',
-    delay: '5000ms',
+    delay: '1800ms',
   },
 ];
 ---
 <section id="meet-mina" class="meet-mina section-edge" aria-labelledby="meet-mina-heading" data-meet-mina>
-  <div class="about-glow" aria-hidden="true"></div>
   <div class="wrap section-pad">
     <header class="section-heading reveal" style="--delay: 0ms">
       <p class="eyebrow">Meet Mina</p>
@@ -76,20 +75,6 @@ const exchanges = [
     padding-block: clamp(5rem, 8vw, 7.5rem);
   }
 
-  .about-glow {
-    position: absolute;
-    z-index: 0;
-    top: 42%;
-    left: 8%;
-    width: 48rem;
-    height: 48rem;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(closest-side, var(--teal), transparent 72%);
-    filter: blur(10rem);
-    opacity: 0.1;
-    pointer-events: none;
-  }
 
   .wrap {
     position: relative;

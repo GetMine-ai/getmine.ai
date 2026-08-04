@@ -60,7 +60,7 @@ const { variant = 'close' } = Astro.props;
           <button class="primary-cta" type="submit">Request beta access</button>
           <p id="beta-form-privacy" class="privacy-line">
             We’ll only use your email to manage beta access.
-            <a href="/privacy">Privacy policy</a>
+            <a href="/privacy">Privacy policy</a> · <a href="/terms">Terms</a>
           </p>
           <div class="invite-placement invite-placement--resting">
             <InviteFriend
@@ -331,7 +331,7 @@ const { variant = 'close' } = Astro.props;
   }
 
   input::placeholder {
-    color: var(--cream);
+    color: rgb(232 250 248 / 45%);
   }
 
   input:focus {
@@ -347,8 +347,12 @@ const { variant = 'close' } = Astro.props;
   .form-status {
     min-height: 1.35rem;
     margin: 0.5rem 0 0;
-    color: var(--ember);
+    color: var(--text-secondary);
     font-size: 0.875rem;
+  }
+
+  .form-status.is-error {
+    color: var(--ember);
   }
 
   .access-form .primary-cta {

@@ -29,6 +29,9 @@ const promises = [
       ))}
     </ul>
 
+    <!-- COPY HOLD (design review P1-6): link text awaits Sabine's ruling -->
+    <p class="promise-more"><a href="/trust">How we hold to this</a></p>
+
     <p class="signature">
       <span>Your health.</span> <strong>Your data.</strong> <em>Your rules.</em>
     </p>
@@ -93,6 +96,16 @@ const promises = [
     display: block;
     color: var(--teal);
     font-weight: 300;
+  }
+
+  .promise-more {
+    margin: 2rem 0 0;
+    font-size: 1rem;
+  }
+
+  .promise-more a {
+    color: var(--teal);
+    text-underline-offset: 0.2rem;
   }
 
   .signature {
