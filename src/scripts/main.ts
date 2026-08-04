@@ -493,9 +493,11 @@ function initialiseAccessForm() {
     input.value = input.value.trim();
     input.removeAttribute('aria-invalid');
     status.textContent = '';
+    status.classList.remove('is-error');
 
     if (!input.validity.valid) {
       input.setAttribute('aria-invalid', 'true');
+      status.classList.add('is-error');
       status.textContent = 'Enter a valid email address.';
       input.focus();
       return;
@@ -514,6 +516,7 @@ function initialiseAccessForm() {
       const response = await fetch(WAITLIST_ENDPOINT, { method: 'POST', body });
 
       if (response.status === 429) {
+        status.classList.add('is-error');
         status.textContent = 'Too many attempts. Please wait a moment and try again.';
         return;
       }
@@ -526,6 +529,7 @@ function initialiseAccessForm() {
       success.hidden = false;
       success.querySelector<HTMLElement>('h1')?.focus();
     } catch {
+      status.classList.add('is-error');
       status.textContent = 'We couldn’t submit your beta access request. Please try again.';
     } finally {
       button.disabled = false;

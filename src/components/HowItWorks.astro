@@ -3,28 +3,24 @@ const steps = [
   {
     id: 'build',
     nav: 'Vault',
-    eyebrow: 'Step one',
     title: 'Connect your health sources',
     body: 'Bring your records, letters, emails, photos and notes into one vault on your own computer.',
   },
   {
     id: 'ask',
     nav: 'Ask Mina',
-    eyebrow: 'Step two',
     title: 'Conversations with context',
     body: 'Like any AI assistant, except she’s read all nineteen years of it and shows her source every time.',
   },
   {
     id: 'topics',
     nav: 'Topics',
-    eyebrow: 'Step three',
     title: 'Name what matters to you',
     body: 'Supplements, longevity, menopause. Your words. Tag records from any source and the topic builds its own memory.',
   },
   {
     id: 'watching',
     nav: 'Watching',
-    eyebrow: 'Step four',
     title: 'Track what changes',
     body: 'A symptom, a pattern, a habit. Log it as it happens, ready when someone asks how long.',
   },
@@ -1343,41 +1339,9 @@ const askExchanges = [
     50% { opacity: 0; }
   }
 
-  @media (min-width: 40rem) {
-    .desktop-walkthrough {
-      display: block;
-    }
-
-    .desktop-walkthrough::after {
-      position: absolute;
-      z-index: 3;
-      top: 1.75rem;
-      right: 1.75rem;
-      width: 3.5rem;
-      height: 32rem;
-      background: linear-gradient(90deg, transparent, var(--navy));
-      content: "";
-      pointer-events: none;
-    }
-
-    .app-stage {
-      justify-content: flex-start;
-      overflow-x: auto;
-      padding-bottom: 0.75rem;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-color: var(--teal-line) transparent;
-    }
-
-    .walkthrough-tabs {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      overflow: visible;
-      padding-bottom: 0.5rem;
-    }
-
-    .mobile-walkthrough {
-      display: none;
-    }
-  }
+  /* Tablets and small laptops get the four static stills, not a 980px mock in a
+     horizontal scroller (design review, 4 Aug). The live walkthrough starts at
+     64rem, where it fits. */
 
   @media (min-width: 64rem) {
     section {
@@ -1391,12 +1355,19 @@ const askExchanges = [
       padding-top: 2rem;
     }
 
-    .desktop-walkthrough {
-      display: block;
-    }
-
+    /* Defined here (hidden) purely for the JS scroll-fallback path, which
+       reveals it when the window is narrower than the 61.25rem mock. */
     .desktop-walkthrough::after {
+      position: absolute;
+      z-index: 3;
+      top: 1.75rem;
+      right: 1.75rem;
       display: none;
+      width: 3.5rem;
+      height: 32rem;
+      background: linear-gradient(90deg, transparent, var(--navy));
+      content: "";
+      pointer-events: none;
     }
 
     .app-stage {
@@ -1413,6 +1384,19 @@ const askExchanges = [
       justify-content: flex-start;
       overflow-x: auto;
       padding-bottom: 0.75rem;
+    }
+  }
+
+  /* The live mock is 61.25rem wide; only from 80rem does it fit with room to
+     breathe. Below that, the four stills tell the same story without a
+     horizontal scroller (design review P0-3). */
+  @media (min-width: 80rem) {
+    .desktop-walkthrough {
+      display: block;
+    }
+
+    .mobile-walkthrough {
+      display: none;
     }
   }
 
