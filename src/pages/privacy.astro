@@ -6,13 +6,10 @@ import { privacyPolicy as policy } from '../data/regulatory';
   <p class="page-eyebrow">Privacy</p>
   <h1 class="page-headline">{policy.title}</h1>
 
-  <p class="policy-meta">
-    {policy.organisation} · {policy.version} · {policy.published}
-  </p>
   <p class="policy-scope">{policy.scope}</p>
-  <aside class="policy-summary">{policy.summary}</aside>
+  <aside class="policy-summary"><strong>The short version:</strong> {policy.summary.replace('The short version: ', '')}</aside>
 
-  {[policy.beta, policy.website, policy.vault, policy.mina].map((section) => (
+  {[policy.beta, policy.vault, policy.mina].map((section) => (
     <section class="page-section">
       <h2>{section.heading}</h2>
       {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
