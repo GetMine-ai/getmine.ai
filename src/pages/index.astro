@@ -20,8 +20,8 @@ import Footer from '../components/Footer.astro';
   <About />
   <section class="beta-facts section-edge" aria-label="Open beta availability">
     <div class="wrap">
-      <!-- COPY HOLD (design review P1-7): label string awaits Sabine's ruling -->
       <p class="eyebrow">In the open beta</p>
+      <div class="beta-facts-grid">
       <article class="card">
         <p class="card-eyebrow">In the UK</p>
         <p>Connect your NHS record through our NHS partner.</p>
@@ -34,6 +34,7 @@ import Footer from '../components/Footer.astro';
         <p class="card-eyebrow">Either way</p>
         <p>Your vault stays on your computer. Nothing leaves without your say.</p>
       </article>
+      </div>
     </div>
   </section>
   <EarlyAccess />
@@ -46,10 +47,16 @@ import Footer from '../components/Footer.astro';
   }
 
   .beta-facts .wrap {
-    display: grid;
-    gap: 1rem;
     /* Bottom trimmed so the cards hand straight into the closing CTA. */
     padding-block: 3.5rem 2rem;
+  }
+
+  /* Label above, then one clean row of three equal cards (ruled 4 Aug). */
+  .beta-facts-grid {
+    display: grid;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: 1rem;
   }
 
   .beta-facts .card {
@@ -73,7 +80,7 @@ import Footer from '../components/Footer.astro';
   }
 
   @media (min-width: 48rem) {
-    .beta-facts .wrap {
+    .beta-facts-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
