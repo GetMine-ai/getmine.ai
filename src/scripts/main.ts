@@ -44,6 +44,54 @@ function initialiseNavigation() {
   updateHeader();
   window.addEventListener('scroll', updateHeader, { passive: true });
 
+  /**
+   * Land every section the same way (ruled 4 Aug).
+   *
+   * A single scroll-padding-top can't do this: each section carries its own top
+   * padding (32px on How it works, 68px on three others, 115px on Meet Mina),
+   * so a fixed offset put the heading anywhere across an 83px spread — tucked
+   * under the header on one screen, floating low on another. Measuring the
+   * heading at click time and scrolling to it keeps the framing identical at
+   * every breakpoint, whatever the padding does.
+   */
+  const HEADING_GAP = 28;
+
+  const landingOffset = (section: HTMLElement) => {
+    const heading = section.querySelector<HTMLElement>('.section-heading') || section;
+    const headerHeight = header?.offsetHeight || 0;
+    const headingTop = heading.getBoundingClientRect().top + window.scrollY;
+    return Math.max(0, Math.round(headingTop - headerHeight - HEADING_GAP));
+  };
+
+  const scrollToSection = (section: HTMLElement, smooth: boolean) => {
+    window.scrollTo({ top: landingOffset(section), behavior: smooth ? 'smooth' : 'auto' });
+  };
+
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')).forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey) return;
+      const url = new URL(link.href, window.location.href);
+      if (url.pathname !== window.location.pathname || !url.hash) return;
+      const section = document.getElementById(url.hash.slice(1));
+      if (!section) return;
+      event.preventDefault();
+      scrollToSection(section, !reducedMotion());
+      // Keep the hash (and the back button) without a second, uncorrected jump.
+      window.history.pushState(null, '', url.hash);
+    });
+  });
+
+  // Arriving from another page (/#meet-mina) gets the same framing.
+  if (window.location.hash) {
+    const landed = document.getElementById(window.location.hash.slice(1));
+    if (landed) {
+      window.requestAnimationFrame(() => scrollToSection(landed, false));
+      window.addEventListener('load', () => scrollToSection(landed, false), { once: true });
+    }
+  }
+
   if (navLinks.length) {
     const sections = navLinks
       .map((link) => document.getElementById(link.dataset.navLink || ''))
