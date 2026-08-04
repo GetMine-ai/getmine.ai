@@ -10,18 +10,11 @@ import { termsPage } from '../data/regulatory';
   <p class="page-eyebrow">{termsPage.eyebrow}</p>
   <h1 class="page-headline">{termsPage.title}</h1>
 
-  <p class="policy-meta">
-    {termsPage.organisation} · Open beta · Last updated: {termsPage.lastUpdated}
-  </p>
-
   <aside class="policy-summary">
-    <strong>The short version:</strong> the beta is free, Mina is not a doctor,
-    and your vault is yours &mdash; on your computer, and it stays there whatever
-    you decide about us.
+    <strong>The short version:</strong> {termsPage.summary}
   </aside>
 
   <p class="page-lead">
-    A short, plain-English set of terms for using GetMine during the open beta.
     GetMine Ltd, England and Wales, company number 17070331. The
     <a href="/privacy">privacy policy</a> governs everything about your data;
     where these terms and the policy could be read differently, the policy

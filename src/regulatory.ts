@@ -29,7 +29,7 @@ export const privacyPolicy = {
     heading: 'Your Health Vault: yours, on your computer',
     paragraphs: [
       'Everything you add or connect (electronic health records, documents, emails you choose to scan, photos, notes) lives in your Health Vault on your own computer. We hold no central copy, we cannot see it, and nothing in the product reports its contents to us.',
-      'We can’t lose or leak what we don’t have. Your vault is encrypted and only you can open it: keeping your computer protected, and being careful with any export you choose to make, is in your hands.',
+      'We can’t lose or leak what we don’t have. Your records are as safe as your computer: keeping it protected, and being careful where you copy or share your vault, is in your hands, as it would be with paper records.',
       'Deleting GetMine never deletes your health information. The app and Mina go.',
     ],
   },
@@ -45,7 +45,7 @@ export const privacyPolicy = {
     bullets: [
       'Electronic health records (in the UK, your NHS record) reach your vault through our health-records access partner, after you log in with them and authorise it.',
       'Email scanning is read-only. GetMine can never send, change or delete your email, and your mailbox is read on your computer, not by us. You can revoke the access you granted with your email provider at any time.',
-      'The logins you grant are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
+      'The logins you grant are stored encrypted on your machine, with the key kept outside the vault folder. A copy of your folder, wherever it ends up, contains no usable login to anything.',
       'Disconnect any source at any time, in the app.',
     ],
   },
@@ -77,7 +77,7 @@ export const privacyPolicy = {
       ],
     ],
     paragraphs: [
-      'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
+      'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider. Our own site stores nothing, and until you click the confirmation link, the address isn’t kept anywhere at all.',
       'Our lawful bases: running the beta you asked to join (contract), improving the product (legitimate interests), and your explicit consent for the AI processing of health information described above.',
     ],
   },
@@ -99,73 +99,68 @@ export const privacyPolicy = {
   },
   controller:
     'GetMine Ltd, registered in England and Wales, company number 17070331, is responsible for the personal data listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '4 August 2026',
+  lastUpdated: '27 July 2026',
 } as const;
 
 
 export const trustPage = {
   title: 'Your vault stays with you.',
   eyebrow: 'Trust & security',
-  version: 'Version 1.1',
-  published: '4 August 2026',
+  version: 'Version 1.0',
+  published: '29 July 2026',
   summary:
-    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. What leaves is decided by your question, relayed but never kept by us.',
+    'The short version: your vault lives on your computer and we hold no copy. What leaves is decided by your question, relayed but never kept by us — and where security is still being built, this page says so plainly.',
   lead:
-    'GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and, just as important, what we do not yet claim.',
+    'GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and — just as important — what we do not yet claim.',
   sections: [
     {
-      heading: 'Secure by design',
+      heading: 'Local-first by design',
       paragraphs: [
-        'Your vault lives on your local device, and the day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no central copy of your records, and nothing leaves your device on its own.',
-        'That architecture is the first layer of security: there is no central store of vaults to breach. What we do not hold cannot be lost, leaked or demanded from us.',
-      ],
-    },
-    {
-      heading: 'An encrypted vault',
-      paragraphs: [
-        'Your vault is an encrypted store on your computer, protected by one password that only you hold. A recovery phrase, issued when your vault is created, is the only other way back in.',
-        'Should you choose to export your records as a zip file, you can password protect it, or keep the export as ordinary readable files. An ordinary export is as safe as the computer it sits on.',
+        'Your vault lives on your device. The day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no copy of your records, and nothing leaves your device on its own.',
       ],
     },
     {
       heading: 'Your question decides what is shared',
       paragraphs: [
-        'When Mina answers, only the slice of your records that the question needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.',
+        'When Mina answers, only the slice of your records that the question needs is sent to the AI provider — relayed through GetMine\u2019s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.',
       ],
     },
     {
       heading: 'You set the terms',
       paragraphs: [
-        'Sharing happens by choice, per source and per permission, and what you have chosen is always visible in the app. You can disconnect a source or withdraw a consent whenever you choose, and doing so stops any further use immediately. An answer already given cannot be unsaid, so what changes is what happens next, which is the honest shape of any consent.',
+        'Sharing happens by choice, per source and per permission, and what you have chosen is always visible in the app. You can disconnect a source or withdraw a consent whenever you choose, and doing so stops any further use immediately. An answer already given cannot be unsaid — so what changes is what happens next, which is the honest shape of any consent.',
       ],
     },
     {
       heading: 'The logins you grant',
       paragraphs: [
-        'Credentials for the sources you connect are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
+        'Credentials for the sources you connect are stored encrypted on your machine, with the key kept outside the vault folder. A copy of your vault folder, wherever it ends up, contains no usable login to anything.',
       ],
     },
     {
       heading: 'What we do not claim today',
       paragraphs: ['Being useful about security means being exact about its limits.'],
       bullets: [
-        'We cannot reset your password. If you lose both your password and your recovery phrase, nobody can open your vault, us included. That is the price of a vault only you can read.',
+        'The vault folder is not encrypted by the app. It relies on your operating system\u2019s own disk encryption (FileVault on macOS, BitLocker on Windows) — which we recommend you switch on. Application-level encryption of the vault is future work, not a property we have today.',
+        'Your records are as safe as your computer. Keeping it protected, and being careful where you copy or share your vault folder, is in your hands, as it would be with paper records.',
         'We hold no formal certifications. We have not sought SOC 2 or ISO 27001, and we do not make claims we cannot back up. We will pursue the right ones as the product and the team grow.',
       ],
     },
     {
       heading: 'A foundation, not a destination',
       paragraphs: [
-        'We are a small team in open beta. Security is foundational and we treat it that way: as GetMine matures our posture will deepen, with more controls, more transparency, and progressively more of the architecture running at the edge.',
+        'We are a small team in open beta. Security is foundational and we treat it that way: as GetMine matures our posture will deepen — more controls, more transparency, and progressively more of the architecture running at the edge. We will keep publishing plain-English documentation as that happens, and we will say when something changes.',
       ],
     },
   ],
   questions: {
     heading: 'Questions',
     paragraphs: [
-      'Write to security@getmine.ai for any trust or security question. We will answer honestly, and if our answer is “not yet”, we will say so.',
+      'Write to privacy@getmine.ai for any trust or security question. We will answer honestly, and if our answer is “not yet”, we will say so.',
     ],
   },
+  governing:
+    'The privacy policy is the governing statement; where the two could be read differently, the privacy policy prevails.',
 } as const;
 
 
@@ -175,8 +170,6 @@ export const trustPage = {
  * policy governs data; these terms defer to it explicitly.
  */
 export const termsPage = {
-  summary:
-    'the beta is free, Mina is not a doctor, and your vault is yours, on your computer, and it stays there whatever you decide about us.',
   title: 'Plain terms for the open beta',
   eyebrow: 'Terms',
   organisation: 'GetMine Ltd',
@@ -185,7 +178,7 @@ export const termsPage = {
   sections: [
     {
       heading: 'What the open beta is',
-      body: 'GetMine is early software, free to use during the beta. Features will evolve and parts of what you see today will change.',
+      body: 'GetMine is early software, free to download and use during the beta. Features will evolve and parts of what you see today will change — when something meaningful changes, we tell you before it applies to you.',
     },
     {
       heading: 'Who it’s for',
@@ -197,19 +190,15 @@ export const termsPage = {
     },
     {
       heading: 'Your vault is yours',
-      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose.',
+      body: 'Your records live in a folder on your computer. We never hold a copy. Deleting GetMine never deletes your vault — the app and Mina go; your folder stays, readable without us. Keep your own copies of anything you can’t afford to lose: your records are as safe as your computer.',
     },
     {
       heading: 'The AI that’s included',
-      body: 'The beta includes a GetMine AI allowance: Mina works without any key or account of your own. Heavy users may later be asked to add their own API key; that’s a choice made in Settings. What Mina sends, and to whom, is described precisely in the privacy policy, and only happens after you’ve agreed on the first-open screen.',
+      body: 'The beta includes a GetMine AI allowance — Mina works without any key or account of your own. Heavy users may later be asked to add their own API key; that’s a choice made in Settings. What Mina sends, and to whom, is described precisely in the privacy policy — and only happens after you’ve agreed on the first-open screen.',
     },
     {
       heading: 'Use it responsibly',
-      body: 'Use GetMine for health information you have the right to hold, and don’t add someone else’s records without their consent. We can pause a beta place that’s clearly being misused, and we’d tell you why.',
-    },
-    {
-      heading: 'Feedback',
-      body: 'The app has a feedback channel, and more ways may follow. Using it is always your choice: what you send helps us build a better product, and the privacy policy describes how it’s held.',
+      body: 'Use GetMine for health information you have the right to hold, and don’t add someone else’s records without their consent. We can pause a beta place that’s clearly being misused — we’d tell you why.',
     },
     {
       heading: 'As-is, while we build',
@@ -217,12 +206,12 @@ export const termsPage = {
     },
     {
       heading: 'Leaving, and endings',
-      body: 'You can leave whenever you like: the app has an exit, and the privacy policy describes the erasure you’re entitled to. If we ever end the beta, we’ll tell you clearly and in advance: Mina would stop working, but your health information stays on your computer, and export keeps it readable anywhere.',
+      body: 'You can leave whenever you like — the app has an exit, and the privacy policy describes the erasure you’re entitled to. If we ever end the beta, we’ll tell you clearly and in advance: Mina would stop working, but your vault is unaffected — it’s a folder of ordinary files on your computer, and it stays readable without us.',
     },
     {
       heading: 'Questions',
       body: 'Write to hello@getmine.ai. These terms are governed by the law of England and Wales.',
     },
   ],
-  lastUpdated: '4 August 2026',
+  lastUpdated: '31 July 2026',
 } as const;

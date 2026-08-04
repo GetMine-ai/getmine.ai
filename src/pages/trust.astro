@@ -1,64 +1,40 @@
 ---
 import LegalPage from '../layouts/LegalPage.astro';
-// Ratified draft 29 Jul 2026 — document 09 of the regulatory pack (the pack is
-// canonical; this page renders it). Pending advisory-board review; the
-// vault-encryption paragraph awaits Mike's engineering confirmation.
+// Document 09 of the regulatory pack. THE PACK IS CANONICAL and this page
+// renders src/data/regulatory.ts, which mirrors it — never write copy here.
+// (The page was hardcoded until 4 Aug 2026; that is how it drifted.)
+import { trustPage } from '../data/regulatory';
 ---
 <LegalPage title="Trust &amp; security | GetMine.ai" description="How GetMine approaches security today, what we are building toward, and what we do not yet claim." canonical="https://getmine.ai/trust">
-    <p class="page-eyebrow">Trust &amp; security</p>
-    <h1 class="page-headline">Your vault stays with you.</h1>
+    <p class="page-eyebrow">{trustPage.eyebrow}</p>
+    <h1 class="page-headline">{trustPage.title}</h1>
 
-    <aside class="policy-summary"><strong>The short version:</strong> your vault lives on your computer and we hold no copy. What leaves is decided by your question, relayed but never kept by us &mdash; and where security is still being built, this page says so plainly.</aside>
+    <aside class="policy-summary"><strong>The short version:</strong> {trustPage.summary.replace('The short version: ', '')}</aside>
 
-    <p class="page-lead">GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and &mdash; just as important &mdash; <strong>what we do not yet claim</strong>.</p>
+    <p class="page-lead">{trustPage.lead}</p>
 
-    <div class="page-section">
-      <h2>Local-first by design</h2>
-      <p>Your vault lives on your device. The day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no copy of your records, and nothing leaves your device on its own.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>Your question decides what is shared</h2>
-      <p>When Mina answers, only the slice of your records that the question needs is sent to the AI provider &mdash; relayed through GetMine&rsquo;s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>You set the terms</h2>
-      <p>Sharing happens by choice, per source and per permission, and what you have chosen is always visible in the app. You can disconnect a source or withdraw a consent whenever you choose, and doing so stops any further use immediately. An answer already given cannot be unsaid &mdash; so what changes is what happens next, which is the honest shape of any consent.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>The logins you grant</h2>
-      <p>Credentials for the sources you connect are stored encrypted on your machine, with the key kept outside the vault folder. A copy of your vault folder, wherever it ends up, contains no usable login to anything.</p>
-    </div>
+    {trustPage.sections.map((section) => (
+      <div class="page-section">
+        <h2>{section.heading}</h2>
+        {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        {'bullets' in section && (
+          <ul>
+            {section.bullets.map((bullet) => {
+              const cut = bullet.indexOf('. ') + 1;
+              return <li><strong>{bullet.slice(0, cut)}</strong> {bullet.slice(cut + 1)}</li>;
+            })}
+          </ul>
+        )}
+      </div>
+    ))}
 
     <div class="page-section">
-      <h2>A verified installer</h2>
-      <p>The installer is signed by GETMINE LTD &mdash; notarised by Apple, publisher-verified by Microsoft. Your computer checks that signature before anything installs.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>What we do not claim today</h2>
-      <p>Being useful about security means being exact about its limits.</p>
-      <ul>
-        <li><strong>The vault folder is not encrypted by the app.</strong> It relies on your operating system&rsquo;s own disk encryption (FileVault on macOS, BitLocker on Windows) &mdash; which we recommend you switch on. Application-level encryption of the vault is future work, not a property we have today.</li>
-        <li><strong>Your records are as safe as your computer.</strong> Keeping it protected, and being careful where you copy or share your vault folder, is in your hands, as it would be with paper records.</li>
-        <li><strong>We hold no formal certifications.</strong> We have not sought SOC&nbsp;2 or ISO&nbsp;27001, and we do not make claims we cannot back up. We will pursue the right ones as the product and the team grow.</li>
-      </ul>
-    </div>
-
-    <div class="page-section">
-      <h2>A foundation, not a destination</h2>
-      <p>We are a small team in open beta. Security is foundational and we treat it that way: as GetMine matures our posture will deepen &mdash; more controls, more transparency, and progressively more of the architecture running at the edge. We will keep publishing plain-English documentation as that happens, and we will say when something changes.</p>
-    </div>
-
-    <div class="page-section">
-      <h2>Questions</h2>
-      <p>Write to <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a> for any trust or security question. We will answer honestly &mdash; and if our answer is &ldquo;not yet&rdquo;, we will say so.</p>
+      <h2>{trustPage.questions.heading}</h2>
+      {trustPage.questions.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
       <p>The <a href="/privacy">privacy policy</a> is the governing statement; where the two could be read differently, the privacy policy prevails.</p>
     </div>
 
-    <p class="page-lead" style="font-size:.85em;opacity:.75">GetMine Ltd &middot; Version 1.0 &middot; 29 July 2026</p>
+    <p class="page-lead" style="font-size:.85em;opacity:.75">Last updated: {trustPage.published} &middot; GetMine Ltd &middot; security@getmine.ai</p>
 </LegalPage>
 
 <style>
@@ -70,6 +46,16 @@ import LegalPage from '../layouts/LegalPage.astro';
     background: color-mix(in srgb, var(--teal-deck) 9%, transparent);
     color: var(--cream);
     font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+    line-height: 1.65;
+  }
+
+  .page-section ul {
+    margin: 1rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .page-section li {
+    margin-top: 0.75rem;
     line-height: 1.65;
   }
 </style>

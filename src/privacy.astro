@@ -7,7 +7,7 @@ import { privacyPolicy as policy } from '../data/regulatory';
   <h1 class="page-headline">{policy.title}</h1>
 
   <p class="policy-scope">{policy.scope}</p>
-  <aside class="policy-summary"><strong>The short version:</strong> {policy.summary.replace('The short version: ', '')}</aside>
+  <aside class="policy-summary">{policy.summary}</aside>
 
   {[policy.beta, policy.vault, policy.mina].map((section) => (
     <section class="page-section">
