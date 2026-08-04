@@ -14,8 +14,10 @@ const {
 } = Astro.props;
 
 const panelId = `invite-friend-${instanceId}`;
+// Lands on the home page, not /beta: the hero carries the CTA, and /beta does
+// not exist on the site that is live today (it 404s until we publish).
 const message =
-  'GetMine is in open beta — all your health records in one vault on your own computer, with Mina to ask about them. Free to download: https://getmine.ai/beta?src=invite';
+  'GetMine brings your health records together in one private vault on your computer, with Mina working across them. Free to download: https://getmine.ai/?src=invite';
 ---
 <div
   class:list={[
@@ -39,36 +41,41 @@ const message =
     <span aria-hidden="true">→</span>
   </button>
 
-  <div
-    id={panelId}
-    class="invite-panel"
-    role="dialog"
-    aria-label="Invite a friend"
-    data-invite-panel
-    hidden
-  >
-    <h2>Invite a friend</h2>
-    <p>Here’s what they’ll get. Change it to sound like you.</p>
+  <div id={panelId} class="invite-overlay" data-invite-panel hidden>
+    <div class="invite-backdrop" data-invite-dismiss aria-hidden="true"></div>
+    <div
+      class="invite-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Invite a friend"
+    >
+      <button class="invite-close" type="button" aria-label="Close" data-invite-dismiss>
+        <span aria-hidden="true">×</span>
+      </button>
+      <h2>Invite a friend</h2>
+      <p>Share GetMine with someone who should own their health data too. You can edit the message before copying it.</p>
 
-    <label class="sr-only" for={`${panelId}-message`}>Message to share</label>
-    <textarea
-      id={`${panelId}-message`}
-      rows="4"
-      data-invite-message
-    >{message}</textarea>
+      <label class="sr-only" for={`${panelId}-message`}>Message to share</label>
+      <textarea
+        id={`${panelId}-message`}
+        rows="4"
+        data-invite-message
+      >{message}</textarea>
 
-    <div class="invite-actions">
-      <button class="copy-action" type="button" data-invite-copy>Copy message</button>
+      <div class="invite-actions">
+        <button class="copy-action" type="button" data-invite-copy>Copy message</button>
+      </div>
+
+      <span class="sr-only" aria-live="polite" data-invite-announcer></span>
     </div>
-
-    <span class="sr-only" aria-live="polite" data-invite-announcer></span>
   </div>
 </div>
 
 <style>
+  /* No z-index here: it would create a stacking context that traps the fixed
+     overlay beneath the nav. The modal must resolve at root level. */
   .invite-friend {
     position: relative;
-    z-index: 20;
     display: inline-flex;
     max-width: 100%;
   }
@@ -117,38 +124,63 @@ const message =
     font-size: 1.125rem;
   }
 
-  .invite-friend--beta .invite-panel {
-    top: auto;
-    right: 0;
-    bottom: calc(100% + 0.75rem);
-    left: auto;
-    transform-origin: bottom right;
+  /* The invite dialog is a true modal (ruled 4 Aug): centred over the whole
+     page, above the nav (z 50), with the page behind it locked. */
+  .invite-overlay {
+    position: fixed;
+    z-index: 90;
+    inset: 0;
+    display: grid;
+    padding: 1.25rem;
+    place-items: center;
+  }
+
+  .invite-overlay[hidden] {
+    display: none;
+  }
+
+  .invite-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(4 10 15 / 72%);
   }
 
   .invite-panel {
-    position: absolute;
-    z-index: 5;
-    top: calc(100% + 0.75rem);
-    left: 0;
-    width: min(23.75rem, calc(100vw - 2.5rem));
-    padding: 1.375rem;
+    position: relative;
+    z-index: 1;
+    width: min(35rem, 100%);
+    max-height: calc(100dvh - 2.5rem);
+    overflow-y: auto;
+    padding: 1.75rem;
     border: 1px solid color-mix(in srgb, var(--ember) 40%, transparent);
     border-radius: 1.125rem;
     background: var(--navy-2);
     box-shadow: 0 30px 70px -20px rgb(0 0 0 / 85%);
     text-align: left;
-    transform-origin: top left;
     animation: invite-panel-in 220ms var(--ease-gm);
   }
 
-  .invite-panel[hidden] {
-    display: none;
+  .invite-close {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    display: inline-flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--cream);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
   }
 
-  .invite-friend--menubar .invite-panel {
-    right: 0;
-    left: auto;
-    transform-origin: top right;
+  .invite-close:hover {
+    border-color: var(--ember);
+    color: #ffd9c6;
   }
 
   .invite-panel h2 {
@@ -160,19 +192,13 @@ const message =
     letter-spacing: -0.015em;
   }
 
+  /* The modal is portalled to <body> on open, so its type is set here rather
+     than through the placement variant — the variant ancestor is left behind. */
   .invite-panel > p {
     margin: 0.5rem 0 0;
     color: var(--cream);
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1.5;
-  }
-
-  .invite-friend--beta .invite-panel h2 {
-    font-size: 1.375rem;
-  }
-
-  .invite-friend--beta .invite-panel > p {
-    font-size: 1.125rem;
   }
 
   textarea {
@@ -188,12 +214,8 @@ const message =
     background: var(--navy);
     color: var(--cream);
     font: inherit;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.5;
-  }
-
-  .invite-friend--beta textarea {
-    font-size: 1.125rem;
   }
 
   textarea:focus {
@@ -211,16 +233,16 @@ const message =
 
   .invite-actions button {
     display: inline-flex;
-    min-height: 2.5rem;
+    min-height: 2.75rem;
     align-items: center;
     justify-content: center;
-    padding: 0.55rem 0.875rem;
+    padding: 0.55rem 1.125rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-pill);
     background: transparent;
     color: var(--cream);
     font: inherit;
-    font-size: 0.8125rem;
+    font-size: 1rem;
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
@@ -230,11 +252,6 @@ const message =
     border-color: var(--ember);
     background: var(--ember);
     color: var(--navy);
-  }
-
-  .invite-friend--beta .invite-actions button {
-    min-height: 2.75rem;
-    font-size: 1.125rem;
   }
 
   .invite-actions button:hover {
@@ -271,46 +288,6 @@ const message =
 
     .invite-friend--primary .invite-trigger {
       width: 100%;
-    }
-
-    .invite-panel,
-    .invite-friend--menubar .invite-panel,
-    .invite-friend--beta .invite-panel {
-      right: auto;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .invite-friend--menubar .invite-panel {
-      top: calc(100% + 0.75rem);
-      bottom: auto;
-      transform-origin: top center;
-    }
-
-    .invite-friend--beta .invite-panel {
-      position: fixed;
-      top: 50%;
-      right: auto;
-      bottom: auto;
-      left: 50%;
-      width: min(22rem, calc(100vw - 2rem));
-      max-height: calc(100dvh - 2rem);
-      overflow-y: auto;
-      transform: translate(-50%, -50%);
-      transform-origin: center;
-      animation: none;
-    }
-
-    @keyframes invite-panel-in {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -0.5rem);
-      }
-
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
     }
   }
 

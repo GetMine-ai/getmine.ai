@@ -1,7 +1,7 @@
 ---
 const promises = [
   ['Your vault lives with you.', 'Local-first on your device.'],
-  ['Your question defines the task.', 'You decide what leaves.'],
+  ['Your question sets the task.', 'You decide what leaves.'],
   ['You set the terms.', 'Revocable, always in view.'],
   ['Your vault is built to serve you.', 'Never to mine you.'],
 ];
@@ -16,7 +16,7 @@ const promises = [
         <em>It’s an oath.</em>
       </h2>
       <p class="support">
-        Too much. Too little. The wrong context. People are left to guess what to
+        Too much. Too little. The wrong context. You are left to guess what to
         share.
       </p>
     </div>
@@ -40,6 +40,11 @@ const promises = [
     position: relative;
     overflow: hidden;
     background: var(--navy);
+  }
+
+  /* Breathing room before About Us, so the oath closes on its own ground. */
+  .section-pad {
+    padding-bottom: clamp(5rem, 8vw, 6.5rem);
   }
 
   .section-heading {

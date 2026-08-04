@@ -11,8 +11,8 @@ const scenarios = [
     title: 'Chronic condition',
     subtitle: 'You repeat your story.',
     image: 'chronic-condition',
-    alt: 'A person managing health documents and appointments',
-    focus: '50% 45%',
+    alt: 'A woman at her table reading an NHS letter, surrounded by scattered paper records, a laptop and an inhaler',
+    focus: '50% 50%',
   },
   {
     title: 'Urgent moment',
@@ -25,18 +25,18 @@ const scenarios = [
     title: 'AI with no context',
     subtitle: 'It sees the question, not your story.',
     image: 'best-from-ai',
-    alt: 'A generic AI assistant answering without personal health context',
-    focus: '50% 45%',
+    alt: 'A man in a café reviewing his health records on his laptop, printed results and notes beside him',
+    focus: '50% 50%',
   },
 ];
 
 const frictions = [
-  ['What?', 'What was that test result?'],
-  ['When?', 'When did I have that vaccine?'],
-  ['How?', 'What dosage was I taking?'],
-  ['Who?', 'Who did I see for this?'],
-  ['Where?', 'Where is that report?'],
-  ['Share?', 'What should I share?'],
+  ['What', 'What was that test result?'],
+  ['When', 'When did I have that vaccine?'],
+  ['How', 'What dosage was I taking?'],
+  ['Who', 'Who did I see for this?'],
+  ['Where', 'Where is that report?'],
+  ['Share', 'What should I share?'],
 ];
 ---
 <section id="why-it-matters" class="section-edge" aria-labelledby="why-it-matters-heading">
@@ -78,7 +78,7 @@ const frictions = [
     </ul>
 
     <div class="frictions">
-      <h3>The daily frictions <em>we all face.</em></h3>
+      <h3>Daily frictions</h3>
       <div class="card friction-rotator" data-frictions>
         <p aria-live="off">
           <em data-friction-question>{frictions[0][0]}</em>
@@ -173,12 +173,12 @@ const frictions = [
   .scenario-copy p {
     margin: 0.5rem 0 0;
     color: var(--text-secondary);
-    font-size: clamp(0.9375rem, 1.4vw, 1rem);
+    font-size: clamp(1rem, 1.5vw, 1.0625rem);
     line-height: 1.45;
   }
 
   .frictions {
-    margin-top: 2.5rem;
+    margin-top: 1.875rem;
   }
 
   .frictions h3 {
@@ -187,8 +187,7 @@ const frictions = [
     letter-spacing: -0.02em;
   }
 
-  .frictions h3 em,
-  .friction-rotator p em {
+  .frictions h3 em {
     color: var(--teal);
     font-style: italic;
   }
@@ -205,17 +204,27 @@ const frictions = [
     display: flex;
     min-width: 0;
     flex: 1;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.75rem;
-    align-items: baseline;
+    flex-direction: column;
+    gap: 0.375rem;
+    align-items: flex-start;
     margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
     line-height: 1.25;
+  }
+
+  .friction-rotator p em {
+    color: var(--teal);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
 
   .friction-rotator p span {
     color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
   }
 
   .friction-controls {

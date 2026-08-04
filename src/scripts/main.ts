@@ -85,6 +85,7 @@ function createAutoAdvance(
 ) {
   let timer: number | undefined;
   let temporarilyPaused = false;
+  let stopped = false;
   const delay = () => (typeof interval === 'function' ? interval() : interval);
 
   const clear = () => {
@@ -98,12 +99,18 @@ function createAutoAdvance(
   };
 
   const start = () => {
-    if (reducedMotion || temporarilyPaused || timer !== undefined) return;
+    if (reducedMotion || temporarilyPaused || stopped || timer !== undefined) return;
     timer = window.setTimeout(tick, delay());
   };
 
   return {
     start,
+    // A deliberate choice ends the tour: once the person picks a stage, the
+    // rotation never restarts (hover-resume included).
+    stop() {
+      stopped = true;
+      clear();
+    },
     pauseTemporarily() {
       temporarilyPaused = true;
       clear();
@@ -175,7 +182,6 @@ function initialiseWalkthrough() {
   const frame = walkthrough.querySelector<HTMLElement>('[data-walkthrough-frame]');
   const desktop = walkthrough.querySelector<HTMLElement>('.desktop-walkthrough');
   const tabRail = walkthrough.querySelector<HTMLElement>('[data-walkthrough-tabs]');
-  const body = walkthrough.querySelector<HTMLElement>('[data-walkthrough-body]');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let active = 0;
 
@@ -191,25 +197,20 @@ function initialiseWalkthrough() {
       panel.hidden = !selected;
       panel.classList.toggle('active', selected);
     });
-    if (body) body.textContent = tabs[active]?.dataset.body || '';
   };
 
-  // Each stop lasts as long as its panel's animation: the vault cycles three
-  // views (6+5+5s), Ask Mina types and answers, Watching opens at 2.8s.
-  const walkthroughDwell = [17000, 17500, 6500, 7500];
-  const rotation = createAutoAdvance(
-    () => select(active + 1),
-    () => walkthroughDwell[active] ?? 6500,
-    reducedMotion,
-  );
+  // Calm, even rotation; a manual pick hands control over for good.
+  const rotation = createAutoAdvance(() => select(active + 1), 5500, reducedMotion);
 
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
+      rotation.stop();
       select(index);
     });
     tab.addEventListener('keydown', (event) => {
       if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
       event.preventDefault();
+      rotation.stop();
       const next = (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
       select(next);
       tabs[next].focus();
@@ -285,12 +286,29 @@ function initialiseInviteFriend() {
   );
   if (!instances.length) return;
 
+  // The modal locks the page scroll while open; restored on every close path.
+  const lockScroll = () => {
+    document.documentElement.style.overflow = 'hidden';
+  };
+  const unlockScroll = () => {
+    document.documentElement.style.overflow = '';
+  };
+
+  // Panels are portalled to <body> when opened, so they can no longer be found
+  // by querying inside their instance — this keeps the pairing.
+  const panelOf = new WeakMap<HTMLElement, HTMLElement>();
+  instances.forEach((instance) => {
+    const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
+    if (panel) panelOf.set(instance, panel);
+  });
+
   const closeInstance = (instance: HTMLElement, restoreFocus = false) => {
     const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
-    const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
+    const panel = panelOf.get(instance);
     if (!trigger || !panel || panel.hidden) return;
     panel.hidden = true;
     trigger.setAttribute('aria-expanded', 'false');
+    unlockScroll();
     if (restoreFocus) trigger.focus();
   };
 
@@ -333,10 +351,22 @@ function initialiseInviteFriend() {
       closeAll(instance);
       panel.hidden = !opening;
       trigger.setAttribute('aria-expanded', String(opening));
-      if (!opening) return;
+      if (!opening) {
+        unlockScroll();
+        return;
+      }
+      // Portal to <body>: any positioned ancestor (the beta card's wrapper is
+      // one) would otherwise trap the fixed overlay beneath the nav.
+      if (panel.parentElement !== document.body) document.body.append(panel);
+      lockScroll();
       resizeMessage();
       message.focus();
       message.select();
+    });
+
+    // Backdrop and the × both dismiss, returning focus to the trigger.
+    instance.querySelectorAll<HTMLElement>('[data-invite-dismiss]').forEach((dismiss) => {
+      dismiss.addEventListener('click', () => closeInstance(instance, true));
     });
 
     panel.addEventListener('keydown', (event) => {
@@ -382,15 +412,16 @@ function initialiseInviteFriend() {
     const target = event.target;
     if (!(target instanceof Node)) return;
     instances.forEach((instance) => {
-      if (!instance.contains(target)) closeInstance(instance);
+      // The panel is portalled out of the instance, so it must be tested too.
+      const panel = panelOf.get(instance);
+      if (instance.contains(target) || panel?.contains(target)) return;
+      closeInstance(instance);
     });
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
-    const open = instances.find(
-      (instance) => !instance.querySelector<HTMLElement>('[data-invite-panel]')?.hidden,
-    );
+    const open = instances.find((instance) => panelOf.get(instance)?.hidden === false);
     if (open) closeInstance(open, true);
   });
 

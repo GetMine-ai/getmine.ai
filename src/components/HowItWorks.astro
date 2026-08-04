@@ -4,28 +4,28 @@ const steps = [
     id: 'build',
     nav: 'Vault',
     eyebrow: 'Step one',
-    title: 'Connect your sources',
+    title: 'Connect your health sources',
     body: 'Bring your records, letters, emails, photos and notes into one vault on your own computer.',
   },
   {
     id: 'ask',
     nav: 'Ask Mina',
     eyebrow: 'Step two',
-    title: 'Engage in conversations',
+    title: 'Conversations with context',
     body: 'Like any AI assistant, except she’s read all nineteen years of it and shows her source every time.',
   },
   {
     id: 'topics',
     nav: 'Topics',
     eyebrow: 'Step three',
-    title: 'Name what matters to you.',
+    title: 'Name what matters to you',
     body: 'Supplements, longevity, menopause. Your words. Tag records from any source and the topic builds its own memory.',
   },
   {
     id: 'watching',
     nav: 'Watching',
     eyebrow: 'Step four',
-    title: 'Track what changes.',
+    title: 'Track what changes',
     body: 'A symptom, a pattern, a habit. Log it as it happens, ready when someone asks how long.',
   },
 ];
@@ -142,9 +142,9 @@ const askExchanges = [
     <header class="section-heading">
       <p class="eyebrow">How it works</p>
       <h2 id="how-it-works-heading">
-        A self-sovereign vault
-        <span>powered by Mina,</span>
-        <em>your personal health agent.</em>
+        Your private health vault,
+        <span>with Mina</span>
+        <em>working across it.</em>
       </h2>
     </header>
   </div>
@@ -316,7 +316,6 @@ const askExchanges = [
           aria-selected={index === 0 ? 'true' : 'false'}
           aria-controls={`walkthrough-${step.id}`}
           data-walkthrough-tab={index}
-          data-body={step.body}
         >
           <i></i>
           <span>{String(index + 1).padStart(2, '0')} {step.nav}</span>
@@ -324,7 +323,6 @@ const askExchanges = [
         </button>
       ))}
     </div>
-    <p class="walkthrough-body" data-walkthrough-body></p>
   </div>
 
   <div class="mobile-walkthrough wrap">
@@ -1280,7 +1278,7 @@ const askExchanges = [
     margin-top: 0.4rem;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     font-weight: 400;
     letter-spacing: -0.02em;
     line-height: 1.2;
@@ -1288,16 +1286,6 @@ const askExchanges = [
 
   .walkthrough-tabs button[aria-selected="true"] b {
     color: var(--cream);
-  }
-
-  .walkthrough-body {
-    max-width: 86ch;
-    text-wrap: balance;
-    margin: 1rem auto 0;
-    color: var(--cream);
-    font-size: 1.0625rem;
-    line-height: 1.55;
-    text-align: center;
   }
 
   .mobile-walkthrough {
@@ -1327,7 +1315,7 @@ const askExchanges = [
   .mobile-walkthrough article > div {
     margin-top: 0.75rem;
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.55;
   }
 
