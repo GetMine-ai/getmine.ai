@@ -124,7 +124,7 @@ export const trustPage = {
       heading: 'An encrypted vault',
       paragraphs: [
         'Your vault is an encrypted store on your computer, protected by one password that only you hold. A recovery phrase, issued when your vault is created, is the only other way back in.',
-        'Should you choose to export your records as a zip file, you can password protect it, or keep the export as ordinary readable files. An ordinary export is as safe as the computer it sits on.',
+        'Should you choose to export your records, the export is ordinary readable files, and it is as safe as the computer it sits on.',
       ],
     },
     {
