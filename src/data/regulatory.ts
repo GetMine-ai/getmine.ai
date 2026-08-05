@@ -78,7 +78,7 @@ export const privacyPolicy = {
     ],
     paragraphs: [
       'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
-      'Our lawful bases: running the beta you asked to join (contract), improving the product (legitimate interests), and your explicit consent for the AI processing of health information described above.',
+      'Our lawful bases for this table: running the beta you asked to join (contract) and improving the product (legitimate interests). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
     ],
   },
   exclusions: {
