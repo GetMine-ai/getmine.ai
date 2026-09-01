@@ -45,8 +45,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
+      - name: Check and build
+        run: |
+          pnpm check
+          pnpm build:release
 
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main'

@@ -176,6 +176,12 @@ const platforms = [
                       {platform.build.filename}
                       {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
                     </p>
+                    {platform.build.sha256 && (
+                      <p class="checksum-line">
+                        <span class="checksum-label">SHA-256</span>
+                        <code class="checksum-value">{platform.build.sha256}</code>
+                      </p>
+                    )}
                   </>
                 ) : (
                   <>
@@ -1281,6 +1287,28 @@ const platforms = [
     color: var(--cream);
     font-size: 1.125rem;
     line-height: 1.5;
+  }
+
+  .installer-copy .checksum-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .checksum-label {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .checksum-value {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    overflow-wrap: anywhere;
+    user-select: all;
   }
 
   .download-action {
