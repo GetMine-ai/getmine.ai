@@ -1248,12 +1248,30 @@ const platforms = [
 
   .platform-panel {
     display: grid;
-    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    /* The action column is a bounded track, not auto: the hidden confirmation
+       state shares the cell via visibility (cross-fade), so its long prose
+       must wrap inside the track rather than size it — auto let it inflate
+       the column and crush the copy to zero width. */
+    grid-template-columns: 4rem minmax(0, 1fr) clamp(11rem, 30%, 15rem);
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.25rem;
     border-color: rgb(120 160 165 / 28%);
     border-radius: 1.375rem;
+  }
+
+  .download-action {
+    min-width: 0;
+  }
+
+  @media (max-width: 40rem) {
+    .platform-panel {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+
+    .download-action {
+      grid-column: 1 / -1;
+    }
   }
 
   .platform-panel[hidden] {
