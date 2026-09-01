@@ -176,12 +176,6 @@ const platforms = [
                       {platform.build.filename}
                       {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
                     </p>
-                    {platform.build.sha256 && (
-                      <p class="checksum-line">
-                        <span class="checksum-label">SHA-256</span>
-                        <code class="checksum-value">{platform.build.sha256}</code>
-                      </p>
-                    )}
                   </>
                 ) : (
                   <>
@@ -222,11 +216,23 @@ const platforms = [
 
               {available && (
                 <div class="installer-trust">
-                  <p class="trust-line">
-                    {platform.trust}
-                    {' '}<a href="/trust">How verification works</a>
+                  <p class="quiet-meta">
+                    Requires {platform.build.minOs} · Signed by {platform.build.signedBy}{platform.key === 'mac' ? ', notarised by Apple' : ''}
                   </p>
-                  <p class="minimum-os">Requires {platform.build.minOs}</p>
+                  {platform.build.sha256 && (
+                    <details class="verify-fold">
+                      <summary>Verify your download</summary>
+                      <p>
+                        Your computer checks the signature before anything installs.
+                        The careful can also compare the file's fingerprint:
+                      </p>
+                      <p class="checksum-line">
+                        <span class="checksum-label">SHA-256</span>
+                        <code class="checksum-value">{platform.build.sha256}</code>
+                      </p>
+                      <p><a href="/trust">How verification works</a></p>
+                    </details>
+                  )}
                 </div>
               )}
             </section>
@@ -1354,6 +1360,28 @@ const platforms = [
   .minimum-os {
     color: var(--cream);
     font-size: 1.125rem;
+  }
+
+  .quiet-meta {
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    margin: 0;
+  }
+
+  .verify-fold {
+    margin-top: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--text-quiet);
+  }
+
+  .verify-fold summary {
+    cursor: pointer;
+    color: var(--teal);
+    width: fit-content;
+  }
+
+  .verify-fold p {
+    margin: 0.5rem 0 0;
   }
 
   .privacy-line {
