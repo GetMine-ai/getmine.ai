@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
-    "build:release": "pnpm assert:downloads && astro build && pnpm assert:rendered",
+    "build": "astro build && node --experimental-strip-types scripts/alias-beta-dir.mjs",
+    "build:release": "pnpm assert:downloads && astro build && node --experimental-strip-types scripts/alias-beta-dir.mjs && pnpm assert:rendered",
     "preview": "astro preview",
     "check": "astro check",
     "assert:downloads": "node --experimental-strip-types scripts/assert-download-links.mjs links",
