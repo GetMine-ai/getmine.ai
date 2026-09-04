@@ -120,6 +120,15 @@ if (stage === 'links') {
     if (!html.includes('Choose macOS or Windows. Your download starts with one click.')) {
       failures.push('one-click platform guidance is absent from dist/beta.html');
     }
+    // The download-running state names the file the visitor is about to open,
+    // per platform. A shared sentence here would send Windows visitors looking
+    // for a .pkg (ruled 4 Sep).
+    for (const [platform, build] of platforms) {
+      const sentence = `When it says complete, open ${build.filename} and follow the instructions.`;
+      if (!html.includes(sentence)) {
+        failures.push(`${platform}: the download-running instruction naming ${build.filename} is absent from dist/beta.html`);
+      }
+    }
     if (!html.includes('What happens next') || !html.includes('Invite a friend')) {
       failures.push('the post-download journey or invite section is absent from dist/beta.html');
     }
