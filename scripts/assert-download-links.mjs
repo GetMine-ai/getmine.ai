@@ -12,7 +12,6 @@
  *             then assert:rendered).
  */
 import { readFile } from 'node:fs/promises';
-import { runInNewContext } from 'node:vm';
 import { builds } from '../src/data/builds.ts';
 
 const stage = process.argv[2] ?? 'links';
@@ -102,86 +101,10 @@ if (stage === 'links') {
         failures.push(`${platform}: checksum ${build.sha256} is not rendered in dist/beta.html`);
       }
     }
-    for (const required of [
-      'data-download-progress',
-      'Downloading GetMine',
-      'browser’s Downloads button shows the exact progress',
-    ]) {
-      if (!html.includes(required)) {
-        failures.push(`download progress state is missing: ${required}`);
-      }
-    }
-    // This handler deliberately lives before the links. A large installer can
-    // navigate before the deferred module hydrates, so a listener added later
-    // would leave the page static on the first, most important click.
-    const earlyListener = html.indexOf("r.addEventListener('click'");
-    const firstRenderedChild = html.indexOf('<div class="download-glow"');
-    if (earlyListener < 0 || firstRenderedChild < 0 || earlyListener > firstRenderedChild) {
-      failures.push('download progress click listener is not installed before the rendered download UI');
-    }
-    const moduleStart = html.lastIndexOf('<main', earlyListener);
-    const scriptOpen = html.lastIndexOf('<script>', earlyListener);
-    const scriptClose = html.indexOf('</script>', earlyListener);
-    if (moduleStart < 0 || scriptOpen < moduleStart || scriptClose < 0 || scriptClose > firstRenderedChild) {
-      failures.push('early download listener is not an inline child of the download module before its UI');
-    } else {
-      const listeners = new Map();
-      const action = { dataset: {} };
-      class FakeElement {
-        constructor(kind) {
-          this.kind = kind;
-        }
 
-        closest(selector) {
-          if (selector === '[data-download-link]') return this.kind === 'target' ? link : null;
-          if (selector === '[data-download-action]') return this.kind === 'link' ? action : null;
-          return null;
-        }
-      }
-      const link = new FakeElement('link');
-      const target = new FakeElement('target');
-      const root = {
-        dataset: {},
-        addEventListener(type, listener) {
-          listeners.set(type, listener);
-        },
-      };
-      const currentScript = { closest: selector => selector === '[data-download-module]' ? root : null };
-      try {
-        runInNewContext(html.slice(scriptOpen + '<script>'.length, scriptClose), {
-          document: { currentScript },
-          navigator: { platform: 'MacIntel', maxTouchPoints: 0 },
-          Element: FakeElement,
-        });
-        const click = listeners.get('click');
-        if (typeof click !== 'function') {
-          failures.push('early download script does not register its click listener');
-        } else {
-          click({ target });
-          if (action.dataset.started !== 'true') {
-            failures.push('clicking a rendered download link does not activate its progress state');
-          }
-        }
-      } catch (error) {
-        failures.push(`early download script could not execute against the rendered hierarchy: ${describe(error)}`);
-      }
-    }
-    const cssHrefs = [...html.matchAll(/href="([^"]+\.css)"/g)].map(match => match[1]);
-    let renderedCss = '';
-    for (const href of cssHrefs) {
-      try {
-        renderedCss += await readFile(new URL(`../dist${href}`, import.meta.url), 'utf8');
-      } catch (error) {
-        failures.push(`rendered stylesheet ${href} could not be read: ${describe(error)}`);
-      }
-    }
-    if (!/@media\(prefers-reduced-motion:reduce\)[\s\S]*?download-action[^{}]*data-started=true[^{}]*download-progress[^{}]*\{display:none\}/.test(renderedCss)) {
-      failures.push('reduced-motion download state still presents an unmoving percentage-like bar');
-    }
-
-    // Each platform card is itself the download choice. This prevents the
-    // selector-then-button interaction from returning while retaining the
-    // immediate, early-bound progress feedback above.
+    // The platform cards are the download actions themselves. Keep the release
+    // page to one click per operating system rather than restoring the former
+    // selector-then-download interaction.
     const downloadActions = html.match(/<a\b[^>]*\bdata-download-link\b[^>]*>/g) ?? [];
     if (downloadActions.length !== 2) {
       failures.push(`rendered page has ${downloadActions.length} platform download actions, expected 2`);
@@ -196,6 +119,18 @@ if (stage === 'links') {
     }
     if (!html.includes('Choose macOS or Windows. Your download starts with one click.')) {
       failures.push('one-click platform guidance is absent from dist/beta.html');
+    }
+    if (!html.includes('Download started.')) {
+      failures.push('the honest completed click state is absent from dist/beta.html');
+    }
+    // The post-click state names the file the visitor is about to open, per
+    // platform. A shared sentence here would send Windows visitors looking for
+    // a .pkg (ruled 4 Sep).
+    for (const [platform, build] of platforms) {
+      const sentence = `When it says complete, open ${build.filename} and follow the instructions.`;
+      if (!html.includes(sentence)) {
+        failures.push(`${platform}: the download-running instruction naming ${build.filename} is absent from dist/beta.html`);
+      }
     }
     if (!html.includes('What happens next') || !html.includes('Invite a friend')) {
       failures.push('the post-download journey or invite section is absent from dist/beta.html');
@@ -213,6 +148,6 @@ if (failures.length > 0) {
 
 console.log(
   stage === 'rendered'
-    ? 'Rendered download assertion passed: direct platform actions, progress, journey copy and checksums are present.'
+    ? 'Rendered download assertion passed: direct platform actions, journey copy and checksums are present.'
     : 'Download release assertion passed for macOS and Windows (links and sidecar checksums).',
 );
