@@ -198,6 +198,10 @@ const platforms = [
                     role="status"
                     aria-live="polite"
                   >
+                    <!-- The browser owns a native cross-origin download after
+                         this click. The page cannot observe its percentage or
+                         completion, so this is deliberately a start receipt,
+                         never an invented progress bar (Sabine, 4 Sep 2026). -->
                     <p><strong>Download started.</strong></p>
                     <p>When it says complete, open {platform.build.filename} and follow the instructions.</p>
                     <a href={platform.build.url} download={platform.build.filename}>

@@ -123,6 +123,9 @@ if (stage === 'links') {
     if (!html.includes('Download started.')) {
       failures.push('the honest completed click state is absent from dist/beta.html');
     }
+    if (html.includes('data-download-progress') || html.includes('Downloading GetMine')) {
+      failures.push('the page has restored a progress claim it cannot observe');
+    }
     // The post-click state names the file the visitor is about to open, per
     // platform. A shared sentence here would send Windows visitors looking for
     // a .pkg (ruled 4 Sep).
