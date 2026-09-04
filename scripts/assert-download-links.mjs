@@ -178,6 +178,28 @@ if (stage === 'links') {
     if (!/@media\(prefers-reduced-motion:reduce\)[\s\S]*?download-action[^{}]*data-started=true[^{}]*download-progress[^{}]*\{display:none\}/.test(renderedCss)) {
       failures.push('reduced-motion download state still presents an unmoving percentage-like bar');
     }
+
+    // Each platform card is itself the download choice. This prevents the
+    // selector-then-button interaction from returning while retaining the
+    // immediate, early-bound progress feedback above.
+    const downloadActions = html.match(/<a\b[^>]*\bdata-download-link\b[^>]*>/g) ?? [];
+    if (downloadActions.length !== 2) {
+      failures.push(`rendered page has ${downloadActions.length} platform download actions, expected 2`);
+    }
+    if (html.includes('data-platform-tab')) {
+      failures.push('rendered page contains the retired platform selector');
+    }
+    for (const platform of ['mac', 'windows']) {
+      if (!html.includes(`data-platform-panel="${platform}"`)) {
+        failures.push(`${platform}: direct platform card is absent from dist/beta.html`);
+      }
+    }
+    if (!html.includes('Choose macOS or Windows. Your download starts with one click.')) {
+      failures.push('one-click platform guidance is absent from dist/beta.html');
+    }
+    if (!html.includes('What happens next') || !html.includes('Invite a friend')) {
+      failures.push('the post-download journey or invite section is absent from dist/beta.html');
+    }
   }
 } else {
   failures.push(`unknown stage '${stage}' (expected 'links' or 'rendered')`);
@@ -191,6 +213,6 @@ if (failures.length > 0) {
 
 console.log(
   stage === 'rendered'
-    ? 'Rendered checksum assertion passed: both checksums appear in dist/beta.html.'
+    ? 'Rendered download assertion passed: direct platform actions, progress, journey copy and checksums are present.'
     : 'Download release assertion passed for macOS and Windows (links and sidecar checksums).',
 );
