@@ -47,7 +47,7 @@ const platforms = [
   data-detected-platform=""
 >
   <script is:inline>
-    (()=>{const r=document.currentScript?.closest('[data-download-module]');if(!r)return;const p=navigator.userAgentData?.platform||navigator.platform||navigator.userAgent||'',i=/Mac/i.test(p)&&navigator.maxTouchPoints>1,d=!i&&/Win/i.test(p)?'windows':!i&&/Mac/i.test(p)?'mac':'unsupported';r.dataset.platform=d;r.dataset.detectedPlatform=d;r.dataset.enhanced='true'})();
+    (()=>{const r=document.currentScript?.closest('[data-download-module]');if(!r)return;const p=navigator.userAgentData?.platform||navigator.platform||navigator.userAgent||'',i=/Mac/i.test(p)&&navigator.maxTouchPoints>1,d=!i&&/Win/i.test(p)?'windows':!i&&/Mac/i.test(p)?'mac':'unsupported';r.dataset.platform=d;r.dataset.detectedPlatform=d;r.dataset.enhanced='true';r.addEventListener('click',e=>{const l=e.target instanceof Element?e.target.closest('[data-download-link]'):null,a=l?.closest('[data-download-action]');if(a)a.dataset.started='true'})})();
   </script>
 
   <div class="download-glow" aria-hidden="true"></div>
@@ -205,8 +205,10 @@ const platforms = [
                     role="status"
                     aria-live="polite"
                   >
-                    <p><strong>Your download’s running.</strong></p>
-                    <p>Next: open the installer. Your computer will confirm GETMINE LTD before anything installs.</p>
+                    <div class="download-progress" data-download-progress aria-hidden="true"><span></span></div>
+                    <p><strong>Downloading GetMine</strong></p>
+                    <p>{platform.build.sizeMB} MB can take a few minutes. Your browser’s Downloads button shows the exact progress.</p>
+                    <p>When it says complete, open {platform.build.filename}. Your computer will confirm GETMINE LTD before anything installs.</p>
                     <a href={platform.build.url} download={platform.build.filename}>
                       Download didn’t start? Use the direct link.
                     </a>
@@ -384,9 +386,6 @@ const platforms = [
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
         count('download-click');
-        const action = link.closest<HTMLElement>('[data-download-action]');
-        if (!action) return;
-        action.dataset.started = 'true';
       });
     });
 
@@ -691,6 +690,25 @@ const platforms = [
     opacity: 0;
   }
 
+  .download-progress {
+    position: relative;
+    width: 100%;
+    height: 0.25rem;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border-radius: var(--radius-pill);
+    background: rgb(232 250 248 / 18%);
+  }
+
+  .download-progress span {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 38%;
+    border-radius: inherit;
+    background: var(--teal);
+  }
+
   .download-action[data-started='true'] .download-start {
     visibility: hidden;
     opacity: 0;
@@ -970,12 +988,23 @@ const platforms = [
       content: '';
       pointer-events: none;
     }
+
+    .download-action[data-started='true'] .download-progress span {
+      animation: download-progress 1.35s ease-in-out infinite;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .download-start,
     .download-confirmation {
       transition: none;
+    }
+
+    /* An unmoving 38% bar looks like measured progress. The copy remains and
+       points to the browser's truthful byte progress; only the decorative,
+       indeterminate motion is omitted for people who disable animation. */
+    .download-action[data-started='true'] .download-progress {
+      display: none;
     }
   }
 
@@ -998,6 +1027,15 @@ const platforms = [
     to {
       transform: scale(1.04);
       opacity: 0;
+    }
+  }
+
+  @keyframes download-progress {
+    from {
+      transform: translateX(-110%);
+    }
+    to {
+      transform: translateX(285%);
     }
   }
 
