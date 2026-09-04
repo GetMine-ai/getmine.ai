@@ -101,6 +101,28 @@ if (stage === 'links') {
         failures.push(`${platform}: checksum ${build.sha256} is not rendered in dist/beta.html`);
       }
     }
+
+    // The platform cards are the download actions themselves. Keep the release
+    // page to one click per operating system rather than restoring the former
+    // selector-then-download interaction.
+    const downloadActions = html.match(/<a\b[^>]*\bdata-download-link\b[^>]*>/g) ?? [];
+    if (downloadActions.length !== 2) {
+      failures.push(`rendered page has ${downloadActions.length} platform download actions, expected 2`);
+    }
+    if (html.includes('data-platform-tab')) {
+      failures.push('rendered page contains the retired platform selector');
+    }
+    for (const platform of ['mac', 'windows']) {
+      if (!html.includes(`data-platform-panel="${platform}"`)) {
+        failures.push(`${platform}: direct platform card is absent from dist/beta.html`);
+      }
+    }
+    if (!html.includes('Choose macOS or Windows. Your download starts with one click.')) {
+      failures.push('one-click platform guidance is absent from dist/beta.html');
+    }
+    if (!html.includes('What happens next') || !html.includes('Invite a friend')) {
+      failures.push('the post-download journey or invite section is absent from dist/beta.html');
+    }
   }
 } else {
   failures.push(`unknown stage '${stage}' (expected 'links' or 'rendered')`);
@@ -114,6 +136,6 @@ if (failures.length > 0) {
 
 console.log(
   stage === 'rendered'
-    ? 'Rendered checksum assertion passed: both checksums appear in dist/beta.html.'
+    ? 'Rendered download assertion passed: direct platform actions, journey copy and checksums are present.'
     : 'Download release assertion passed for macOS and Windows (links and sidecar checksums).',
 );

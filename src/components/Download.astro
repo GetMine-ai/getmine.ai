@@ -71,8 +71,7 @@ const platforms = [
         </div>
         <h1 id="download-title">Download GetMine</h1>
         <p class="download-lead">
-          <span>No account, no email, nothing to fill in. The download just starts.</span>
-          <span>Everything else — who you are, what you agree to — happens in the app.</span>
+          <span>Choose macOS or Windows. Your download starts with one click.</span>
         </p>
       </header>
 
@@ -133,28 +132,7 @@ const platforms = [
         <span class="sr-only" aria-live="polite" data-link-announcer></span>
       </aside>
 
-      <div class="platform-tabs" data-platform-tabs aria-label="Choose your computer">
-        {platforms.map((platform) => (
-          <button
-            type="button"
-            data-platform-tab={platform.key}
-            aria-controls={`download-${platform.key}`}
-          >
-            {platform.key === 'mac' ? (
-              <svg class="platform-icon platform-icon--apple" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.09 3.13 7.5 8.33 7.21c1.26-.07 2.4.87 3.2.87.78 0 2.23-1.07 3.77-.91.64.03 2.43.26 3.58 1.94-.09.06-2.14 1.25-2.12 3.78.03 3.02 2.65 4.03 2.68 4.04-.02.07-.42 1.44-1.39 2.85ZM14.29 3.24c.81-.96 2.16-1.67 3.31-1.71.15 1.33-.39 2.68-1.17 3.64-.78.97-2.05 1.72-3.32 1.62-.17-1.3.46-2.63 1.18-3.55Z"></path>
-              </svg>
-            ) : (
-              <svg class="platform-icon platform-icon--windows" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 4.75 10.75 3.7v7.55H3V4.75Zm9.25-1.25L21 2.25v9h-8.75V3.5ZM3 12.75h7.75v7.55L3 19.25v-6.5Zm9.25 0H21v9l-8.75-1.25v-7.75Z"></path>
-              </svg>
-            )}
-            <span>{platform.tabLabel}</span>
-          </button>
-        ))}
-      </div>
-
-      <div class="platform-panels">
+      <div class="platform-panels" aria-label="Download GetMine">
         {platforms.map((platform) => {
           const available = Boolean(platform.build.url);
           return (
@@ -166,7 +144,22 @@ const platforms = [
               aria-labelledby={`download-${platform.key}-heading`}
             >
               <h2 class="sr-only" id={`download-${platform.key}-heading`}>{platform.title}</h2>
-              <div class="installer-mark" aria-hidden="true"><span>M</span><i>.</i></div>
+              <div class="platform-card-top">
+                <div class="installer-mark" aria-hidden="true">
+                  {platform.key === 'mac' ? (
+                    <svg class="platform-icon platform-icon--apple" viewBox="0 0 24 24">
+                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.09 3.13 7.5 8.33 7.21c1.26-.07 2.4.87 3.2.87.78 0 2.23-1.07 3.77-.91.64.03 2.43.26 3.58 1.94-.09.06-2.14 1.25-2.12 3.78.03 3.02 2.65 4.03 2.68 4.04-.02.07-.42 1.44-1.39 2.85ZM14.29 3.24c.81-.96 2.16-1.67 3.31-1.71.15 1.33-.39 2.68-1.17 3.64-.78.97-2.05 1.72-3.32 1.62-.17-1.3.46-2.63 1.18-3.55Z"></path>
+                    </svg>
+                  ) : (
+                    <svg class="platform-icon platform-icon--windows" viewBox="0 0 24 24">
+                      <path d="M3 4.75 10.75 3.7v7.55H3V4.75Zm9.25-1.25L21 2.25v9h-8.75V3.5ZM3 12.75h7.75v7.55L3 19.25v-6.5Zm9.25 0H21v9l-8.75-1.25v-7.75Z"></path>
+                    </svg>
+                  )}
+                </div>
+                <span class="platform-fit">
+                  {platform.key === 'mac' ? 'For this Mac' : 'For this Windows PC'}
+                </span>
+              </div>
 
               <div class="installer-copy">
                 {available ? (
@@ -257,15 +250,14 @@ const platforms = [
             <span class="step-number">1</span>
             <div>
               <h3>Open the installer</h3>
-              <p>Agree to the beta terms and complete the usual installation. Your computer may confirm the publisher as GETMINE LTD.</p>
-              <p class="step-note">This confirmation is performed by your operating system.</p>
+              <p>Your computer confirms GetMine before anything installs.</p>
             </div>
           </li>
           <li>
             <span class="step-number">2</span>
             <div>
-              <h3>Tell GetMine who you are</h3>
-              <p>Add your name and date of birth. These stay on your computer. Your email is sent once for verification.</p>
+              <h3>Set up your vault</h3>
+              <p>Review the beta consent, then add your name and date of birth.</p>
             </div>
           </li>
           <li>
@@ -278,8 +270,8 @@ const platforms = [
           <li class="timeline-final">
             <span class="step-number">4</span>
             <div>
-              <h3>Your place is confirmed</h3>
-              <p>Your vault opens when your place does. Your health. Your data. Your rules.</p>
+              <h3>Open your vault</h3>
+              <p>Your private health vault opens on this computer.</p>
             </div>
           </li>
         </ol>
@@ -330,57 +322,6 @@ const platforms = [
 
   roots.forEach((root) => {
     root.dataset.moduleReady = 'true';
-    const tabs = Array.from(
-      root.querySelectorAll<HTMLButtonElement>('[data-platform-tab]'),
-    );
-    const panels = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-platform-panel]'),
-    );
-    const selectPlatform = (platform: string, focus = false) => {
-      root.dataset.platform = platform;
-      tabs.forEach((tab) => {
-        const selected = tab.dataset.platformTab === platform;
-        tab.setAttribute('aria-selected', String(selected));
-        tab.setAttribute('tabindex', selected ? '0' : '-1');
-        if (selected && focus) tab.focus();
-      });
-      panels.forEach((panel) => {
-        const selected = panel.dataset.platformPanel === platform;
-        panel.hidden = !selected;
-      });
-    };
-
-    tabs.forEach((tab, index) => {
-      tab.setAttribute('role', 'tab');
-      tab.addEventListener('click', () => {
-        const platform = tab.dataset.platformTab;
-        if (platform) selectPlatform(platform);
-      });
-      tab.addEventListener('keydown', (event) => {
-        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-        event.preventDefault();
-        const direction = event.key === 'ArrowRight' ? 1 : -1;
-        const next = (index + direction + tabs.length) % tabs.length;
-        const platform = tabs[next]?.dataset.platformTab;
-        if (platform) selectPlatform(platform, true);
-      });
-    });
-
-    root.querySelector('[data-platform-tabs]')?.setAttribute('role', 'tablist');
-    panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
-
-    if (root.dataset.platform === 'mac' || root.dataset.platform === 'windows') {
-      selectPlatform(root.dataset.platform);
-    } else {
-      tabs.forEach((tab) => {
-        tab.setAttribute('aria-selected', 'false');
-        tab.setAttribute('tabindex', '0');
-      });
-      panels.forEach((panel) => {
-        panel.hidden = false;
-      });
-    }
-
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
         count('download-click');
@@ -511,36 +452,6 @@ const platforms = [
     line-height: 1.6;
   }
 
-  .platform-tabs {
-    display: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: min(100%, 25rem);
-    margin: 1.5rem auto 0;
-    padding: 0.25rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-pill);
-    background: var(--navy);
-  }
-
-  [data-enhanced='true'] .platform-tabs {
-    display: grid;
-  }
-
-  .platform-tabs button {
-    min-height: 2.75rem;
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: transparent;
-    color: var(--cream);
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .platform-tabs button[aria-selected='true'] {
-    background: var(--teal);
-    color: var(--navy);
-  }
-
   .unsupported-notice {
     display: none;
     margin-top: 1.25rem;
@@ -605,11 +516,6 @@ const platforms = [
   }
 
   .platform-panel[hidden] {
-    display: none;
-  }
-
-  [data-enhanced='true'][data-platform='mac'] [data-platform-panel='windows'],
-  [data-enhanced='true'][data-platform='windows'] [data-platform-panel='mac'] {
     display: none;
   }
 
@@ -914,15 +820,6 @@ const platforms = [
       line-height: 1.55;
     }
 
-    .platform-tabs {
-      margin-top: 0.75rem;
-      padding: 0.125rem;
-    }
-
-    .platform-tabs button {
-      min-height: 2.5rem;
-    }
-
     .platform-panel {
       padding: 0.85rem;
     }
@@ -1224,24 +1121,6 @@ const platforms = [
     font-size: 1.125rem;
   }
 
-  .platform-tabs {
-    width: 100%;
-    min-height: 4.25rem;
-    margin-top: 0.75rem;
-    padding: 0.25rem;
-    border-radius: 2.625rem;
-  }
-
-  .platform-tabs button {
-    display: inline-flex;
-    min-height: 3.75rem;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    border-radius: 2.35rem;
-    font-size: 1.1875rem;
-  }
-
   .platform-icon {
     width: 1.75rem;
     height: 1.75rem;
@@ -1249,35 +1128,53 @@ const platforms = [
   }
 
   .platform-panels {
-    margin-top: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
   }
 
   .platform-panel {
-    display: grid;
-    /* The action column is a bounded track, not auto: the hidden confirmation
-       state shares the cell via visibility (cross-fade), so its long prose
-       must wrap inside the track rather than size it — auto let it inflate
-       the column and crush the copy to zero width. */
-    grid-template-columns: 4rem minmax(0, 1fr) clamp(11rem, 30%, 15rem);
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
+    display: flex;
+    min-width: 0;
+    min-height: 20rem;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem;
     border-color: rgb(120 160 165 / 28%);
     border-radius: 1.375rem;
   }
 
-  .download-action {
-    min-width: 0;
+  .platform-panel[data-platform-panel='mac'] {
+    border-color: color-mix(in srgb, var(--teal) 42%, var(--line));
+    background: color-mix(in srgb, var(--teal) 7%, var(--surface));
   }
 
-  @media (max-width: 40rem) {
-    .platform-panel {
-      grid-template-columns: 3rem minmax(0, 1fr);
-    }
+  .platform-panel[data-platform-panel='windows'] {
+    border-color: color-mix(in srgb, var(--ember) 38%, var(--line));
+    background: color-mix(in srgb, var(--ember) 7%, var(--surface));
+  }
 
-    .download-action {
-      grid-column: 1 / -1;
-    }
+  .platform-card-top {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .platform-fit {
+    display: none;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  [data-detected-platform='mac'] [data-platform-panel='mac'] .platform-fit,
+  [data-detected-platform='windows'] [data-platform-panel='windows'] .platform-fit {
+    display: inline-flex;
   }
 
   .platform-panel[hidden] {
@@ -1292,9 +1189,17 @@ const platforms = [
     justify-content: center;
     border: 1px solid rgb(120 160 165 / 32%);
     border-radius: 50%;
-    font-family: var(--font-display);
-    font-size: 1.75rem;
-    font-style: italic;
+    color: var(--teal);
+  }
+
+  .platform-panel[data-platform-panel='windows'] .installer-mark {
+    border-color: color-mix(in srgb, var(--ember) 45%, transparent);
+    color: var(--ember);
+  }
+
+  .installer-copy {
+    min-height: 5.25rem;
+    margin-top: 1rem;
   }
 
   .installer-copy h3 {
@@ -1336,8 +1241,9 @@ const platforms = [
   }
 
   .download-action {
+    width: 100%;
     min-height: auto;
-    margin: 0;
+    margin: 1.25rem 0 0;
   }
 
   .download-button {
@@ -1347,13 +1253,22 @@ const platforms = [
     white-space: nowrap;
   }
 
+  .platform-panel[data-platform-panel='mac'] .download-button {
+    background: var(--teal);
+  }
+
+  .platform-panel[data-platform-panel='windows'] .download-button {
+    background: var(--ember);
+  }
+
   .download-confirmation p,
   .download-confirmation a {
     font-size: 1.125rem;
   }
 
   .installer-trust {
-    grid-column: 2 / -1;
+    margin-top: auto;
+    padding-top: 1.25rem;
   }
 
   .trust-line,
@@ -1619,22 +1534,12 @@ const platforms = [
       height: 1.9rem;
     }
 
-    .platform-tabs {
-      min-height: 4.25rem;
-      border-radius: 2.25rem;
-    }
-
-    .platform-tabs button {
-      min-height: 3.75rem;
-      gap: 0.625rem;
-      padding-inline: 0.75rem;
-      border-radius: 2rem;
-      font-size: 1.125rem;
+    .platform-panels {
+      grid-template-columns: 1fr;
     }
 
     .platform-panel {
-      grid-template-columns: 4rem minmax(0, 1fr);
-      gap: 1rem;
+      min-height: 0;
       padding: 1.25rem;
     }
 
@@ -1642,11 +1547,6 @@ const platforms = [
       width: 3.75rem;
       height: 3.75rem;
       font-size: 1.9rem;
-    }
-
-    .download-action,
-    .installer-trust {
-      grid-column: 1 / -1;
     }
 
     .download-button {
@@ -1687,15 +1587,6 @@ const platforms = [
       padding-inline: 1rem;
     }
 
-    .platform-tabs {
-      grid-template-columns: 1fr;
-      min-height: auto;
-      border-radius: 1.5rem;
-    }
-
-    .platform-tabs button {
-      border-radius: 1.25rem;
-    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
