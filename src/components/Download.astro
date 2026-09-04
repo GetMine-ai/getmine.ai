@@ -1,0 +1,1597 @@
+---
+import InviteFriend from './InviteFriend.astro';
+
+interface BuildInfo {
+  url: string;
+  version: string;
+  sizeMB: number;
+  filename: string;
+  minOs: string;
+  signedBy: string;
+  sha256: string;
+}
+
+interface Props {
+  builds: {
+    mac: BuildInfo;
+    windows: BuildInfo;
+  };
+}
+
+const { builds } = Astro.props;
+
+const platforms = [
+  {
+    key: 'mac',
+    tabLabel: 'macOS',
+    title: 'GetMine for macOS',
+    build: builds.mac,
+    trust:
+      'Your Mac verifies this before installing — signed by GETMINE LTD and notarised by Apple.',
+  },
+  {
+    key: 'windows',
+    tabLabel: 'Windows',
+    title: 'GetMine for Windows',
+    build: builds.windows,
+    trust:
+      'Windows verifies this before installing — publisher verified as GETMINE LTD.',
+  },
+] as const;
+---
+<main
+  class="download-page"
+  data-download-module
+  data-enhanced="false"
+  data-platform=""
+  data-detected-platform=""
+>
+  <script is:inline>
+    (()=>{const r=document.currentScript?.closest('[data-download-module]');if(!r)return;const p=navigator.userAgentData?.platform||navigator.platform||navigator.userAgent||'',i=/Mac/i.test(p)&&navigator.maxTouchPoints>1,d=!i&&/Win/i.test(p)?'windows':!i&&/Mac/i.test(p)?'mac':'unsupported';r.dataset.platform=d;r.dataset.detectedPlatform=d;r.dataset.enhanced='true'})();
+  </script>
+
+  <div class="download-glow" aria-hidden="true"></div>
+  <svg class="download-memory-line" viewBox="0 0 1600 300" aria-hidden="true">
+    <path d="M0 165 C175 35 295 285 465 165 S760 35 930 165 S1225 285 1400 165 S1545 80 1600 118" />
+    <circle cx="465" cy="165" r="6" />
+    <circle cx="930" cy="165" r="6" />
+    <circle cx="1400" cy="165" r="6" />
+  </svg>
+  <div class="wrap download-wrap">
+    <section class="download-panel" aria-labelledby="download-title">
+      <header class="download-hero">
+        <p class="beta-status-pill">
+          <span class="status-dot" aria-hidden="true"></span>
+          Open beta · Free to download
+        </p>
+
+        <div class="hero-mark-wrap" aria-hidden="true">
+          <span class="mina-ring"></span>
+          <span class="mina-mark"><i>M</i><b>.</b></span>
+        </div>
+        <h1 id="download-title">Download GetMine</h1>
+        <p class="download-lead">
+          <span>Choose macOS or Windows. Your download starts with one click.</span>
+        </p>
+      </header>
+
+      <section class="what-to-expect" aria-labelledby="what-to-expect-heading">
+        <h2 id="what-to-expect-heading">What to expect</h2>
+
+        <div class="expectation-row">
+          <span class="expectation-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <rect x="5.5" y="5.5" width="21" height="16" rx="1.5"></rect>
+              <path d="M12 26.5h8M16 21.5v5"></path>
+            </svg>
+          </span>
+          <p><strong>Your vault lives on your computer.</strong> We never hold a copy.</p>
+        </div>
+
+        <div class="expectation-row">
+          <span class="expectation-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <rect x="7" y="13" width="18" height="14" rx="2"></rect>
+              <path d="M11 13V9a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </span>
+          <p><strong>Free during the Beta,</strong> no account needed, Mina’s AI included; heavy users will be asked to add their own API key.</p>
+        </div>
+
+        <div class="expectation-row">
+          <span class="expectation-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <path d="M16 4.5 25 8v7.25c0 5.75-3.65 10.35-9 12.25-5.35-1.9-9-6.5-9-12.25V8l9-3.5Z"></path>
+            </svg>
+          </span>
+          <p><strong>You can leave whenever you like,</strong> and your records stay with you, readable without us.</p>
+        </div>
+
+        <a class="beta-terms-link" href="/terms" target="_blank" rel="noopener">
+          Read the beta terms
+        </a>
+      </section>
+
+      <aside class="unsupported-notice" data-unsupported-notice>
+        <p><strong>Sorry — the beta runs on macOS and Windows only.</strong> GetMine is a desktop
+          app, because your vault lives on your own computer. There’s no phone,
+          tablet or Linux version yet.
+        </p>
+        <p>
+          On your phone right now? Take the link with you:
+          <strong>getmine.ai/beta</strong>
+        </p>
+        <div class="notice-actions">
+          <button type="button" data-copy-beta-link>Copy link</button>
+          <a
+            href="mailto:?subject=GetMine%20download%20link&body=https%3A%2F%2Fgetmine.ai%2Fbeta"
+          >
+            Email it to yourself
+          </a>
+        </div>
+        <span class="sr-only" aria-live="polite" data-link-announcer></span>
+      </aside>
+
+      <div class="platform-panels" aria-label="Download GetMine">
+        {platforms.map((platform) => {
+          const available = Boolean(platform.build.url);
+          return (
+            <section
+              id={`download-${platform.key}`}
+              class="platform-panel"
+              data-platform-panel={platform.key}
+              data-available={String(available)}
+              aria-labelledby={`download-${platform.key}-heading`}
+            >
+              <h2 class="sr-only" id={`download-${platform.key}-heading`}>{platform.title}</h2>
+              <div class="platform-card-top">
+                <div class="installer-mark" aria-hidden="true">
+                  {platform.key === 'mac' ? (
+                    <svg class="platform-icon platform-icon--apple" viewBox="0 0 24 24">
+                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.09 3.13 7.5 8.33 7.21c1.26-.07 2.4.87 3.2.87.78 0 2.23-1.07 3.77-.91.64.03 2.43.26 3.58 1.94-.09.06-2.14 1.25-2.12 3.78.03 3.02 2.65 4.03 2.68 4.04-.02.07-.42 1.44-1.39 2.85ZM14.29 3.24c.81-.96 2.16-1.67 3.31-1.71.15 1.33-.39 2.68-1.17 3.64-.78.97-2.05 1.72-3.32 1.62-.17-1.3.46-2.63 1.18-3.55Z"></path>
+                    </svg>
+                  ) : (
+                    <svg class="platform-icon platform-icon--windows" viewBox="0 0 24 24">
+                      <path d="M3 4.75 10.75 3.7v7.55H3V4.75Zm9.25-1.25L21 2.25v9h-8.75V3.5ZM3 12.75h7.75v7.55L3 19.25v-6.5Zm9.25 0H21v9l-8.75-1.25v-7.75Z"></path>
+                    </svg>
+                  )}
+                </div>
+                <span class="platform-fit">
+                  {platform.key === 'mac' ? 'For this Mac' : 'For this Windows PC'}
+                </span>
+              </div>
+
+              <div class="installer-copy">
+                {available ? (
+                  <>
+                    <h3>{platform.title}</h3>
+                    <p>
+                      {platform.build.filename}
+                      {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h3>Sign up installer coming next</h3>
+                    <p>Release timeline shared soon — updates here.</p>
+                  </>
+                )}
+              </div>
+
+              {available && (
+                <div class="download-action" data-download-action>
+                  <div class="download-start" data-download-start>
+                    <a
+                      class="download-button"
+                      href={platform.build.url}
+                      download={platform.build.filename}
+                      data-download-link
+                      data-download-platform={platform.key}
+                    >
+                      Download for {platform.tabLabel}
+                    </a>
+                  </div>
+
+                  <div
+                    class="download-confirmation"
+                    data-download-confirmation
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <p><strong>Your download’s running.</strong></p>
+                    <p>When it says complete, open {platform.build.filename} and follow the instructions.</p>
+                    <a href={platform.build.url} download={platform.build.filename}>
+                      Download didn’t start? Use the direct link.
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {available && (
+                <div class="installer-trust">
+                  <p class="quiet-meta">
+                    Requires {platform.build.minOs} · Signed by {platform.build.signedBy}{platform.key === 'mac' ? ', notarised by Apple' : ''}
+                  </p>
+                  {platform.build.sha256 && (
+                    <details class="verify-fold">
+                      <summary>Verify your download</summary>
+                      <p>
+                        Your computer checks the signature before anything installs.
+                        The careful can also compare the file's fingerprint:
+                      </p>
+                      <p class="checksum-line">
+                        <span class="checksum-label">SHA-256</span>
+                        <code class="checksum-value">{platform.build.sha256}</code>
+                      </p>
+                      <p><a href="/trust">How verification works</a></p>
+                    </details>
+                  )}
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
+
+      <p class="privacy-line">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5.5" y="10.5" width="13" height="10" rx="1.5"></rect>
+          <path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"></path>
+        </svg>
+        <span>Your privacy is built in. No account required.</span>
+      </p>
+
+      <section class="next-steps" aria-labelledby="next-steps-heading">
+        <h2 id="next-steps-heading">What happens next</h2>
+        <p class="next-intro">From download to your private vault in four simple steps.</p>
+
+        <ol class="timeline">
+          <li>
+            <span class="step-number">1</span>
+            <div>
+              <h3>Open the installer</h3>
+              <p>Your computer confirms GetMine before anything installs.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <div>
+              <h3>Set up your vault</h3>
+              <p>Review the beta consent, then add your name and date of birth.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <div>
+              <h3>Confirm your email</h3>
+              <p>Open the link we send you to confirm that it was you.</p>
+            </div>
+          </li>
+          <li class="timeline-final">
+            <span class="step-number">4</span>
+            <div>
+              <h3>Open your vault</h3>
+              <p>Your private health vault opens on this computer.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="referral-card" aria-labelledby="referral-heading">
+        <span class="referral-icon" aria-hidden="true">
+          <svg viewBox="0 0 44 44">
+            <circle cx="16" cy="13" r="6"></circle>
+            <circle cx="30.5" cy="15" r="4.5"></circle>
+            <path d="M4.5 36v-3.5a11.5 11.5 0 0 1 23 0V36M27.5 25.5a9 9 0 0 1 12 8.5v2"></path>
+          </svg>
+        </span>
+        <div class="referral-copy">
+          <h2 id="referral-heading">Know someone who should own their health data too?</h2>
+          <p>Invite them to download GetMine during the open beta.</p>
+        </div>
+        <div class="invite-action">
+          <InviteFriend
+            variant="primary"
+            placement="beta"
+            instanceId="download-card"
+          />
+        </div>
+      </section>
+    </section>
+  </div>
+</main>
+
+<script>
+  // The site's only measurement (ruled, spec §1.6a): two anonymous first-party
+  // counts — page view and download click. No identity, no cookie, no storage;
+  // fire-and-forget so a failure can never affect the page. Disclosed in /privacy.
+  const COUNT_ENDPOINT = 'https://api.getmine.ai/access/v1/request-submitted';
+  const count = (event: string) => {
+    void fetch(`${COUNT_ENDPOINT}?event=${event}`, {
+      method: 'POST',
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+      keepalive: true,
+    }).catch(() => undefined);
+  };
+
+  const roots = document.querySelectorAll<HTMLElement>(
+    '[data-download-module]:not([data-module-ready])',
+  );
+  if (roots.length) count('page-view');
+
+  roots.forEach((root) => {
+    root.dataset.moduleReady = 'true';
+    root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
+      link.addEventListener('click', () => {
+        count('download-click');
+        const action = link.closest<HTMLElement>('[data-download-action]');
+        if (!action) return;
+        action.dataset.started = 'true';
+      });
+    });
+
+    const copyText = async (value: string) => {
+      if (!navigator.clipboard?.writeText) {
+        throw new Error('Clipboard access is unavailable');
+      }
+      await navigator.clipboard.writeText(value);
+    };
+
+    const linkButton = root.querySelector<HTMLButtonElement>('[data-copy-beta-link]');
+    const linkAnnouncer = root.querySelector<HTMLElement>('[data-link-announcer]');
+    linkButton?.addEventListener('click', async () => {
+      try {
+        await copyText('https://getmine.ai/beta');
+        linkButton.textContent = 'Copied';
+        if (linkAnnouncer) linkAnnouncer.textContent = 'Download link copied';
+      } catch {
+        linkButton.textContent = 'Copy unavailable';
+        if (linkAnnouncer) linkAnnouncer.textContent = 'Copy unavailable. Use the email link instead.';
+      }
+    });
+
+  });
+</script>
+
+<style>
+  .download-page {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding-top: 4.75rem;
+    background: var(--navy);
+  }
+
+  .download-glow {
+    position: absolute;
+    top: -12rem;
+    left: 50%;
+    width: 55rem;
+    height: 55rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(29 191 176 / 15%), transparent 72%);
+    filter: blur(5rem);
+    pointer-events: none;
+  }
+
+  .download-memory-line {
+    position: absolute;
+    top: 19rem;
+    left: 50%;
+    width: max(100%, 90rem);
+    height: 18rem;
+    transform: translateX(-50%);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  .download-memory-line path {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2;
+  }
+
+  .download-memory-line circle {
+    fill: var(--teal);
+  }
+
+  .download-wrap {
+    position: relative;
+    display: grid;
+    gap: 3.5rem;
+    padding-block: clamp(2rem, 5vw, 4.5rem) clamp(4rem, 8vw, 7rem);
+  }
+
+  .download-card {
+    width: min(100%, 48rem);
+    margin-inline: auto;
+    padding: clamp(1.35rem, 4vw, 3.25rem);
+    border: 1px solid var(--line);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    background: color-mix(in srgb, var(--navy-2) 94%, transparent);
+    box-shadow: 0 40px 100px -55px rgb(0 0 0 / 95%);
+    text-align: center;
+  }
+
+  .mina-mark {
+    display: flex;
+    width: clamp(4.5rem, 9vw, 6rem);
+    height: clamp(4.5rem, 9vw, 6rem);
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem auto 0;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    font-style: italic;
+  }
+
+  .mina-mark i {
+    color: var(--teal);
+  }
+
+  h1 {
+    margin: 1rem 0 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  .download-lead {
+    max-width: 39rem;
+    margin: 1.25rem auto 0;
+    color: var(--cream);
+    font-size: var(--text-lead);
+    line-height: 1.6;
+  }
+
+  .unsupported-notice {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-md);
+    background: var(--teal-surface);
+    text-align: left;
+  }
+
+  [data-enhanced='true'][data-detected-platform='unsupported'] .unsupported-notice {
+    display: block;
+  }
+
+  .unsupported-notice[hidden] {
+    display: none;
+  }
+
+  .unsupported-notice p {
+    margin: 0;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .unsupported-notice p + p {
+    margin-top: 0.75rem;
+  }
+
+  .notice-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .notice-actions button,
+  .notice-actions a {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .platform-panels {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .platform-panel {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    text-align: left;
+  }
+
+  .platform-panel[hidden] {
+    display: none;
+  }
+
+  .platform-panel h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .expectations-summary {
+    max-width: 40rem;
+    margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-quiet);
+    text-align: left;
+  }
+
+  .expectations-summary .eyebrow {
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+  }
+
+  .expectation-list {
+    display: grid;
+    gap: 0;
+    margin-top: 0.75rem;
+  }
+
+  .expectation-list p {
+    margin: 0;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--line-quiet);
+    color: var(--cream);
+    font-size: var(--text-body);
+    line-height: 1.55;
+  }
+
+  .expectations-summary > a,
+  .trust-line,
+  .minimum-os {
+    margin: 0;
+    color: var(--cream);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .expectations-summary > a {
+    display: inline-flex;
+    margin-top: 0.75rem;
+  }
+
+  .expectations-summary > a,
+  .trust-line a {
+    width: fit-content;
+    color: var(--teal);
+  }
+
+  .download-action {
+    display: grid;
+    min-height: 9.25rem;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-block: 0.25rem;
+  }
+
+  .download-start,
+  .download-confirmation {
+    grid-area: 1 / 1;
+    transition: opacity 200ms var(--ease-gm);
+  }
+
+  .download-confirmation {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='true'] .download-start {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='true'] .download-confirmation {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .download-button {
+    display: flex;
+    width: 100%;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.25rem;
+    border-radius: var(--radius-pill);
+    background: var(--ember);
+    color: var(--navy);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .download-button--pending {
+    border: 1px solid var(--line);
+    background: var(--surface-raised);
+    color: var(--taupe);
+  }
+
+  .build-meta {
+    margin: 0.75rem 0 0;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .build-meta a {
+    color: inherit;
+  }
+
+  .download-confirmation p {
+    margin: 0;
+    color: var(--cream);
+    line-height: 1.55;
+  }
+
+  .download-confirmation p + p {
+    margin-top: 0.4rem;
+  }
+
+  .download-confirmation a {
+    display: inline-block;
+    margin-top: 0.65rem;
+    color: var(--teal);
+  }
+
+  .trust-line {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .minimum-os {
+    margin-top: 0.35rem;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+  }
+
+  .invite {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / -1;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .invite-trigger,
+  .invite-panel > button {
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .invite-panel {
+    position: absolute;
+    z-index: 3;
+    top: calc(100% + 0.75rem);
+    width: min(24rem, calc(100vw - 3rem));
+    padding: 1.25rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-lg);
+    background: var(--navy-2);
+    box-shadow: 0 30px 70px -20px rgb(0 0 0 / 90%);
+    text-align: left;
+  }
+
+  .invite-panel[hidden] {
+    display: none;
+  }
+
+  .invite-panel h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+
+  .invite-panel p {
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+  }
+
+  .invite-panel textarea {
+    width: 100%;
+    margin-top: 1rem;
+    resize: vertical;
+    padding: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--navy);
+    color: var(--cream);
+    font: inherit;
+    line-height: 1.5;
+  }
+
+  .invite-panel > button {
+    margin-top: 0.75rem;
+    border-color: var(--ember);
+    background: var(--ember);
+    color: var(--navy);
+  }
+
+  .expectations {
+    display: grid;
+    gap: 2rem;
+    width: min(100%, 48rem);
+    margin-inline: auto;
+  }
+
+  .expectations > div > p:not(.eyebrow) {
+    margin: 1rem 0 0;
+    color: var(--cream);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .expectations ol {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .expectations li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: start;
+    gap: 0.75rem;
+  }
+
+  .expectations li span {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--teal-line);
+    border-radius: 50%;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .expectations li p {
+    margin: 0.25rem 0 0;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 30rem) {
+    .download-page {
+      padding-top: 4.25rem;
+    }
+
+    .download-wrap {
+      gap: 2.5rem;
+      padding: 1rem 0.75rem 4rem;
+    }
+
+    .download-card {
+      padding-block: 1.1rem 1.25rem;
+      padding-inline: 1rem;
+    }
+
+    .mina-mark {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin-top: 0.8rem;
+      font-size: 1.8rem;
+    }
+
+    h1 {
+      margin-top: 0.65rem;
+      font-size: var(--text-h2);
+    }
+
+    .download-lead {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .platform-panel {
+      padding: 0.85rem;
+    }
+
+    .expectations-summary {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+    }
+
+    .expectations-summary .eyebrow {
+      font-size: 1rem;
+    }
+
+    .expectation-list p,
+    .expectations-summary > a {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .download-action {
+      min-height: 7rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .download-card {
+      animation: download-arrive 420ms var(--ease-gm) both;
+    }
+
+    .expectations {
+      animation: download-arrive 420ms 90ms var(--ease-gm) both;
+    }
+
+    .platform-panel {
+      position: relative;
+    }
+
+    .download-action[data-started='true']::after {
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--teal);
+      border-radius: var(--radius-lg);
+      animation: download-ring 700ms var(--ease-gm) both;
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .download-start,
+    .download-confirmation {
+      transition: none;
+    }
+  }
+
+  @keyframes download-arrive {
+    from {
+      transform: translateY(0.75rem);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes download-ring {
+    from {
+      transform: scale(0.96);
+      opacity: 0.8;
+    }
+    to {
+      transform: scale(1.04);
+      opacity: 0;
+    }
+  }
+
+  /*
+   * Integrated open-beta download journey.
+   * These rules intentionally follow the earlier component rules so the
+   * approved single-panel composition supersedes the retired split layout.
+   */
+  .download-page {
+    padding-top: 5rem;
+  }
+
+  .download-glow {
+    top: 3rem;
+    width: min(64rem, 100vw);
+    height: 64rem;
+    background: radial-gradient(
+      closest-side,
+      rgb(29 191 176 / 9%),
+      transparent 72%
+    );
+    filter: blur(6rem);
+  }
+
+  .download-memory-line {
+    top: 12rem;
+    opacity: 0.2;
+  }
+
+  .download-wrap {
+    display: block;
+    padding-block: 0.75rem 5rem;
+  }
+
+  .download-panel {
+    position: relative;
+    width: min(100%, 56.25rem);
+    margin-inline: auto;
+    padding: 2rem 4.5rem 2.5rem;
+    border: 1px solid rgb(120 160 165 / 28%);
+    border-radius: 1.75rem;
+    background: color-mix(in srgb, var(--navy-2) 94%, transparent);
+  }
+
+  .download-hero {
+    text-align: center;
+  }
+
+  .beta-status-pill {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.625rem 1.5rem;
+    border: 1px solid var(--teal);
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--teal) 6%, transparent);
+    color: var(--teal);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  .hero-mark-wrap {
+    position: relative;
+    display: grid;
+    width: 5.375rem;
+    height: 5.375rem;
+    place-items: center;
+    margin-top: 1rem;
+    margin-inline: auto;
+  }
+
+  .hero-mark-wrap .mina-ring,
+  .hero-mark-wrap .mina-mark {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .hero-mark-wrap .mina-ring {
+    inset: -0.6rem;
+    border: 1px solid var(--teal-line);
+    opacity: 0.22;
+  }
+
+  .hero-mark-wrap .mina-mark {
+    display: inline-flex;
+    inset: 0;
+    width: auto;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    border: 1px solid var(--teal-line);
+    background: var(--navy-2);
+    box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
+    font-size: 2.4rem;
+  }
+
+  .hero-mark-wrap .mina-mark i,
+  .installer-mark span {
+    color: var(--cream);
+  }
+
+  .hero-mark-wrap .mina-mark i {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero-mark-wrap .mina-mark b,
+  .installer-mark i {
+    color: var(--teal);
+    font-weight: 300;
+  }
+
+  h1 {
+    margin-top: 0.5rem;
+    font-size: 3.625rem;
+    line-height: 1.04;
+  }
+
+  .download-lead {
+    display: grid;
+    gap: 0.125rem;
+    max-width: 47rem;
+    margin-top: 0.5rem;
+    font-size: 1.1875rem;
+    line-height: 1.45;
+  }
+
+  .what-to-expect,
+  .next-steps {
+    margin-top: 2rem;
+  }
+
+  .what-to-expect h2,
+  .next-steps > h2 {
+    margin: 0;
+    color: var(--teal);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .expectation-row {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 1.25rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--line-quiet);
+  }
+
+  .expectation-icon {
+    display: grid;
+    width: 3.5rem;
+    height: 3.5rem;
+    place-items: center;
+    border: 1px solid rgb(120 160 165 / 30%);
+    border-radius: 50%;
+    color: var(--teal);
+  }
+
+  .expectation-icon svg {
+    width: 1.9rem;
+    height: 1.9rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+  }
+
+  .expectation-row p {
+    margin: 0;
+    color: var(--cream);
+    font-size: 1.125rem;
+    line-height: 1.55;
+  }
+
+  .expectation-row strong {
+    font-weight: 700;
+  }
+
+  .beta-terms-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    margin-top: 0.25rem;
+    color: var(--teal);
+    font-size: 1.125rem;
+    text-underline-offset: 0.2em;
+  }
+
+  .unsupported-notice {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .unsupported-notice p {
+    font-size: 1.125rem;
+  }
+
+  .notice-actions button,
+  .notice-actions a {
+    min-height: 2.75rem;
+    font-size: 1.125rem;
+  }
+
+  .platform-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: currentColor;
+  }
+
+  .platform-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .platform-panel {
+    display: flex;
+    min-width: 0;
+    min-height: 20rem;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem;
+    border-color: rgb(120 160 165 / 28%);
+    border-radius: 1.375rem;
+  }
+
+  .platform-panel[data-platform-panel='mac'] {
+    border-color: color-mix(in srgb, var(--teal) 42%, var(--line));
+    background: color-mix(in srgb, var(--teal) 7%, var(--surface));
+  }
+
+  .platform-panel[data-platform-panel='windows'] {
+    border-color: color-mix(in srgb, var(--ember) 38%, var(--line));
+    background: color-mix(in srgb, var(--ember) 7%, var(--surface));
+  }
+
+  .platform-card-top {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .platform-fit {
+    display: none;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--teal-line);
+    border-radius: var(--radius-pill);
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  [data-detected-platform='mac'] [data-platform-panel='mac'] .platform-fit,
+  [data-detected-platform='windows'] [data-platform-panel='windows'] .platform-fit {
+    display: inline-flex;
+  }
+
+  .platform-panel[hidden] {
+    display: none;
+  }
+
+  .installer-mark {
+    display: flex;
+    width: 3.5rem;
+    height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(120 160 165 / 32%);
+    border-radius: 50%;
+    color: var(--teal);
+  }
+
+  .platform-panel[data-platform-panel='windows'] .installer-mark {
+    border-color: color-mix(in srgb, var(--ember) 45%, transparent);
+    color: var(--ember);
+  }
+
+  .installer-copy {
+    min-height: 5.25rem;
+    margin-top: 1rem;
+  }
+
+  .installer-copy h3 {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .installer-copy p {
+    margin: 0.35rem 0 0;
+    color: var(--cream);
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  .installer-copy .checksum-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .checksum-label {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .checksum-value {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    overflow-wrap: anywhere;
+    user-select: all;
+  }
+
+  .download-action {
+    width: 100%;
+    min-height: auto;
+    margin: 1.25rem 0 0;
+  }
+
+  .download-button {
+    min-height: 3.5rem;
+    padding-inline: 1.5rem;
+    font-size: 1.125rem;
+    white-space: nowrap;
+  }
+
+  .platform-panel[data-platform-panel='mac'] .download-button {
+    background: var(--teal);
+  }
+
+  .platform-panel[data-platform-panel='windows'] .download-button {
+    background: var(--ember);
+  }
+
+  .download-confirmation p,
+  .download-confirmation a {
+    font-size: 1.125rem;
+  }
+
+  .installer-trust {
+    margin-top: auto;
+    padding-top: 1.25rem;
+  }
+
+  .trust-line,
+  .minimum-os {
+    color: var(--cream);
+    font-size: 1.125rem;
+  }
+
+  .quiet-meta {
+    color: var(--text-quiet);
+    font-size: 0.8125rem;
+    margin: 0;
+  }
+
+  .verify-fold {
+    margin-top: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--text-quiet);
+  }
+
+  .verify-fold summary {
+    cursor: pointer;
+    color: var(--teal);
+    width: fit-content;
+  }
+
+  .verify-fold p {
+    margin: 0.5rem 0 0;
+  }
+
+  .privacy-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0 0;
+    color: color-mix(in srgb, var(--cream) 78%, transparent);
+    font-size: 1.125rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .privacy-line svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .next-steps {
+    padding-top: 2rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .next-intro {
+    margin: 0.75rem 0 0;
+    color: var(--cream);
+    font-size: 1.125rem;
+    line-height: 1.55;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 2rem;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3.125rem minmax(0, 1fr);
+    gap: 1.75rem;
+    min-width: 0;
+  }
+
+  .timeline li:not(:last-child)::after {
+    position: absolute;
+    top: 3.125rem;
+    bottom: -2rem;
+    left: 1.53125rem;
+    width: 1px;
+    background: rgb(120 160 165 / 45%);
+    content: '';
+  }
+
+  .step-number {
+    display: grid;
+    width: 3.125rem;
+    height: 3.125rem;
+    place-items: center;
+    border: 1px solid var(--teal);
+    border-radius: 50%;
+    color: var(--teal);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .timeline h3 {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .timeline p {
+    margin: 0.4rem 0 0;
+    color: var(--cream);
+    font-size: 1.125rem;
+    line-height: 1.55;
+  }
+
+  .timeline .step-note {
+    font-size: 1.125rem;
+  }
+
+  .timeline-final {
+    margin: -0.5rem -1rem -0.5rem -1rem;
+    padding: 1rem;
+    border: 1px solid rgb(29 191 176 / 18%);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--teal) 5%, transparent);
+  }
+
+  .referral-card {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 2.75rem;
+    padding: 1.75rem;
+    border: 1px solid rgb(120 160 165 / 28%);
+    border-radius: 1.375rem;
+    background: var(--surface);
+  }
+
+  .referral-icon {
+    color: var(--ember);
+  }
+
+  .referral-icon svg {
+    width: 3.5rem;
+    height: 3.5rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .referral-copy h2 {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .referral-copy p {
+    margin: 0.3rem 0 0;
+    color: var(--cream);
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  .invite-action {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 63.99rem) {
+    .download-panel {
+      padding: 2.5rem 3rem;
+    }
+
+    h1 {
+      font-size: clamp(3.375rem, 7vw, 3.875rem);
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .download-page {
+      padding-top: 4.5rem;
+    }
+
+    .download-wrap {
+      padding: 1.25rem 1rem 3.5rem;
+    }
+
+    .download-panel {
+      padding: 2rem 1.25rem;
+      border-radius: 1.5rem;
+    }
+
+    .beta-status-pill {
+      min-height: 3rem;
+      padding-inline: 1.125rem;
+      font-size: 1.125rem;
+    }
+
+    .hero-mark-wrap {
+      width: 5rem;
+      height: 5rem;
+      margin-top: 1rem;
+    }
+
+    .hero-mark-wrap .mina-mark {
+      font-size: 2.25rem;
+    }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: clamp(2.75rem, 12vw, 3.125rem);
+    }
+
+    .download-lead,
+    .expectation-row p,
+    .next-intro,
+    .timeline p {
+      font-size: 1.125rem;
+    }
+
+    .download-lead {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    .download-lead span {
+      display: inline;
+    }
+
+    .download-lead span + span::before {
+      content: ' ';
+    }
+
+    .what-to-expect,
+    .next-steps {
+      margin-top: 1.75rem;
+    }
+
+    .expectation-row {
+      grid-template-columns: 3.5rem minmax(0, 1fr);
+      gap: 1rem;
+      padding-block: 0.875rem;
+    }
+
+    .expectation-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    .expectation-icon svg {
+      width: 1.9rem;
+      height: 1.9rem;
+    }
+
+    .platform-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .platform-panel {
+      min-height: 0;
+      padding: 1.25rem;
+    }
+
+    .installer-mark {
+      width: 3.75rem;
+      height: 3.75rem;
+      font-size: 1.9rem;
+    }
+
+    .download-button {
+      width: 100%;
+    }
+
+    .timeline {
+      gap: 2rem;
+    }
+
+    .timeline li {
+      grid-template-columns: 3.125rem minmax(0, 1fr);
+      gap: 1rem;
+    }
+
+    .timeline-final {
+      margin-inline: -0.5rem;
+      padding-inline: 0.5rem;
+    }
+
+    .referral-card {
+      grid-template-columns: 3.5rem minmax(0, 1fr);
+      padding: 1.5rem;
+    }
+
+    .invite-action {
+      grid-column: 1 / -1;
+      justify-content: stretch;
+    }
+  }
+
+  @media (max-width: 22.49rem) {
+    .download-wrap {
+      padding-inline: 0.625rem;
+    }
+
+    .download-panel {
+      padding-inline: 1rem;
+    }
+
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .download-panel {
+      animation: download-arrive 420ms var(--ease-gm) both;
+    }
+  }
+</style>

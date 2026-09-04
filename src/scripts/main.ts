@@ -288,7 +288,6 @@ function initialiseWalkthrough() {
         - 74
         - (heading?.offsetHeight ?? 0)
         - (tabRail?.offsetHeight ?? 0)
-        - (body?.offsetHeight ?? 0)
         - 56,
     );
     const availableWidth = stage.clientWidth - 64;
@@ -315,7 +314,6 @@ function initialiseWalkthrough() {
   observer.observe(frame);
   if (heading) observer.observe(heading);
   if (tabRail) observer.observe(tabRail);
-  if (body) observer.observe(body);
   window.addEventListener('resize', fit);
 }
 
