@@ -26,11 +26,11 @@ export const builds: { mac: BuildInfo; windows: BuildInfo } = {
   mac: {
     url: 'https://github.com/GetMine-ai/releases/releases/download/wave-6/GetMine-Installer.pkg',
     version: 'GetMine-Installer', // see note below: must be a substring of the release identity
-    sizeMB: 164.7,
+    sizeMB: 164.8,
     filename: 'GetMine-Installer.pkg',
     minOs: 'macOS 14 or later',
     signedBy: 'GETMINE LTD',
-    sha256: '231fd90956962007f1a0a604c53ee2d3dc1ac183c70c41c144bf11f7181af583',
+    sha256: '95aab033c3d262c00e9b593d1933d1b70068e6fe85bd8f5b152aec412dbe08d5',
   },
   windows: {
     url: 'https://github.com/GetMine-ai/releases/releases/download/wave-6/GetMine-Setup.exe',
@@ -39,7 +39,7 @@ export const builds: { mac: BuildInfo; windows: BuildInfo } = {
     filename: 'GetMine-Setup.exe',
     minOs: 'Windows 11',
     signedBy: 'GETMINE LTD',
-    sha256: 'deb107c205a7a1792a5ab6925d193ac0a0b5980c83f8857bfd42032a0d4b15e3',
+    sha256: '11168738d096b7dd68d4d81e6aa53b1b2b350c0022d625fc2083abcd54bbfa4d',
   },
 };
 
