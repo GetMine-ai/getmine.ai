@@ -120,17 +120,33 @@ if (stage === 'links') {
     if (!html.includes('Choose macOS or Windows. Your download starts with one click.')) {
       failures.push('one-click platform guidance is absent from dist/beta.html');
     }
-    // The download-running state names the file the visitor is about to open,
-    // per platform. A shared sentence here would send Windows visitors looking
-    // for a .pkg (ruled 4 Sep).
+    // The receipt (MINION-21, 5 Sep): two lines, nothing else in the box.
+    for (const line of ['Download started', 'Your browser is bringing it in.']) {
+      if (!html.includes(line)) failures.push(`the receipt line "${line}" is absent from dist/beta.html`);
+    }
+    // Mina's second message names the file the visitor is about to open, per
+    // platform, and stays conditional: the page cannot know the file landed.
+    // A shared sentence here would send Windows visitors looking for a .pkg
+    // (ruled 4 Sep).
     for (const [platform, build] of platforms) {
-      const sentence = `When it says complete, open ${build.filename} and follow the instructions.`;
-      if (!html.includes(sentence)) {
-        failures.push(`${platform}: the download-running instruction naming ${build.filename} is absent from dist/beta.html`);
+      const opening = `When it’s downloaded, open ${build.filename}.`;
+      if (!html.includes(opening)) {
+        failures.push(`${platform}: Mina’s message naming ${build.filename} is absent from dist/beta.html`);
       }
     }
-    if (!html.includes('What happens next') || !html.includes('Invite a friend')) {
-      failures.push('the post-download journey or invite section is absent from dist/beta.html');
+    if (!html.includes('While you’re waiting') || !html.includes('Invite a friend')) {
+      failures.push('Mina’s waiting section or the invite section is absent from dist/beta.html');
+    }
+    // Without JavaScript the waiting section and both of Mina's messages render
+    // at once (MINION-21 §4c): the static HTML must not hide them.
+    const waiting = html.match(/<section\b[^>]*\bdata-waiting\b[^>]*>/)?.[0] ?? '';
+    if (!waiting) failures.push('the waiting section is absent from dist/beta.html');
+    else if (/\bhidden\b/.test(waiting)) failures.push('the waiting section is hidden in static HTML; only JavaScript may hide it');
+    const laterMessages = html.match(/<p\b[^>]*data-mina-message="2"[^>]*>/g) ?? [];
+    if (laterMessages.length !== 2) failures.push(`expected 2 static second messages (one per platform), found ${laterMessages.length}`);
+    if (laterMessages.some((m) => /\bhidden\b/.test(m))) failures.push('a second message is hidden in static HTML; only JavaScript may hide it');
+    for (const retired of ['What happens next', 'What to expect', 'Your privacy is built in']) {
+      if (html.includes(retired)) failures.push(`retired section "${retired}" is still rendered in dist/beta.html`);
     }
   }
 } else {
@@ -145,6 +161,6 @@ if (failures.length > 0) {
 
 console.log(
   stage === 'rendered'
-    ? 'Rendered download assertion passed: direct platform actions, journey copy and checksums are present.'
+    ? 'Rendered download assertion passed: direct platform actions, the receipt, Mina’s minute and checksums are present.'
     : 'Download release assertion passed for macOS and Windows (links and sidecar checksums).',
 );
