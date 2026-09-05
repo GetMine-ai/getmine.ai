@@ -145,6 +145,11 @@ if (stage === 'links') {
     const laterMessages = html.match(/<p\b[^>]*data-mina-message="2"[^>]*>/g) ?? [];
     if (laterMessages.length !== 2) failures.push(`expected 2 static second messages (one per platform), found ${laterMessages.length}`);
     if (laterMessages.some((m) => /\bhidden\b/.test(m))) failures.push('a second message is hidden in static HTML; only JavaScript may hide it');
+    // The browser owns a native cross-origin download; the page cannot observe
+    // its progress, so it must never claim to (Sabine, 4 Sep). Carried from main.
+    if (html.includes('data-download-progress') || html.includes('Downloading GetMine')) {
+      failures.push('the page has restored a progress claim it cannot observe');
+    }
     for (const retired of ['What happens next', 'What to expect', 'Your privacy is built in']) {
       if (html.includes(retired)) failures.push(`retired section "${retired}" is still rendered in dist/beta.html`);
     }
