@@ -201,7 +201,6 @@ const platforms = [
                     href={platform.build.url}
                     download={platform.build.filename}
                     data-download-fallback
-                    hidden
                   >
                     Download didn’t start? Use the direct link.
                   </a>
@@ -310,10 +309,10 @@ const platforms = [
   roots.forEach((root) => {
     root.dataset.moduleReady = 'true';
     // Mina's minute (MINION-21, 5 Sep): the second message waits until the
-    // download has plausibly landed; the fallback link only offers help once
-    // there has been time for something to go wrong. Both are timers, never
-    // claims: message 2 stays conditional ("When it’s downloaded").
-    const FALLBACK_AFTER_MS = 15_000;
+    // download has plausibly landed. A timer, never a claim: message 2 stays
+    // conditional ("When it’s downloaded"). The fallback link is not timed: it
+    // sits under the receipt from the moment the receipt appears (Sabine, 5 Sep:
+    // a link that pops up while the download is working reads as an alarm).
     const SECOND_MESSAGE_AFTER_MS = 45_000;
     // Without JavaScript the section and both messages render at once (the
     // sequence is a nicety, never the content); with it, they wait for the click.
@@ -341,8 +340,6 @@ const platforms = [
             laterMessages.forEach((message) => { message.hidden = false; });
           }, SECOND_MESSAGE_AFTER_MS);
         }
-        const fallback = action.querySelector<HTMLElement>('[data-download-fallback]');
-        if (fallback) window.setTimeout(() => { fallback.hidden = false; }, FALLBACK_AFTER_MS);
       });
     });
 
@@ -439,13 +436,22 @@ const platforms = [
     margin: 1.5rem auto 0;
     border: 1px solid var(--teal-line);
     border-radius: 50%;
+    background: var(--navy-2);
     font-family: var(--font-display);
     font-size: clamp(2.25rem, 5vw, 3rem);
-    font-style: italic;
   }
 
+  /* The one Mina mark, as on Meet Mina and About: a cream, light, italic M and
+     a teal, light dot on the navy disc. Every mark on this page inherits it. */
   .mina-mark i {
+    color: var(--cream);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .mina-mark b {
     color: var(--teal);
+    font-weight: 300;
   }
 
   h1 {
@@ -1341,24 +1347,21 @@ const platforms = [
     line-height: 1.5;
   }
 
+  /* A quiet line under the receipt, there for the whole download, never a pop-up. */
   .download-fallback {
-    display: inline-flex;
+    display: none;
     grid-area: 2 / 1;
-    justify-self: center;
-    min-height: 2.75rem;
-    align-items: center;
-    margin-top: 0.75rem;
-    padding: 0.5625rem 1rem;
-    border: 1px solid var(--teal-line);
-    border-radius: var(--radius-pill);
-    color: var(--cream);
-    font-size: 0.9375rem;
-    font-weight: 700;
-    text-decoration: none;
+    justify-self: start;
+    margin-top: 0.5rem;
+    color: var(--teal);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
-  .download-fallback[hidden] {
-    display: none;
+  .download-action[data-started='true'] .download-fallback {
+    display: inline-block;
   }
 
   /* Once one download has started, the other card steps back. */
@@ -1400,12 +1403,11 @@ const platforms = [
     height: 5rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid color-mix(in srgb, var(--teal) 55%, transparent);
+    border: 1px solid var(--teal-line);
     border-radius: 50%;
-    background: var(--surface);
+    background: var(--navy-2);
     font-family: var(--font-display);
     font-size: 2.25rem;
-    font-weight: 300;
     line-height: 1;
   }
 
