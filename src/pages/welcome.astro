@@ -40,25 +40,21 @@ import LegalPage from '../layouts/LegalPage.astro';
     <p class="welcome-hello">Hi, I&rsquo;m Mina.</p>
     <h1 class="welcome-headline">You&rsquo;re in.</h1>
 
-    <p class="welcome-lead">Your email is confirmed &mdash; that&rsquo;s everything we need for now. You have a place in the queue for the open beta.</p>
-
-    <p class="welcome-next">We&rsquo;re opening the beta in waves. When yours opens, we&rsquo;ll email you a personal invitation with your download link.</p>
-
-    <p class="welcome-inbox">My invitation will come from <strong>hello@getmine.ai</strong> &mdash; adding it to your contacts now keeps it out of your spam folder.</p>
+    <p class="welcome-lead">Your email is confirmed. That&rsquo;s everything we need for now. You have a place in the queue for the open beta.</p>
 
     <div class="welcome-card">
-      <p class="welcome-card-eyebrow">While you wait</p>
+      <span class="welcome-card-tile" aria-hidden="true">NHS</span>
       <h2>Have an NHS number?</h2>
-      <p>Register with Patients Know Best, the NHS service that gives you your own copy of your records. It takes a couple of minutes, and it&rsquo;s what lets me work with your NHS GP record from your very first day. Registration uses NHS Login. Set a Patients Know Best password afterwards. GetMine signs in with that email and password.</p>
+      <p>Register with Patients Know Best, the NHS service that holds your own copy of your GP record. Registration uses NHS Login. Set a Patients Know Best password afterwards. GetMine signs in with that email and password.</p>
       <p class="welcome-card-action">
         <a class="welcome-button" href="https://patientsknowbest.com" target="_blank" rel="noopener noreferrer">
           Register with Patients Know Best <span aria-hidden="true">&#8599;</span>
         </a>
       </p>
-      <p class="welcome-card-second">No NHS number, or not in the UK? Nothing to do &mdash; I&rsquo;ll work from your own letters, emails and photos.</p>
+      <p class="welcome-card-second">No NHS number, or not in the UK? Nothing to do. I&rsquo;ll work from your letters, emails and photos.</p>
     </div>
 
-    <p class="welcome-signoff">I&rsquo;ll be here when you arrive.<br />&mdash; Mina</p>
+    <p class="welcome-signoff">I&rsquo;ll be here when you arrive.<br />Mina</p>
 
   </div>
 
@@ -140,18 +136,10 @@ import LegalPage from '../layouts/LegalPage.astro';
       animation: fade-up 700ms 220ms cubic-bezier(.2, .7, .3, 1) both;
     }
 
-    .welcome-next {
-      margin: 16px auto 0;
-      max-width: 30em;
-      color: color-mix(in srgb, var(--cream) 68%, transparent);
-      font-family: 'DM Sans Variable', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      animation: fade-up 700ms 300ms cubic-bezier(.2, .7, .3, 1) both;
-    }
 
     /* The one practical thing — set apart so it reads as help, not homework. */
     .welcome-card {
+      position: relative;
       margin: 46px auto 0;
       max-width: 34em;
       padding: 26px 28px;
@@ -161,16 +149,27 @@ import LegalPage from '../layouts/LegalPage.astro';
       background: color-mix(in srgb, var(--teal-deck) 6%, transparent);
       animation: fade-up 700ms 400ms cubic-bezier(.2, .7, .3, 1) both;
     }
-    .welcome-card-eyebrow {
-      color: var(--teal-deck);
+    /* The same tile the app's NHS record screen uses: a navy square with the three
+       letters, never the NHS logo (a protected mark; ruled 14 Sep 2026). */
+    .welcome-card-tile {
+      position: absolute;
+      top: 22px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #005EB8;
+      color: #fff;
       font-family: 'DM Sans Variable', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .welcome-card h2 {
+      padding-right: 56px;
       color: var(--cream);
       font-family: 'DM Sans Variable', sans-serif;
       font-size: 19px;
@@ -217,16 +216,6 @@ import LegalPage from '../layouts/LegalPage.astro';
 
     /* Same weight as the waves sentence it follows: knowing which address the
        invitation arrives from is practical information, not fine print. */
-    .welcome-inbox {
-      margin: 16px auto 0;
-      max-width: 30em;
-      color: color-mix(in srgb, var(--cream) 68%, transparent);
-      font-family: 'DM Sans Variable', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      animation: fade-up 700ms 350ms cubic-bezier(.2, .7, .3, 1) both;
-    }
-    .welcome-inbox strong { color: var(--cream); font-weight: 600; }
 
     .welcome-signoff {
       margin: 44px auto 0;
@@ -247,7 +236,7 @@ import LegalPage from '../layouts/LegalPage.astro';
     /* Motion is decoration here; anyone who has asked for less gets the page still. */
     @media (prefers-reduced-motion: reduce) {
       .welcome-mark, .welcome-headline, .welcome-lead,
-      .welcome-next, .welcome-card, .welcome-signoff { animation: none; }
+      .welcome-card, .welcome-signoff { animation: none; }
       .spark-halo, .spark-core { animation: none; }
     }
 
