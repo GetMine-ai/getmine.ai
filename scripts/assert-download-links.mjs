@@ -124,15 +124,35 @@ if (stage === 'links') {
     for (const line of ['Download started', 'Your browser is bringing it in.']) {
       if (!html.includes(line)) failures.push(`the receipt line "${line}" is absent from dist/beta.html`);
     }
-    // Mina's second message names the file the visitor is about to open, per
-    // platform, and stays conditional: the page cannot know the file landed.
-    // A shared sentence here would send Windows visitors looking for a .pkg
-    // (ruled 4 Sep).
+    // Mina's second message stays per-platform and conditional: the page cannot
+    // know the file landed. The danger it guards is a SHARED sentence sending
+    // Windows visitors looking for a .pkg (ruled 4 Sep) — so what must hold is
+    // that neither message names the other platform's file, not that both name
+    // their own. Windows names no file at all (ruled 18 Sep): the sentence spends
+    // its words on the SmartScreen warning instead, and nobody mistakes which
+    // file they just downloaded.
+    const macBuild = platforms.find(([platform]) => platform === 'mac')?.[1];
+    if (macBuild && !html.includes(`When it’s downloaded, open ${macBuild.filename}.`)) {
+      failures.push(`mac: Mina’s message naming ${macBuild.filename} is absent from dist/beta.html`);
+    }
     for (const [platform, build] of platforms) {
-      const opening = `When it’s downloaded, open ${build.filename}.`;
-      if (!html.includes(opening)) {
-        failures.push(`${platform}: Mina’s message naming ${build.filename} is absent from dist/beta.html`);
+      const message = (html.match(
+        new RegExp(`<p\\b[^>]*data-message-platform="${platform}"[^>]*>([\\s\\S]*?)</p>`),
+      ) ?? [])[1];
+      if (!message) {
+        failures.push(`${platform}: Mina’s second message is absent from dist/beta.html`);
+        continue;
       }
+      for (const [other, otherBuild] of platforms) {
+        if (other !== platform && message.includes(otherBuild.filename)) {
+          failures.push(`${platform}: Mina’s message names ${otherBuild.filename}, the ${other} file`);
+        }
+      }
+    }
+    // The Windows warning is the one thing that message exists to carry (18 Sep):
+    // almost every Windows tester meets SmartScreen before they meet Mina.
+    if (!html.includes('Windows may say it doesn’t recognise us')) {
+      failures.push('the Windows SmartScreen warning is absent from Mina’s second message');
     }
     if (!html.includes('While you’re waiting') || !html.includes('Invite a friend')) {
       failures.push('Mina’s waiting section or the invite section is absent from dist/beta.html');
