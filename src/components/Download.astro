@@ -252,11 +252,9 @@ const platforms = [
             {platforms.map((platform) =>
               platform.build.url ? (
                 <p class="mina-bubble" data-mina-message="2" data-message-platform={platform.key}>
-                  When it’s downloaded, open {platform.build.filename}.{' '}
                   {platform.key === 'mac'
-                    ? 'Your Mac checks our signature before anything installs.'
-                    : 'Windows checks our publisher before anything installs.'}{' '}
-                  I’ll be there when it opens.
+                    ? <>When it’s downloaded, open {platform.build.filename}. Your Mac checks our signature before anything installs. I’ll be there when it opens.</>
+                    : <>When it’s downloaded, open the file. One important thing: Windows may say it doesn’t recognise us, only because we’re new. Just choose Keep all the way through.</>}
                 </p>
               ) : null,
             )}
