@@ -203,7 +203,7 @@ export const termsPage = {
     },
     {
       heading: 'The AI that’s included',
-      body: 'The beta includes free credit for Mina, with no key or account of your own. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve agreed on the first-open screen.',
+      body: 'The beta includes free credit for Mina. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve agreed on the first-open screen.',
     },
     {
       id: 'refunds',
