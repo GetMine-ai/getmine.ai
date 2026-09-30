@@ -36,7 +36,7 @@ export const privacyPolicy = {
   mina: {
     heading: 'When Mina answers a question',
     paragraphs: [
-      'Mina is powered by our AI LLM provider. To answer a question, or to file a document, email or photo you’ve added, she sends the provider only the slice of your records relevant to that task. Never your whole vault, never your logins. And only after you’ve agreed on the first-open screen: no consent, no Mina.',
+      'Mina is powered by our AI LLM provider. To answer a question, or to file a document, email or photo you’ve added, she sends the provider only the slice of your records relevant to that task. Never your whole vault, never your logins. And only after you’ve given your consent when you first open the app: no consent, no Mina.',
       'Requests pass through GetMine’s server, which keeps none of the content and only counts them against your credit.',
     ],
   },
@@ -45,7 +45,7 @@ export const privacyPolicy = {
     bullets: [
       'Electronic health records (in the UK, your NHS record) reach your vault through our health-records access partner, after you log in with them and authorise it.',
       'Email scanning is read-only. GetMine can never send, change or delete your email, and your mailbox is read on your computer, not by us. You can revoke the access you granted with your email provider at any time.',
-      'The logins you grant are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
+      'The logins you grant are stored encrypted, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
       'Disconnect any source at any time, in the app.',
     ],
   },
@@ -53,7 +53,7 @@ export const privacyPolicy = {
     heading: 'What we hold',
     introduction: 'GetMine holds exactly this, and nothing else:',
     summaryParagraph:
-      'GetMine holds exactly this, and nothing else: your email address and your beta status; the code in your invite link, if you sign up through one; your consent record, as proof we asked; your AI usage counts, for your credit; and, if you top up, your purchases. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record and your purchases, which we keep for 6 years. No health information appears anywhere in this list.',
+      'GetMine holds exactly this, and nothing else: your email address and your beta status; the code in your invite link, if you sign up through one; your consent record, as proof we asked; if you connect your NHS record, the permission you gave; your AI usage counts, for your credit; if you top up, your purchases; and, as a condition of the beta, how the app is used, never your records, your questions or answers, with the age band, sex and world region from your profile. Only if you send it: your feedback. Everything is deleted within 6 months of the beta ending, except the consent record and your purchases, which we keep for 6 years. No health information appears anywhere in this list.',
     columns: ['What', 'Why', 'Kept until'],
     rows: [
       ['Your email address', 'beta emails', 'you leave, or the beta ends'],
@@ -67,8 +67,8 @@ export const privacyPolicy = {
       ['AI usage counts', 'your credit', 'the beta ends'],
       ['Your purchases (what, when, the price)', 'your receipts, and the accounts the law requires', '6 years'],
       [
-        'App usage (which parts of the app you use, never health data)',
-        'improving the beta; only if you opt in',
+        'How the app is used (never your records, your questions or answers), with the age band, sex and world region from your profile',
+        'improving the beta; a condition of the beta',
         'the beta ends',
       ],
       [
@@ -86,6 +86,7 @@ export const privacyPolicy = {
   exclusions: {
     heading: 'What we don’t do',
     bullets: [
+      'No health data is stored on our servers, and no model is trained on it.',
       'We don’t sell personal data, and we never will.',
       'We don’t run advertising or personal tracking on the product or website.',
       'We don’t look at your vault. We built it so we can’t.',
@@ -109,16 +110,16 @@ export const trustPage = {
   title: 'Your vault stays with you.',
   eyebrow: 'Trust & security',
   version: 'Version 1.1',
-  published: '4 August 2026',
+  published: '30 September 2026',
   summary:
-    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. What leaves is decided by your question, relayed but never kept by us.',
+    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. Only what is needed to answer your question, or to organise what you bring into the vault, is shared, relayed but never kept by us. No health data is stored on our servers, and no model is trained on it.',
   lead:
     'GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and, just as important, what we do not yet claim.',
   sections: [
     {
       heading: 'Secure by design',
       paragraphs: [
-        'Your vault lives on your local device, and the day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no central copy of your records, and nothing leaves your device on its own.',
+        'Your vault lives on your local device, and the day-to-day work of storing and searching your records happens locally, on hardware you own. We hold no central copy of your records.',
         'That architecture is the first layer of security: there is no central store of vaults to breach. What we do not hold cannot be lost, leaked or demanded from us.',
       ],
     },
@@ -130,9 +131,9 @@ export const trustPage = {
       ],
     },
     {
-      heading: 'Your question decides what is shared',
+      heading: 'Only what Mina needs is shared',
       paragraphs: [
-        'When Mina answers, only the slice of your records that the question needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.',
+        'When Mina helps you, only the slice of your records the task needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing is shared until you give your consent when you first open the app.',
       ],
     },
     {
@@ -144,7 +145,7 @@ export const trustPage = {
     {
       heading: 'The logins you grant',
       paragraphs: [
-        'Credentials for the sources you connect are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
+        'Credentials for the sources you connect are stored encrypted, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
       ],
     },
     {
@@ -199,11 +200,11 @@ export const termsPage = {
     },
     {
       heading: 'Your vault is yours',
-      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose.',
+      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose. No health data is stored on our servers, and no model is trained on it.',
     },
     {
       heading: 'The AI that’s included',
-      body: 'The beta includes free credit for Mina. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve agreed on the first-open screen.',
+      body: 'The beta includes free credit for Mina. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve given your consent when you first open the app.',
     },
     {
       id: 'refunds',
