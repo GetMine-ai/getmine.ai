@@ -18,7 +18,7 @@ export const privacyPolicy = {
   reviewStatus: '',
   scope: 'This one policy covers the GetMine desktop app and the getmine.ai website.',
   summary:
-    'The short version: your health records live on your computer. The only personal data we hold about you is what it takes to run the beta: your email address and your status on the open beta.',
+    'The short version: your health records live on your computer. The only personal data we hold about you is what it takes to run the beta: your email address, your status on the open beta and, if you top up, your purchases.',
   beta: {
     heading: 'The beta, plainly',
     paragraphs: [
@@ -37,7 +37,7 @@ export const privacyPolicy = {
     heading: 'When Mina answers a question',
     paragraphs: [
       'Mina is powered by our AI LLM provider. To answer a question, or to file a document, email or photo you’ve added, she sends the provider only the slice of your records relevant to that task. Never your whole vault, never your logins. And only after you’ve agreed on the first-open screen: no consent, no Mina.',
-      'Requests either pass through GetMine’s server, which keeps none of the content and only counts them against the AI allowance included with the beta, or go straight from your computer to the provider under your own key, never touching a GetMine server.',
+      'Requests pass through GetMine’s server, which keeps none of the content and only counts them against your credit.',
     ],
   },
   sources: {
@@ -53,7 +53,7 @@ export const privacyPolicy = {
     heading: 'What we hold',
     introduction: 'GetMine holds exactly this, and nothing else:',
     summaryParagraph:
-      'GetMine holds exactly this, and nothing else: your email address and your beta status; the code in your invite link, if you sign up through one; your consent record, as proof we asked; and your AI usage counts, for the allowance included with the beta. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record, which we keep for 6 years. No health information appears anywhere in this list.',
+      'GetMine holds exactly this, and nothing else: your email address and your beta status; the code in your invite link, if you sign up through one; your consent record, as proof we asked; your AI usage counts, for your credit; and, if you top up, your purchases. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record and your purchases, which we keep for 6 years. No health information appears anywhere in this list.',
     columns: ['What', 'Why', 'Kept until'],
     rows: [
       ['Your email address', 'beta emails', 'you leave, or the beta ends'],
@@ -64,7 +64,8 @@ export const privacyPolicy = {
         '6 months after the beta ends',
       ],
       ['Your consent record', 'proving we asked', '6 years'],
-      ['AI usage counts', 'your included allowance', 'the beta ends'],
+      ['AI usage counts', 'your credit', 'the beta ends'],
+      ['Your purchases (what, when, the price)', 'your receipts, and the accounts the law requires', '6 years'],
       [
         'App usage (which parts of the app you use, never health data)',
         'improving the beta; only if you opt in',
@@ -77,8 +78,9 @@ export const privacyPolicy = {
       ],
     ],
     paragraphs: [
+      'Card and billing details go to our payment provider, Stripe, and never to us.',
       'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
-      'Our lawful bases for this table: running the beta you asked to join (contract) and improving the product (legitimate interests). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
+      'Our lawful bases for this table: running the beta you asked to join (contract), improving the product (legitimate interests), and keeping accounts, as the law requires (legal obligation). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
     ],
   },
   exclusions: {
@@ -93,13 +95,13 @@ export const privacyPolicy = {
   rights: {
     heading: 'Your rights',
     paragraphs: [
-      'For the data in the table above: ask what we hold, correct it, or have it deleted. Write to privacy@getmine.ai, or use “leave the beta” when it ships in the app. Your vault needs no rights from us: you hold the data.',
+      'For the data in the table above: ask what we hold, correct it, or have it deleted. Write to privacy@getmine.ai, or use Leave the beta in the app. Your vault needs no rights from us: you hold the data.',
       'If you’re unhappy with how we’ve handled something, you can complain to the Information Commissioner’s Office (ico.org.uk). We’d appreciate the chance to fix it first.',
     ],
   },
   controller:
     'GetMine Ltd, registered in England and Wales, company number 17070331, is responsible for the personal data listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '4 August 2026',
+  lastUpdated: '30 September 2026',
 } as const;
 
 
@@ -176,7 +178,7 @@ export const trustPage = {
  */
 export const termsPage = {
   summary:
-    'the beta is free, Mina is not a doctor, and your vault is yours, on your computer, and it stays there whatever you decide about us.',
+    'the beta is free and comes with credit for Mina, you can top up with more credit if you want it, Mina is not a doctor, and your vault is yours, on your computer, and it stays there whatever you decide about us.',
   title: 'Plain terms for the open beta',
   eyebrow: 'Terms',
   organisation: 'GetMine Ltd',
@@ -201,7 +203,12 @@ export const termsPage = {
     },
     {
       heading: 'The AI that’s included',
-      body: 'The beta includes a GetMine AI allowance: Mina works without any key or account of your own. Heavy users may later be asked to add their own API key; that’s a choice made in Settings. What Mina sends, and to whom, is described precisely in the privacy policy, and only happens after you’ve agreed on the first-open screen.',
+      body: 'The beta includes free credit for Mina, with no key or account of your own. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve agreed on the first-open screen.',
+    },
+    {
+      id: 'refunds',
+      heading: 'Refunds',
+      body: 'If a payment went wrong, or you change your mind, write to hello@getmine.ai within 14 days and we’ll refund the credit you haven’t used. Refunds go back to the card you paid with.',
     },
     {
       heading: 'Use it responsibly',
@@ -224,5 +231,5 @@ export const termsPage = {
       body: 'Write to hello@getmine.ai. These terms are governed by the law of England and Wales.',
     },
   ],
-  lastUpdated: '4 August 2026',
+  lastUpdated: '30 September 2026',
 } as const;
