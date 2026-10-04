@@ -201,6 +201,7 @@ const platforms = [
                     href={platform.build.url}
                     download={platform.build.filename}
                     data-download-fallback
+                    data-download-platform={platform.key}
                   >
                     Download didn’t start? Use the direct link.
                   </a>
@@ -286,23 +287,17 @@ const platforms = [
 </main>
 
 <script>
-  // The site's only measurement (ruled, spec §1.6a): two anonymous first-party
-  // counts — page view and download click. No identity, no cookie, no storage;
-  // fire-and-forget so a failure can never affect the page. Disclosed in /privacy.
-  const COUNT_ENDPOINT = 'https://api.getmine.ai/access/v1/request-submitted';
-  const count = (event: string) => {
-    void fetch(`${COUNT_ENDPOINT}?event=${event}`, {
-      method: 'POST',
-      credentials: 'omit',
-      referrerPolicy: 'no-referrer',
-      keepalive: true,
-    }).catch(() => undefined);
-  };
+  // This page's two counts, sent through the site's measurement module
+  // (src/scripts/siteMetrics.ts): a press of a download button and a press of
+  // the direct link under the receipt, each with the platform of the card it
+  // sits on. Anonymous and first-party, with no identity, no cookie and no
+  // storage; fire-and-forget, so a failure can never affect the page. The page
+  // load itself is counted by main.ts.
+  import { track } from '../scripts/siteMetrics';
 
   const roots = document.querySelectorAll<HTMLElement>(
     '[data-download-module]:not([data-module-ready])',
   );
-  if (roots.length) count('page-view');
 
   roots.forEach((root) => {
     root.dataset.moduleReady = 'true';
@@ -322,7 +317,7 @@ const platforms = [
 
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
-        count('download-click');
+        track('download_click', { platform: link.dataset.downloadPlatform });
         const action = link.closest<HTMLElement>('[data-download-action]');
         if (!action) return;
         // One download at a time on the page: the platform pressed last owns the
@@ -338,6 +333,12 @@ const platforms = [
             laterMessages.forEach((message) => { message.hidden = false; });
           }, SECOND_MESSAGE_AFTER_MS);
         }
+      });
+    });
+
+    root.querySelectorAll<HTMLAnchorElement>('[data-download-fallback]').forEach((link) => {
+      link.addEventListener('click', () => {
+        track('download_fallback_click', { platform: link.dataset.downloadPlatform });
       });
     });
 
