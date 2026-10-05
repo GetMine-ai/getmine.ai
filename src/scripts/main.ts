@@ -1,3 +1,5 @@
+import { startSiteMetrics, track } from './siteMetrics';
+
 const WAITLIST_ENDPOINT = String(
   import.meta.env.PUBLIC_WAITLIST_ENDPOINT
     || 'https://f3cde459.sibforms.com/serve/MUIFAPkIttg9_w9drKl1pUH19xvaHSB6th2O_Uk7AMjGv6Yks09ls0EtOJ6n5sYr_dL_TrtArIYmoXK4dIp-183Oxac9u5FLhBTU7DZX1lAwkdefJAlLv7e0yqZMIq_grAsEXXYEqFPnRr8llU_6kHz5oT1mLU6xrIyqIABJ9a6NgG8lPR-YTOe3vNY7_OOFVmmb_PYkuekUN62fXw==',
@@ -401,6 +403,7 @@ function initialiseInviteFriend() {
         unlockScroll();
         return;
       }
+      track('invite_opened');
       // Portal to <body>: any positioned ancestor (the beta card's wrapper is
       // one) would otherwise trap the fixed overlay beneath the nav.
       if (panel.parentElement !== document.body) document.body.append(panel);
@@ -439,6 +442,7 @@ function initialiseInviteFriend() {
     });
 
     copyButton.addEventListener('click', async () => {
+      track('invite_copied');
       try {
         if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
         await navigator.clipboard.writeText(message.value);
@@ -536,6 +540,7 @@ function initialiseAccessForm() {
   });
 }
 
+startSiteMetrics();
 initialiseNavigation();
 initialiseFrictionRotator();
 initialiseWalkthrough();

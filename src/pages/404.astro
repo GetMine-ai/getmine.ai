@@ -1,8 +1,10 @@
 ---
 // Astro always emits dist/404.html so GitHub Pages can serve this route.
 import Base from '../layouts/Base.astro';
+import { visitCounting } from '../data/visitCounting';
 ---
 <Base
+  page="not-found"
   title="Page not found | GetMine.ai"
   description="The page you followed might be broken or may have moved."
   canonical="https://getmine.ai/404.html"
@@ -31,6 +33,8 @@ import Base from '../layouts/Base.astro';
       <span>© 2026 GetMine Ltd</span>
       <span aria-hidden="true">·</span>
       <a href="mailto:hello@getmine.ai">hello@getmine.ai</a>
+      <span aria-hidden="true">·</span>
+      <a href="/privacy#visit-counting">{visitCounting.label}</a>
     </footer>
   </div>
 </Base>
@@ -180,6 +184,7 @@ import Base from '../layouts/Base.astro';
     position: relative;
     z-index: 1;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
     border-top: 1px solid var(--line-quiet);

@@ -13,6 +13,7 @@
     "build:release": "pnpm assert:downloads && astro build && node --experimental-strip-types scripts/alias-beta-dir.mjs && pnpm assert:rendered",
     "preview": "astro preview",
     "check": "astro check",
+    "test": "node --experimental-strip-types --test scripts/site-metrics.test.mjs",
     "assert:downloads": "node --experimental-strip-types scripts/assert-download-links.mjs links",
     "assert:rendered": "node --experimental-strip-types scripts/assert-download-links.mjs rendered"
   },

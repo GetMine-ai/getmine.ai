@@ -93,6 +93,14 @@ export const privacyPolicy = {
       'We don’t send your data anywhere this page hasn’t told you about.',
     ],
   },
+  visitCounting: {
+    heading: 'Visit counting',
+    paragraphs: [
+      'We count visits to getmine.ai so we can see whether people are finding us and whether the site works. For each visit we count the page, the site or campaign link that brought you, how far down the home page you read, and presses of the download and invite buttons. On the download page we also count whether you are on a Mac, Windows or another device. We count a broad region (UK, rest of Europe, North America or elsewhere) taken from your device’s time zone.',
+      'We keep daily totals only, never a record of you or your visit. We set no cookies. Our server reads your IP address and browser type to handle each request and keeps neither. Totals by source and by region are deleted 6 months after the beta ends.',
+      'You can turn visit counting off in this browser at any time, and nothing more will be counted from it. That choice is the only thing this site stores in your browser.',
+    ],
+  },
   rights: {
     heading: 'Your rights',
     paragraphs: [
