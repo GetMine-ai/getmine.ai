@@ -6,8 +6,14 @@ import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/fraunces/wght-italic.css';
 import '../styles/legal.css';
+import '../styles/visit-counting.css';
+import { visitCounting } from '../data/visitCounting';
+import type { SitePage } from '../scripts/siteMetricsCore';
 
 interface Props {
+  /** The name this page is counted under (src/scripts/siteMetrics.ts). Fixed at
+   *  build time; a page without one is not counted. */
+  page?: SitePage;
   title: string;
   description: string;
   canonical: string;
@@ -16,7 +22,7 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description, canonical, noindex = false } = Astro.props;
+const { page, title, description, canonical, noindex = false } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +39,7 @@ const { title, description, canonical, noindex = false } = Astro.props;
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
-<body>
+<body data-site-page={page}>
 
 <header class="page-nav">
   <a class="page-logo" href="/">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
@@ -46,7 +52,19 @@ const { title, description, canonical, noindex = false } = Astro.props;
   </article>
 </main>
 
-<footer>&copy; 2026 GetMine Ltd. All rights reserved.</footer>
+<footer>
+  &copy; 2026 GetMine Ltd. All rights reserved.
+  <span aria-hidden="true">&middot;</span>
+  <a href="/privacy#visit-counting">{visitCounting.label}</a>
+</footer>
+
+<script>
+  // The only script on these pages: it counts the visit, and lets ?count=off
+  // turn visit counting off on whichever page it lands (src/scripts/siteMetrics.ts).
+  import { startSiteMetrics } from '../scripts/siteMetrics';
+
+  startSiteMetrics();
+</script>
 
 </body>
 </html>

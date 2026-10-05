@@ -80,7 +80,6 @@ export const privacyPolicy = {
     paragraphs: [
       'Card and billing details go to our payment provider, Stripe, and never to us.',
       'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
-      'We count how often pages on getmine.ai are opened, and how often the download and invite buttons are pressed. We keep daily totals only. We set no cookie, read nothing from your device and keep nothing that identifies you.',
       'Our lawful bases for this table: running the beta you asked to join (contract), improving the product (legitimate interests), and keeping accounts, as the law requires (legal obligation). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
     ],
   },
@@ -92,6 +91,14 @@ export const privacyPolicy = {
       'We don’t run advertising or personal tracking on the product or website.',
       'We don’t look at your vault. We built it so we can’t.',
       'We don’t send your data anywhere this page hasn’t told you about.',
+    ],
+  },
+  visitCounting: {
+    heading: 'Visit counting',
+    paragraphs: [
+      'We count visits to getmine.ai so we can see whether people are finding us and whether the site works. For each visit we count the page, the site or campaign link that brought you, how far down the home page you read, and presses of the download and invite buttons. On the download page we also count whether you are on a Mac, Windows or another device. We count a broad region (UK, rest of Europe, North America or elsewhere) taken from your device’s time zone.',
+      'We keep daily totals only, never a record of you or your visit. We set no cookies. Our server reads your IP address and browser type to handle each request and keeps neither. Totals by source and by region are deleted 6 months after the beta ends.',
+      'You can turn visit counting off in this browser at any time, and nothing more will be counted from it. That choice is the only thing this site stores in your browser.',
     ],
   },
   rights: {

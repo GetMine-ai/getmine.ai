@@ -290,10 +290,11 @@ const platforms = [
   // This page's two counts, sent through the site's measurement module
   // (src/scripts/siteMetrics.ts): a press of a download button and a press of
   // the direct link under the receipt, each with the platform of the card it
-  // sits on. Anonymous and first-party, with no identity, no cookie and no
-  // storage; fire-and-forget, so a failure can never affect the page. The page
-  // load itself is counted by main.ts.
-  import { track } from '../scripts/siteMetrics';
+  // sits on. A download press also says where the visit came from, if this
+  // page knows. Anonymous and first-party, with no identity and no cookie;
+  // fire-and-forget, so a failure can never affect the page. The page load
+  // itself is counted by main.ts.
+  import { track, visitSource } from '../scripts/siteMetrics';
 
   const roots = document.querySelectorAll<HTMLElement>(
     '[data-download-module]:not([data-module-ready])',
@@ -317,7 +318,7 @@ const platforms = [
 
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
-        track('download_click', { platform: link.dataset.downloadPlatform });
+        track('download_click', { platform: link.dataset.downloadPlatform, ...visitSource() });
         const action = link.closest<HTMLElement>('[data-download-action]');
         if (!action) return;
         // One download at a time on the page: the platform pressed last owns the
