@@ -5,8 +5,8 @@
  * It reads nothing from the browser and stores nothing: no referrer, no
  * address, no device details, no cookie, no storage. The page name is written
  * into the markup at build time. Every send is fire-and-forget, so a failure
- * can never affect the page. The privacy policy does not describe these counts
- * yet; that wording is the regulatory pack's to rule.
+ * can never affect the page. A change to what is sent here must first be
+ * checked against the privacy page.
  *
  * The contract itself (events, fields, vocabularies) is siteMetricsCore.ts.
  */
