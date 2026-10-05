@@ -80,6 +80,7 @@ export const privacyPolicy = {
     paragraphs: [
       'Card and billing details go to our payment provider, Stripe, and never to us.',
       'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
+      'We count how often pages on getmine.ai are opened, and how often the download and invite buttons are pressed. We keep daily totals only. We set no cookie, read nothing from your device and keep nothing that identifies you.',
       'Our lawful bases for this table: running the beta you asked to join (contract), improving the product (legitimate interests), and keeping accounts, as the law requires (legal obligation). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
     ],
   },
