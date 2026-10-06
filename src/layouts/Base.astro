@@ -13,6 +13,9 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   locale?: string;
+  /** Keep the page out of search results: a page meant to be reached only
+   *  through someone else's link (/pkb). */
+  noindex?: boolean;
 }
 
 const {
@@ -24,6 +27,7 @@ const {
   ogImage = 'https://getmine.ai/og-image.png',
   ogType = 'website',
   locale = 'en_GB',
+  noindex = false,
 } = Astro.props;
 ---
 <!doctype html>
@@ -36,6 +40,7 @@ const {
     <meta name="author" content="GetMine.ai" />
     <meta name="theme-color" content="#060c14" />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="GetMine.ai" />
     <meta property="og:title" content={ogTitle} />

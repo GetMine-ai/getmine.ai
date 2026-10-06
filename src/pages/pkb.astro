@@ -1,0 +1,30 @@
+---
+// Patients Know Best's download page (PKB install tagging, ruled 6 Oct 2026).
+// PKB links here and nowhere else: never to the installer files. It is /beta,
+// word for word, handing out PKB's copies of the installers (pkbBuilds): the
+// same signed bytes under PKB names. The installer reads its own name, so an
+// install from here is recorded as PKB's. The file's name is the whole signal:
+// nothing here reads a ?src tag, a referrer or anything else about the visit.
+//
+// Out of search results (noindex, and not in the sitemap): an install is PKB's
+// only when it came through PKB's link, and a stranger who found this page by
+// searching would be recorded as PKB's.
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Download from '../components/Download.astro';
+import Footer from '../components/Footer.astro';
+import { pkbBuilds } from '../data/builds';
+---
+<Base
+  title="Download GetMine | Open Beta"
+  ogTitle="Download GetMine — open beta"
+  description="Download the GetMine open beta for macOS or Windows. Your Health Vault lives on your own computer, with Mina AI included."
+  ogDescription="Download GetMine for macOS or Windows. One health vault on your own computer, with Mina to ask about it."
+  canonical="https://getmine.ai/pkb"
+  ogImage="https://getmine.ai/og-beta.png"
+  noindex
+>
+  <Nav hideCta />
+  <Download builds={pkbBuilds} pageUrl="https://getmine.ai/pkb" />
+  <Footer />
+</Base>
