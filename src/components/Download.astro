@@ -16,9 +16,16 @@ interface Props {
     mac: BuildInfo;
     windows: BuildInfo;
   };
+  /**
+   * This page's own address, for a visitor who must take the link to their
+   * computer. /pkb passes its own, so a PKB visitor on a phone carries PKB's
+   * link, and PKB's files, to the computer they install on.
+   */
+  pageUrl?: string;
 }
 
-const { builds } = Astro.props;
+const { builds, pageUrl = 'https://getmine.ai/beta' } = Astro.props;
+const pageLink = pageUrl.replace(/^https:\/\//, '');
 
 const platforms = [
   {
@@ -103,12 +110,12 @@ const platforms = [
         </p>
         <p>
           On your phone right now? Take the link with you:
-          <strong>getmine.ai/beta</strong>
+          <strong>{pageLink}</strong>
         </p>
         <div class="notice-actions">
-          <button type="button" data-copy-beta-link>Copy link</button>
+          <button type="button" data-copy-beta-link data-page-url={pageUrl}>Copy link</button>
           <a
-            href="mailto:?subject=GetMine%20download%20link&body=https%3A%2F%2Fgetmine.ai%2Fbeta"
+            href={`mailto:?subject=GetMine%20download%20link&body=${encodeURIComponent(pageUrl)}`}
           >
             Email it to yourself
           </a>
@@ -352,7 +359,7 @@ const platforms = [
     const linkAnnouncer = root.querySelector<HTMLElement>('[data-link-announcer]');
     linkButton?.addEventListener('click', async () => {
       try {
-        await copyText('https://getmine.ai/beta');
+        await copyText(linkButton.dataset.pageUrl ?? 'https://getmine.ai/beta');
         linkButton.textContent = 'Copied';
         if (linkAnnouncer) linkAnnouncer.textContent = 'Download link copied';
       } catch {
