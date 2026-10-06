@@ -9,12 +9,13 @@ export default defineConfig({
   site: 'https://getmine.ai',
   // 'file' keeps every published address exactly as it is (Brevo lands on
   // /welcome.html — an external contract). The one trailing-slash gap this
-  // leaves, /beta/ 404ing, is closed by a targeted alias the build writes
-  // (scripts/alias-beta-dir.mjs), not by changing every route's shape.
+  // leaves, /beta/ (and /pkb/) 404ing, is closed by a targeted alias the build
+  // writes (scripts/alias-beta-dir.mjs), not by changing every route's shape.
   build: { format: 'file' },
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith('/download'),
+      // /pkb is reached only through PKB's link (src/pages/pkb.astro).
+      filter: (page) => !page.endsWith('/download') && !page.endsWith('/pkb'),
     }),
   ],
   // Default dev/preview port (matches the sibling getmine app).
