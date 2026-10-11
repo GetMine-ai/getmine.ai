@@ -6,7 +6,7 @@
  * release-link assertion refuses to approve a production flip while either
  * URL remains empty.
  *
- * WAVE-9 FILL, COMPLETED 30 SEP 2026 from the published assets (wave-9 = latest).
+ * WAVE-10 FILL, COMPLETED 12 OCT 2026 from the published assets (wave-10 = latest).
  * The moment the wave assets are published, fill:
  *   - sha256: the checksum of each published asset (shasum -a 256 <file>)
  *   - sizeMB: the asset size rounded to the nearest MB (0 hides the size line)
@@ -24,22 +24,22 @@ export interface BuildInfo {
 
 export const builds: { mac: BuildInfo; windows: BuildInfo } = {
   mac: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-9/GetMine-Installer.pkg',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-10/GetMine-Installer.pkg',
     version: 'GetMine-Installer', // see note below: must be a substring of the release identity
-    sizeMB: 176.0,
+    sizeMB: 175.0,
     filename: 'GetMine-Installer.pkg',
     minOs: 'macOS 14 or later',
     signedBy: 'GETMINE LTD',
-    sha256: 'af58a075018d60ae01fae7e7e1b3ba4f5ed53a69b85ffd65941bd76836e220cb',
+    sha256: '391ff4c302cdc9e4209bee6f6881d22bd7f2acbae32c9e35fef4f6f593ff2a83',
   },
   windows: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-9/GetMine-Setup.exe',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-10/GetMine-Setup.exe',
     version: 'GetMine-Setup', // see note below: must be a substring of the release identity
-    sizeMB: 80.0,
+    sizeMB: 2.0,
     filename: 'GetMine-Setup.exe',
     minOs: 'Windows 11',
     signedBy: 'GETMINE LTD',
-    sha256: '0463f75f10fbb01c40dca7003d17bc52de8d42e053c315925ba95e0df5b921bf',
+    sha256: 'f114edf9f7ed3226eba2a472f9535e687354f49856aa664acbf61aa00e599839',
   },
 };
 
