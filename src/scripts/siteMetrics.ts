@@ -55,7 +55,9 @@ const DOWNLOAD_PAGE_PATH = '/beta';
 
 type SiteEventFields = Readonly<Record<string, string | boolean | undefined>>;
 
-function countingIsOff(): boolean {
+/** True once this browser has turned visit counting off (or cannot remember a
+ *  choice): every other count on the site respects it too. */
+export function countingIsOff(): boolean {
   try {
     return window.localStorage.getItem(COUNTING_FLAG) === 'off';
   } catch {
@@ -146,6 +148,10 @@ function applyCountChoice(choice: 'off' | 'on') {
   const search = params.toString();
   replaceAddress(search ? `?${search}` : '', window.location.hash);
   showCountingStatus();
+  // Rewriting the address cancels the browser's own jump to the section the link
+  // named: bring the visitor back to where they pressed it.
+  const target = window.location.hash ? document.getElementById(window.location.hash.slice(1)) : null;
+  target?.scrollIntoView({ block: 'start', behavior: 'instant' });
 }
 
 function navigationType(): string | undefined {

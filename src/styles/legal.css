@@ -50,3 +50,7 @@ footer a:hover{color:var(--cream)}
 .page-section td{text-align:left;padding:11px 14px;vertical-align:top;color:color-mix(in srgb,var(--cream) 82%,transparent);line-height:1.5}
 .page-section tr+tr td{border-top:1px solid color-mix(in srgb,var(--cream) 9%,transparent)}
 .page-section td:first-child{color:var(--cream);font-weight:600}
+
+/* No paragraph or list item ends on a lone word; links stay whole. */
+.page-section p,.page-section li,.policy-summary,.page-lead,.controller-notice{text-wrap:pretty}
+.page-section a.nowrap{white-space:nowrap}

@@ -1,8 +1,9 @@
 /**
- * The wording of the visit-counting choice: the footer link, the action in the
- * privacy policy, and the line shown once the choice is made.
+ * The wording of the visit-counting choice: the link at the end of the counting
+ * sentence in the privacy policy's "What we hold", and the line shown once the
+ * choice is made.
  *
- * These three strings belong with the "Visit counting" section of the privacy
+ * These two strings belong with the counting sentence in the privacy
  * policy (src/data/regulatory.ts, which mirrors the regulatory pack). Change
  * them only together with that section, and write no other copy for this
  * feature here.
@@ -11,7 +12,6 @@
  * rest as the link that turns counting back on.
  */
 export const visitCounting = {
-  label: 'Visit counting',
-  action: 'Turn off visit counting in this browser',
-  status: 'Visit counting is off in this browser. Turn it back on.',
+  action: 'Turn this off for this browser',
+  status: 'Visit counting is off for this browser. Turn it back on.',
 } as const;

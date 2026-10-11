@@ -3,17 +3,16 @@ import LegalPage from '../layouts/LegalPage.astro';
 import { privacyPolicy as policy } from '../data/regulatory';
 import { visitCounting as visitCountingCopy } from '../data/visitCounting';
 
-// The "Visit counting" section comes from regulatory.ts like every other
-// section. The action link under it is the one piece of interface wording, and
-// lives in visitCounting.ts.
-const visitCounting = policy.visitCounting;
+// Visit counting is one sentence at the end of "What we hold"'s first
+// paragraph (regulatory.ts); its turn-off link is the one piece of interface
+// wording, and lives in visitCounting.ts.
 ---
 <LegalPage page="privacy" title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app and getmine.ai website." canonical="https://getmine.ai/privacy">
   <p class="page-eyebrow">Privacy</p>
   <h1 class="page-headline">{policy.title}</h1>
 
   <p class="policy-scope">{policy.scope}</p>
-  <aside class="policy-summary"><strong>The short version:</strong> {policy.summary.replace('The short version: ', '')}</aside>
+  <aside class="policy-summary"><strong>In short:</strong> {policy.summary.replace('In short: ', '')}</aside>
 
   {[policy.beta, policy.vault, policy.mina].map((section) => (
     <section class="page-section">
@@ -27,21 +26,10 @@ const visitCounting = policy.visitCounting;
     <ul>{policy.sources.bullets.map((item) => <li>{item}</li>)}</ul>
   </section>
 
-  <section class="page-section">
-    <h2>{policy.holdings.heading}</h2>
-    <p>{policy.holdings.summaryParagraph}</p>
-    {policy.holdings.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-  </section>
-
-  <section class="page-section">
-    <h2>{policy.exclusions.heading}</h2>
-    <ul>{policy.exclusions.bullets.map((item) => <li>{item}</li>)}</ul>
-  </section>
-
   <section class="page-section" id="visit-counting">
-    <h2>{visitCounting.heading}</h2>
-    {visitCounting.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-    <p><a href="/privacy?count=off#visit-counting">{visitCountingCopy.action}</a></p>
+    <h2>{policy.holdings.heading}</h2>
+    <p>{policy.holdings.summaryParagraph} <a class="nowrap" href="/privacy?count=off#visit-counting">{visitCountingCopy.action}</a>.</p>
+    {policy.holdings.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
   </section>
 
   <section class="page-section">

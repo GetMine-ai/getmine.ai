@@ -7,7 +7,6 @@ import '@fontsource-variable/fraunces';
 import '@fontsource-variable/fraunces/wght-italic.css';
 import '../styles/legal.css';
 import '../styles/visit-counting.css';
-import { visitCounting } from '../data/visitCounting';
 import type { SitePage } from '../scripts/siteMetricsCore';
 
 interface Props {
@@ -54,8 +53,6 @@ const { page, title, description, canonical, noindex = false } = Astro.props;
 
 <footer>
   &copy; 2026 GetMine Ltd. All rights reserved.
-  <span aria-hidden="true">&middot;</span>
-  <a href="/privacy#visit-counting">{visitCounting.label}</a>
 </footer>
 
 <script>

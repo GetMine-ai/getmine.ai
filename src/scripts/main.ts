@@ -1,4 +1,4 @@
-import { startSiteMetrics, track } from './siteMetrics';
+import { countingIsOff, startSiteMetrics, track } from './siteMetrics';
 
 const WAITLIST_ENDPOINT = String(
   import.meta.env.PUBLIC_WAITLIST_ENDPOINT
@@ -320,6 +320,8 @@ function initialiseWalkthrough() {
 }
 
 function recordAnonymousSubmission() {
+  // Turning visit counting off stops this count too, so off means off.
+  if (countingIsOff()) return;
   void fetch(REQUEST_SUBMITTED_ENDPOINT, {
     method: 'POST',
     credentials: 'omit',
