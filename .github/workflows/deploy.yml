@@ -48,6 +48,7 @@ jobs:
       - name: Check and build
         run: |
           pnpm check
+          pnpm test
           pnpm build:release
 
       - name: Upload Pages artifact

@@ -3,6 +3,7 @@
 import Base from '../layouts/Base.astro';
 ---
 <Base
+  page="not-found"
   title="Page not found | GetMine.ai"
   description="The page you followed might be broken or may have moved."
   canonical="https://getmine.ai/404.html"
@@ -180,6 +181,7 @@ import Base from '../layouts/Base.astro';
     position: relative;
     z-index: 1;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
     border-top: 1px solid var(--line-quiet);
