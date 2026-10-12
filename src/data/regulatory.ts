@@ -53,7 +53,7 @@ export const privacyPolicy = {
     /** The website-counting sentence ends this paragraph; privacy.astro adds the
      *  turn-off link after it (src/data/visitCounting.ts). */
     summaryParagraph:
-      'We hold only what we need to run the beta: your account details, such as your email address and your consent; how much you use Mina, and any credit you buy; how the app is used, never your records, questions or answers; and your feedback, if you send it. None of this is health information, so please keep health details out of your feedback. On our website, we count how many people visit and what they read, as daily totals only: no cookies, and nothing that identifies you.',
+      'We hold only what we need to run the beta: your account details, such as your email address and your consent; where your GetMine installer came from, to administer referrals; how much you use Mina, and any credit you buy; how the app is used, never your records, questions or answers; and your feedback, if you send it. None of this is health information, so please keep health details out of your feedback. On our website, we count how many people visit and what they read, as daily totals only: no cookies, and nothing that identifies you.',
     paragraphs: [
       'We keep this while you’re in the beta and delete it when you leave. For legal reasons, two things stay longer: the record of your consent, for 6 years, and a record of payments that doesn’t name you, for our accounts. Card details go to our payment provider, Stripe, never to us.',
       'A few third-party providers help us run the beta: Stripe for payments, an email provider for our emails, and hosting providers for our website and server. They only hold the details above, never your health records. Where a provider is based outside the UK, we use the UK’s approved safeguards. We hold this to run the beta you joined, to improve GetMine, and to keep the accounts the law requires.',
@@ -68,7 +68,7 @@ export const privacyPolicy = {
   },
   controller:
     'Who we are: GetMine Ltd, registered in England and Wales, company number 17070331. We are responsible for what is listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '11 October 2026',
+  lastUpdated: '12 October 2026',
 } as const;
 
 
