@@ -43,6 +43,28 @@ export const builds: { mac: BuildInfo; windows: BuildInfo } = {
   },
 };
 
+/**
+ * PKB's copies of the two installers, which only /pkb offers (PKB install
+ * tagging, ruled 6 Oct 2026). Every wave publishes them beside the originals:
+ * the same signed bytes under PKB names. The installer reads its own file name,
+ * so a person who downloads from PKB's page is recorded as a PKB install.
+ *
+ * Same wave, same checksum, same size: only the name differs. So these follow
+ * from `builds` and the flip edits `builds` alone, while assert:downloads
+ * fetches each copy's own sidecar and refuses a copy whose bytes differ.
+ */
+const pkbCopy = (build: BuildInfo, filename: string): BuildInfo => ({
+  ...build,
+  url: build.url.replace(/[^/]+$/, filename),
+  version: filename.replace(/\.[^.]+$/, ''),
+  filename,
+});
+
+export const pkbBuilds: { mac: BuildInfo; windows: BuildInfo } = {
+  mac: pkbCopy(builds.mac, 'GetMine-Installer-PKB.pkg'),
+  windows: pkbCopy(builds.windows, 'GetMine-Setup-PKB.exe'),
+};
+
 /*
  * Why `version` is not the wave tag (measured 1 Sep 2026, not assumed):
  * scripts/assert-download-links.mjs requires `version` to appear in
