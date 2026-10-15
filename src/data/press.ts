@@ -87,7 +87,7 @@ export const releases: Release[] = [
     ],
     about: {
       heading: 'About Patients Know Best',
-      text: 'Patients Know Best is the world’s largest Personal Health Record solution, with over 8 million registered patients, one in six adults across England and Wales. Founded as a social enterprise in 2008, PKB brings together data from NHS and private providers, GP records, medical devices, wearables and the patient’s own entries into a single patient record. It is integrated into the NHS App and NHS Wales App, and lets patients securely share their record with anyone, anywhere. PKB is expanding internationally, including Canada and Lagos State, Nigeria.',
+      text: 'Patients Know Best is the world’s largest Personal Health Record solution, with almost 9 million registered patients, one in six adults across England and Wales. Founded as a social enterprise in 2008, PKB brings together data from NHS and private providers, GP records, medical devices, wearables and the patient’s own entries into a single patient record. It is integrated into the NHS App and NHS Wales App, and lets patients securely share their record with anyone, anywhere. PKB is expanding internationally, including Canada and Lagos State, Nigeria.',
       linkLabel: 'patientsknowbest.com',
       href: 'https://www.patientsknowbest.com',
     },
