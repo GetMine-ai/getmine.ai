@@ -12,7 +12,7 @@ body{background:var(--navy);color:var(--cream);font-family:'DM Sans Variable',sa
 
 /* Header */
 .page-nav{padding:22px 32px;border-bottom:1px solid color-mix(in srgb,var(--cream) 6%,transparent);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.page-logo{font-family:'Fraunces Variable',serif;font-size:1.6rem;color:var(--cream);font-weight:300;letter-spacing:-.025em;text-decoration:none}
+.page-logo{font-family:'Fraunces Variable',serif;font-size:1.6rem;color:var(--cream);font-weight:400;letter-spacing:-.025em;text-decoration:none}
 .page-logo .logo-mine{color:var(--teal-deck);font-style:italic}
 .page-logo .logo-ai{color:var(--cream)}
 .page-back{display:inline-flex;min-height:44px;align-items:center;padding:.6rem 1rem;border:1px solid var(--cream);border-radius:999px;color:var(--cream);font-family:'DM Sans Variable',sans-serif;font-size:14px;font-weight:600;text-decoration:none;transition:color .2s,border-color .2s,background .2s}
