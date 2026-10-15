@@ -1,6 +1,13 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+
+// The press pages stay out of the sitemap until src/data/press.ts publishes
+// them (the routes themselves render the not-found page until then).
+const pressPublished = /export const pressPublished = true;/.test(
+  readFileSync(new URL('./src/data/press.ts', import.meta.url), 'utf8'),
+);
 
 // Static marketing site for getmine.ai.
 // `site` powers absolute canonical URLs; output is static by default and the
@@ -15,7 +22,10 @@ export default defineConfig({
   integrations: [
     sitemap({
       // /pkb is reached only through PKB's link (src/pages/pkb.astro).
-      filter: (page) => !page.endsWith('/download') && !page.endsWith('/pkb'),
+      filter: (page) =>
+        !page.endsWith('/download') &&
+        !page.endsWith('/pkb') &&
+        (pressPublished || !/\/press(\/|$)/.test(page)),
     }),
   ],
   // Default dev/preview port (matches the sibling getmine app).

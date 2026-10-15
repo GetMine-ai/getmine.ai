@@ -19,9 +19,23 @@ interface Props {
   /** Keep a page out of search results — for pages that only make sense when
    *  you arrived from somewhere specific (e.g. the post-confirmation welcome). */
   noindex?: boolean;
+  /** A social image for the page; without it the page has no Open Graph tags, as today. */
+  ogImage?: string;
+  /** Where the back button leads and what it says. Defaults to the home page. */
+  backHref?: string;
+  backLabel?: string;
 }
 
-const { page, title, description, canonical, noindex = false } = Astro.props;
+const {
+  page,
+  title,
+  description,
+  canonical,
+  noindex = false,
+  ogImage,
+  backHref = '/',
+  backLabel = 'Back to home',
+} = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +47,19 @@ const { page, title, description, canonical, noindex = false } = Astro.props;
 <meta name="theme-color" content="#060C14">
 <meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow'}>
 <link rel="canonical" href={canonical}>
+{ogImage && (
+  <>
+    <meta property="og:type" content="article">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={canonical}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content={ogImage}>
+  </>
+)}
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -42,7 +69,7 @@ const { page, title, description, canonical, noindex = false } = Astro.props;
 
 <header class="page-nav">
   <a class="page-logo" href="/">Get<span class="logo-mine">Mine.</span><span class="logo-ai">ai</span></a>
-  <a class="page-back" href="/">&larr; Back to home</a>
+  <a class="page-back" href={backHref}>&larr; {backLabel}</a>
 </header>
 
 <main>

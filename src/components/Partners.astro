@@ -1,0 +1,142 @@
+---
+// Partners and integrations: three logos under the closing call to action.
+// PKB sits on a cream frame because its mark is made for light grounds; Covia
+// and Convex sit in the site's card frame on the navy. Covia is deliberately
+// the tallest: its short wordmark needs the height to weigh the same as the
+// two wide lock-ups. Captions are each partner's own words.
+---
+<section id="partners" class="partners section-edge" aria-labelledby="partners-label" data-site-section="partners">
+  <div class="wrap">
+    <p id="partners-label" class="eyebrow">Partners and integrations</p>
+    <ul class="partners-grid">
+      <li>
+        <a class="frame frame-light" href="https://www.patientsknowbest.com" target="_blank" rel="noopener" aria-label="Patients Know Best, opens in a new tab">
+          <img src="/assets/partners/pkb-logo-full.png" alt="Patients Know Best" width="3692" height="608" loading="lazy" decoding="async" />
+        </a>
+        <p>One of the world’s largest personal health and care record platforms.</p>
+      </li>
+      <li>
+        <a class="frame" href="https://covia.ai" target="_blank" rel="noopener" aria-label="Covia, opens in a new tab">
+          <img src="/assets/partners/covia-logo-on-navy.svg" alt="Covia" width="236" height="74" loading="lazy" decoding="async" />
+        </a>
+        <p>The foundational infrastructure for production-grade AI agents.</p>
+      </li>
+      <li>
+        <a class="frame" href="https://convex.world" target="_blank" rel="noopener" aria-label="Convex, opens in a new tab">
+          <img src="/assets/partners/convex-logo-colour.svg" alt="Convex" width="285" height="62" loading="lazy" decoding="async" />
+        </a>
+        <p>Decentralised network infrastructure,<br />a self-sovereign lattice data fabric.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .partners {
+    background: var(--navy);
+    text-align: center;
+  }
+
+  .partners .wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding-block: 3.5rem;
+  }
+
+  .partners-grid {
+    display: grid;
+    width: 100%;
+    max-width: 62rem;
+    margin: 0;
+    padding: 0;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+    align-items: start;
+    list-style: none;
+  }
+
+  .partners-grid li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .frame {
+    display: flex;
+    height: 72px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color var(--ease-fast);
+  }
+
+  .frame:hover,
+  .frame:focus-visible {
+    border-color: rgb(232 250 248 / 28%);
+  }
+
+  .frame-light {
+    border-color: var(--cream);
+    background: var(--cream);
+  }
+
+  .frame img {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .frame-light img {
+    height: 34px;
+  }
+
+  .partners-grid li:nth-child(2) .frame img {
+    height: 60px;
+  }
+
+  .partners-grid li:nth-child(3) .frame img {
+    height: 38px;
+  }
+
+  .partners-grid p {
+    margin: 0;
+    color: var(--text-quiet);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 48rem) {
+    .partners .wrap {
+      padding-block: 4.25rem;
+    }
+
+    .partners-grid {
+      gap: 3rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .frame {
+      height: 88px;
+    }
+
+    .frame-light img {
+      height: 44px;
+    }
+
+    .partners-grid li:nth-child(2) .frame img {
+      height: 74px;
+    }
+
+    .partners-grid li:nth-child(3) .frame img {
+      height: 46px;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+// /press: the announcements, newest first, as summary cards. The full text of a
+// release is never on this page; each card opens its own release page.
+// Until pressPublished is true this route shows the not-found page, noindex.
+import Base from '../layouts/Base.astro';
+import LegalPage from '../layouts/LegalPage.astro';
+import NotFound from '../components/NotFound.astro';
+import { pressPublished, releases } from '../data/press';
+---
+{pressPublished ? (
+  <LegalPage
+    title="Press | GetMine.ai"
+    description="Announcements from GetMine."
+    canonical="https://getmine.ai/press"
+  >
+    <p class="page-eyebrow">Press</p>
+    <h1 class="page-headline">News</h1>
+
+    <ul class="releases">
+      {releases.map((r) => (
+        <li class="release-card">
+          <a class="release-image" href={`/press/${r.slug}`} aria-label="Read the announcement">
+            <img src={r.image} alt={r.imageAlt} width="1920" height="1080" loading="lazy" decoding="async" />
+          </a>
+          <div class="release-body">
+            <h2><a href={`/press/${r.slug}`}>{r.headline}</a></h2>
+            <p class="release-date"><time datetime={r.date}>{r.dateLabel}</time></p>
+            <p class="release-summary">{r.summary} <a class="nowrap" href={`/press/${r.slug}`}>Read more</a></p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </LegalPage>
+) : (
+  <Base
+    page="not-found"
+    title="Page not found | GetMine.ai"
+    description="The page you followed might be broken or may have moved."
+    canonical="https://getmine.ai/404.html"
+    noindex
+  >
+    <NotFound />
+  </Base>
+)}
