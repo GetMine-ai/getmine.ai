@@ -1,0 +1,59 @@
+---
+// One page per release, at /press/<slug>. Same chrome as the legal pages, with
+// the back button leading to the list. The body comes from src/data/press.ts
+// in order: a lead paragraph, paragraphs, and the quotes set as pull quotes.
+// Until pressPublished is true this route shows the not-found page, noindex.
+import Base from '../../layouts/Base.astro';
+import LegalPage from '../../layouts/LegalPage.astro';
+import NotFound from '../../components/NotFound.astro';
+import { pressPublished, releases } from '../../data/press';
+
+export function getStaticPaths() {
+  return releases.map((release) => ({ params: { slug: release.slug }, props: { release } }));
+}
+
+const { release: r } = Astro.props;
+---
+{pressPublished ? (
+  <LegalPage
+    title={`${r.headline} | GetMine.ai`}
+    description={r.summary}
+    canonical={`https://getmine.ai/press/${r.slug}`}
+    ogImage={`https://getmine.ai${r.ogImage}`}
+    backHref="/press"
+    backLabel="All news"
+  >
+    <article class="release">
+      <p class="page-eyebrow">Press release · {r.dateLabel}</p>
+      <h1 class="release-title">{r.headline}.</h1>
+      <img class="release-hero" src={r.image} alt="" width="1920" height="1080" decoding="async" />
+      <div class="release-text">
+        {r.body.map((block) =>
+          block.kind === 'quote' ? (
+            <blockquote>
+              <span class="mark" aria-hidden="true">“</span>
+              <p>{block.text}</p>
+              <footer>{block.by}</footer>
+            </blockquote>
+          ) : (
+            <p class:list={[block.kind === 'lead' && 'lead']} set:html={block.html} />
+          ),
+        )}
+      </div>
+      <section class="release-about" aria-labelledby="release-about-heading">
+        <h2 id="release-about-heading">{r.about.heading}</h2>
+        <p>{r.about.text} Find out more: <a href={r.about.href}>{r.about.linkLabel}</a></p>
+      </section>
+    </article>
+  </LegalPage>
+) : (
+  <Base
+    page="not-found"
+    title="Page not found | GetMine.ai"
+    description="The page you followed might be broken or may have moved."
+    canonical="https://getmine.ai/404.html"
+    noindex
+  >
+    <NotFound />
+  </Base>
+)}
