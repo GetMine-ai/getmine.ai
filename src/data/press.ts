@@ -34,9 +34,9 @@ export interface Release {
 
 export const releases: Release[] = [
   {
-    slug: 'pkb-2026-10-20',
-    date: '2026-10-20',
-    dateLabel: '20 October 2026',
+    slug: 'pkb-2026-10-19',
+    date: '2026-10-19',
+    dateLabel: '19 October 2026',
     headline:
       'Patients Know Best and GetMine partner to launch a patient-owned AI intelligent health vault',
     summary:
@@ -48,7 +48,7 @@ export const releases: Release[] = [
     body: [
       {
         kind: 'lead',
-        html: '<strong>London, 20 October 2026.</strong> GetMine, an intelligent health vault on a person’s own computer with an AI health companion, today announces a partnership with Patients Know Best (PKB), the world’s largest personal health record and patient engagement platform, with almost 9 million registered patients.',
+        html: '<strong>London, 19 October 2026.</strong> GetMine, an intelligent health vault on a person’s own computer with an AI health companion, today announces a partnership with Patients Know Best (PKB), the world’s largest personal health record and patient engagement platform, with almost 9 million registered patients.',
       },
       {
         kind: 'p',
