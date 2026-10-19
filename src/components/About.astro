@@ -1,8 +1,10 @@
 ---
+import { pressPublished } from '../data/press';
+
 const founders = [
   {
     name: 'Sabine Azancot',
-    role: 'Co founder & CEO',
+    role: 'Co-founder & CEO',
     discipline: 'AI, product development and human behaviour.',
     line: 'Turns intelligence into meaningful consumer value.',
     image: 'sabine-color',
@@ -10,7 +12,7 @@ const founders = [
   },
   {
     name: 'Mike Anderson',
-    role: 'Co founder & Chief Architect',
+    role: 'Co-founder & Chief Architect',
     discipline: 'Sovereign architecture and agentic systems.',
     line: 'Builds the technology that keeps people in control.',
     image: 'mike-color',
@@ -79,6 +81,16 @@ const founders = [
       AI without memory is generic.<br />
       Memory without agency is <em>not truly yours.</em>
     </p>
+
+    {pressPublished && (
+      <div class="news">
+        <p class="news-label">In the news</p>
+        <p>
+          19 October 2026. Patients Know Best and GetMine partner to launch a patient-owned AI
+          intelligent health vault. <a href="/press/pkb-2026-10-19">Read the announcement</a>
+        </p>
+      </div>
+    )}
   </div>
 </section>
 
@@ -347,7 +359,7 @@ const founders = [
     inset: 0;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--teal-line);
+    border: 2px solid rgb(29 191 176 / 85%);
     background: var(--navy-2);
     box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
     font-family: var(--font-display);
@@ -534,5 +546,39 @@ const founders = [
   #about-us .section-heading,
   .about .section-heading {
     max-width: none;
+  }
+  /* In the news: one line under the closing couplet, shown once the press
+     pages are published (src/data/press.ts). Text only, by ruling. */
+  .news {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-quiet);
+  }
+
+  .news-label {
+    margin: 0;
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .news p:not(.news-label) {
+    margin: 0;
+    color: var(--text-quiet);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .news a {
+    color: var(--teal);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 </style>

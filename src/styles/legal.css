@@ -12,7 +12,7 @@ body{background:var(--navy);color:var(--cream);font-family:'DM Sans Variable',sa
 
 /* Header */
 .page-nav{padding:22px 32px;border-bottom:1px solid color-mix(in srgb,var(--cream) 6%,transparent);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.page-logo{font-family:'Fraunces Variable',serif;font-size:1.6rem;color:var(--cream);font-weight:300;letter-spacing:-.025em;text-decoration:none}
+.page-logo{font-family:'Fraunces Variable',serif;font-size:1.6rem;color:var(--cream);font-weight:400;letter-spacing:-.025em;text-decoration:none}
 .page-logo .logo-mine{color:var(--teal-deck);font-style:italic}
 .page-logo .logo-ai{color:var(--cream)}
 .page-back{display:inline-flex;min-height:44px;align-items:center;padding:.6rem 1rem;border:1px solid var(--cream);border-radius:999px;color:var(--cream);font-family:'DM Sans Variable',sans-serif;font-size:14px;font-weight:600;text-decoration:none;transition:color .2s,border-color .2s,background .2s}
@@ -54,3 +54,42 @@ footer a:hover{color:var(--cream)}
 /* No paragraph or list item ends on a lone word; links stay whole. */
 .page-section p,.page-section li,.policy-summary,.page-lead,.controller-notice{text-wrap:pretty}
 .page-section a.nowrap{white-space:nowrap}
+
+/* Press: the announcements list (/press) and the release pages under it.
+   Cards only on the list; each release has its own page on the same chrome. */
+.releases{list-style:none;margin:40px 0 0;padding:0;display:flex;flex-direction:column;gap:24px}
+.release-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid color-mix(in srgb,var(--cream) 14%,transparent);border-radius:20px;background:color-mix(in srgb,var(--cream) 3.5%,transparent);transition:border-color .2s}
+.release-card:hover{border-color:color-mix(in srgb,var(--cream) 28%,transparent)}
+.release-image{display:block;line-height:0}
+.release-image img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block}
+.release-body{display:flex;flex-direction:column;gap:12px;padding:28px 32px 32px}
+.release-body h2{margin:0;color:var(--cream);font-family:'Fraunces Variable',serif;font-size:30px;font-weight:400;line-height:1.2;letter-spacing:-.02em}
+.release-body h2 a{color:var(--cream);text-decoration:none}
+.release-date{margin:0;color:color-mix(in srgb,var(--cream) 70%,transparent);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.release-summary{margin:4px 0 0;color:var(--cream);font-size:17px;line-height:1.65}
+.release-summary a{color:var(--teal-deck);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--teal-deck) 40%,transparent);padding-bottom:1px;white-space:nowrap}
+.release-summary a:hover,.release-body h2 a:hover{color:var(--teal-deck)}
+
+.release-title{margin:18px 0 0;color:var(--cream);font-family:'Fraunces Variable',serif;font-size:44px;font-weight:400;letter-spacing:-.035em;line-height:1.1}
+.release-hero{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;margin-top:32px;border-radius:16px}
+.release-text{display:flex;flex-direction:column;gap:18px;margin-top:36px;color:var(--cream);font-size:17px;line-height:1.7}
+.release-text p{margin:0}
+.release-text .lead{font-size:20px;line-height:1.6}
+.release-text .lead strong{font-weight:600}
+.release-text blockquote{position:relative;margin:16px 0;padding:0 0 0 36px}
+.release-text blockquote .mark{position:absolute;left:0;top:-14px;color:var(--teal-deck);font-family:'Fraunces Variable',serif;font-size:64px;font-weight:300;line-height:1}
+.release-text blockquote p{font-family:'Fraunces Variable',serif;font-size:24px;font-weight:300;line-height:1.45}
+.release-text blockquote footer{margin-top:12px;color:var(--teal-deck);font-size:14px;font-weight:600}
+.release-about{margin-top:44px;padding-top:28px;border-top:1px solid color-mix(in srgb,var(--cream) 9%,transparent)}
+.release-about h2{margin:0 0 6px;color:var(--cream);font-size:15px;font-weight:600}
+.release-about p{margin:0;color:color-mix(in srgb,var(--cream) 88%,transparent);font-size:14px;line-height:1.65}
+.release-about a{color:var(--teal-deck);text-decoration:none}
+.release-about a:hover{color:var(--cream)}
+.release-text p,.release-summary,.release-about p{text-wrap:pretty}
+
+@media (max-width:680px){
+  .release-body{padding:22px 20px 26px}
+  .release-body h2{font-size:24px}
+  .release-title{font-size:32px}
+  .release-text blockquote p{font-size:20px}
+}

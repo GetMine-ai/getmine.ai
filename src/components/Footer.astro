@@ -1,4 +1,5 @@
 ---
+import { pressPublished } from '../data/press';
 ---
 <footer>
   <div class="wrap footer-main">
@@ -17,12 +18,12 @@
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
       <a href="/trust">Trust &amp; Security</a>
+      {pressPublished && <a href="/press">Press</a>}
       <a href="mailto:hello@getmine.ai">Contact</a>
     </nav>
   </div>
 
   <div class="wrap footer-meta">
-    <p>GetMine is a local-first personal health vault for macOS and Windows.</p>
     <p>© 2026 GetMine Ltd</p>
   </div>
 </footer>
@@ -101,7 +102,7 @@
   .footer-meta {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--space-3);
     border-top: 1px solid var(--line-quiet);
     padding-block: 20px;
