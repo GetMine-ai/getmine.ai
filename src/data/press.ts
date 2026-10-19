@@ -7,7 +7,7 @@
  * leaks before the partner's embargo lifts. Flipping it to true is the only
  * change needed on the morning of the announcement.
  */
-export const pressPublished = false;
+export const pressPublished = true;
 
 export type ReleaseBlock =
   | { kind: 'lead' | 'p'; html: string }
