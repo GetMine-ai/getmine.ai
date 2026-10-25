@@ -1,0 +1,6 @@
+---
+import template from '../templates/meet-mina.html?raw';
+import { whatsappLink } from '../data/whatsapp';
+const html=template.replaceAll('__WHATSAPP_LINK__',whatsappLink());
+---
+<Fragment set:html={html} />

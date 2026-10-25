@@ -23,6 +23,7 @@ export default defineConfig({
     sitemap({
       // /pkb is reached only through PKB's link (src/pages/pkb.astro).
       filter: (page) =>
+        !/\/(?:invite|meet-mina)(?:\.html)?\/?$/.test(page) &&
         !page.endsWith('/download') &&
         !page.endsWith('/pkb') &&
         (pressPublished || !/\/press(\/|$)/.test(page)),

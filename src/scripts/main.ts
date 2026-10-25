@@ -371,19 +371,16 @@ function initialiseInviteFriend() {
   instances.forEach((instance) => {
     const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
     const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
-    const message = instance.querySelector<HTMLTextAreaElement>('[data-invite-message]');
+    const share = instance.querySelector<HTMLAnchorElement>('[data-invite-share]');
     const copyButton = instance.querySelector<HTMLButtonElement>('[data-invite-copy]');
     const announcer = instance.querySelector<HTMLElement>('[data-invite-announcer]');
-    if (!trigger || !panel || !message || !copyButton) return;
-
-    const resizeMessage = () => {
-      message.style.height = 'auto';
-      message.style.height = `${Math.max(message.scrollHeight, 120)}px`;
-    };
+    if (!trigger || !panel || !share || !copyButton) return;
+    const inviteUrl = copyButton.dataset.inviteUrl;
+    if (!inviteUrl) return;
 
     const fallbackCopy = () => {
       const fallback = document.createElement('textarea');
-      fallback.value = message.value;
+      fallback.value = inviteUrl;
       fallback.setAttribute('readonly', '');
       fallback.style.position = 'fixed';
       fallback.style.opacity = '0';
@@ -392,8 +389,7 @@ function initialiseInviteFriend() {
       const legacyDocument = document as unknown as {
         execCommand(commandId: string): boolean;
       };
-      legacyDocument.execCommand('copy');
-      fallback.remove();
+      try { return legacyDocument.execCommand('copy'); } finally { fallback.remove(); copyButton.focus(); }
     };
 
     trigger.addEventListener('click', () => {
@@ -410,9 +406,7 @@ function initialiseInviteFriend() {
       // one) would otherwise trap the fixed overlay beneath the nav.
       if (panel.parentElement !== document.body) document.body.append(panel);
       lockScroll();
-      resizeMessage();
-      message.focus();
-      message.select();
+      share.focus();
     });
 
     // Backdrop and the × both dismiss, returning focus to the trigger.
@@ -439,23 +433,39 @@ function initialiseInviteFriend() {
       }
     });
 
-    message.addEventListener('input', () => {
-      resizeMessage();
-    });
+    const touchDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (touchDevice && navigator.share) {
+      share.textContent = 'Share invitation';
+      share.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try { await navigator.share({ url: inviteUrl }); }
+        catch (error) {
+          if (!(error instanceof DOMException && error.name === 'AbortError') && announcer)
+            announcer.textContent = 'Sharing is unavailable. You can copy the link instead.';
+        }
+      });
+    }
 
     copyButton.addEventListener('click', async () => {
-      track('invite_copied');
+      let copied = false;
       try {
         if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-        await navigator.clipboard.writeText(message.value);
+        await navigator.clipboard.writeText(inviteUrl);
+        copied = true;
       } catch {
-        fallbackCopy();
+        try { copied = fallbackCopy(); } catch { copied = false; }
       }
 
+      if (!copied) {
+        if (announcer) announcer.textContent = 'Copy unavailable. Share this link: ' + inviteUrl;
+        return;
+      }
+      track('invite_copied');
       copyButton.textContent = 'Copied';
-      if (announcer) announcer.textContent = 'Message copied';
+      if (announcer) announcer.textContent = 'Link copied';
       window.setTimeout(() => {
-        copyButton.textContent = 'Copy message';
+        copyButton.textContent = 'Copy link';
       }, 1800);
     });
   });
