@@ -1,4 +1,5 @@
 ---
+import { whatsappLink } from '../data/whatsapp';
 import InviteFriend from './InviteFriend.astro';
 
 interface BuildInfo {
@@ -12,13 +13,21 @@ interface BuildInfo {
 }
 
 interface Props {
+  offerMina?: boolean;
   builds: {
     mac: BuildInfo;
     windows: BuildInfo;
   };
+  /**
+   * This page's own address, for a visitor who must take the link to their
+   * computer. /pkb passes its own, so a PKB visitor on a phone carries PKB's
+   * link, and PKB's files, to the computer they install on.
+   */
+  pageUrl?: string;
 }
 
-const { builds } = Astro.props;
+const { builds, offerMina = false, pageUrl = 'https://getmine.ai/beta' } = Astro.props;
+const pageLink = pageUrl.replace(/^https:\/\//, '');
 
 const platforms = [
   {
@@ -75,6 +84,10 @@ const platforms = [
         </p>
       </header>
 
+      {offerMina && <aside class="whatsapp-option" aria-label="Get started with Mina on WhatsApp">
+        <div class="whatsapp-invitation"><span class="whatsapp-eyebrow"><span aria-hidden="true"></span>Now on WhatsApp</span><p>Let Mina help you get started.<br /><span>Just text or send a voice note.</span></p></div>
+        <a class="primary-cta whatsapp-start" data-mina-entry href={whatsappLink('Hi Mina')}>Text Mina <span aria-hidden="true">↗</span></a>
+      </aside>}
       <div class="download-keys">
         <p class="download-key">
           <span class="key-icon" aria-hidden="true">
@@ -103,12 +116,12 @@ const platforms = [
         </p>
         <p>
           On your phone right now? Take the link with you:
-          <strong>getmine.ai/beta</strong>
+          <strong>{pageLink}</strong>
         </p>
         <div class="notice-actions">
-          <button type="button" data-copy-beta-link>Copy link</button>
+          <button type="button" data-copy-beta-link data-page-url={pageUrl}>Copy link</button>
           <a
-            href="mailto:?subject=GetMine%20download%20link&body=https%3A%2F%2Fgetmine.ai%2Fbeta"
+            href={`mailto:?subject=GetMine%20download%20link&body=${encodeURIComponent(pageUrl)}`}
           >
             Email it to yourself
           </a>
@@ -116,6 +129,7 @@ const platforms = [
         <span class="sr-only" aria-live="polite" data-link-announcer></span>
       </aside>
 
+      {offerMina && <h2 class="direct-install-label">Or install directly</h2>}
       <div class="platform-panels" aria-label="Download GetMine">
         {platforms.map((platform) => {
           const available = Boolean(platform.build.url);
@@ -201,6 +215,7 @@ const platforms = [
                     href={platform.build.url}
                     download={platform.build.filename}
                     data-download-fallback
+                    data-download-platform={platform.key}
                   >
                     Download didn’t start? Use the direct link.
                   </a>
@@ -234,7 +249,7 @@ const platforms = [
       </div>
 
       <p class="download-terms">
-        <span>Mina’s AI is included; heavy users will be asked to add their own API key.</span>
+        <span>Mina’s AI comes with free credit; top up in the app if you need more.</span>
         <a href="/terms" target="_blank" rel="noopener">Read the beta terms</a>
       </p>
 
@@ -252,11 +267,9 @@ const platforms = [
             {platforms.map((platform) =>
               platform.build.url ? (
                 <p class="mina-bubble" data-mina-message="2" data-message-platform={platform.key}>
-                  When it’s downloaded, open {platform.build.filename}.{' '}
                   {platform.key === 'mac'
-                    ? 'Your Mac checks our signature before anything installs.'
-                    : 'Windows checks our publisher before anything installs.'}{' '}
-                  I’ll be there when it opens.
+                    ? <>When it’s downloaded, open {platform.build.filename}. Your Mac checks our signature before anything installs. I’ll be there when it opens.</>
+                    : <>When it’s downloaded, open the file. One important thing: Windows may say it doesn’t recognise us, only because we’re new. Just choose Keep all the way through.</>}
                 </p>
               ) : null,
             )}
@@ -288,23 +301,18 @@ const platforms = [
 </main>
 
 <script>
-  // The site's only measurement (ruled, spec §1.6a): two anonymous first-party
-  // counts — page view and download click. No identity, no cookie, no storage;
-  // fire-and-forget so a failure can never affect the page. Disclosed in /privacy.
-  const COUNT_ENDPOINT = 'https://api.getmine.ai/access/v1/request-submitted';
-  const count = (event: string) => {
-    void fetch(`${COUNT_ENDPOINT}?event=${event}`, {
-      method: 'POST',
-      credentials: 'omit',
-      referrerPolicy: 'no-referrer',
-      keepalive: true,
-    }).catch(() => undefined);
-  };
+  // This page's two counts, sent through the site's measurement module
+  // (src/scripts/siteMetrics.ts): a press of a download button and a press of
+  // the direct link under the receipt, each with the platform of the card it
+  // sits on. A download press also says where the visit came from, if this
+  // page knows. Anonymous and first-party, with no identity and no cookie;
+  // fire-and-forget, so a failure can never affect the page. The page load
+  // itself is counted by main.ts.
+  import { track, visitSource } from '../scripts/siteMetrics';
 
   const roots = document.querySelectorAll<HTMLElement>(
     '[data-download-module]:not([data-module-ready])',
   );
-  if (roots.length) count('page-view');
 
   roots.forEach((root) => {
     root.dataset.moduleReady = 'true';
@@ -324,7 +332,7 @@ const platforms = [
 
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
-        count('download-click');
+        track('download_click', { platform: link.dataset.downloadPlatform, ...visitSource() });
         const action = link.closest<HTMLElement>('[data-download-action]');
         if (!action) return;
         // One download at a time on the page: the platform pressed last owns the
@@ -343,6 +351,12 @@ const platforms = [
       });
     });
 
+    root.querySelectorAll<HTMLAnchorElement>('[data-download-fallback]').forEach((link) => {
+      link.addEventListener('click', () => {
+        track('download_fallback_click', { platform: link.dataset.downloadPlatform });
+      });
+    });
+
     const copyText = async (value: string) => {
       if (!navigator.clipboard?.writeText) {
         throw new Error('Clipboard access is unavailable');
@@ -354,7 +368,7 @@ const platforms = [
     const linkAnnouncer = root.querySelector<HTMLElement>('[data-link-announcer]');
     linkButton?.addEventListener('click', async () => {
       try {
-        await copyText('https://getmine.ai/beta');
+        await copyText(linkButton.dataset.pageUrl ?? 'https://getmine.ai/beta');
         linkButton.textContent = 'Copied';
         if (linkAnnouncer) linkAnnouncer.textContent = 'Download link copied';
       } catch {
@@ -434,7 +448,7 @@ const platforms = [
     align-items: center;
     justify-content: center;
     margin: 1.5rem auto 0;
-    border: 1px solid var(--teal-line);
+    border: 2px solid rgb(29 191 176 / 85%);
     border-radius: 50%;
     background: var(--navy-2);
     font-family: var(--font-display);
@@ -987,7 +1001,7 @@ const platforms = [
     align-items: center;
     justify-content: center;
     margin: 0;
-    border: 1px solid var(--teal-line);
+    border: 2px solid rgb(29 191 176 / 85%);
     background: var(--navy-2);
     box-shadow: 0 0 3.5rem rgb(29 191 176 / 18%);
     font-size: 2.4rem;
@@ -1403,7 +1417,7 @@ const platforms = [
     height: 5rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--teal-line);
+    border: 2px solid rgb(29 191 176 / 85%);
     border-radius: 50%;
     background: var(--navy-2);
     font-family: var(--font-display);
@@ -1671,3 +1685,15 @@ const platforms = [
     }
   }
 </style>
+
+<style>
+.whatsapp-option{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:1.75rem 0 2rem;padding:24px 28px;text-align:left;border:1px solid rgb(29 191 176 / 55%);border-radius:20px;background:linear-gradient(115deg,rgb(29 191 176 / 16%),rgb(29 191 176 / 4%));box-shadow:0 0 36px rgb(29 191 176 / 9%)}
+.whatsapp-eyebrow{display:flex;align-items:center;gap:9px;color:var(--teal);font-size:1.125rem;font-weight:700}
+.whatsapp-eyebrow>span{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 14px var(--teal)}
+.whatsapp-invitation p{margin:10px 0 0;font-family:var(--font-display);font-size:1.625rem;line-height:1.3;color:var(--cream)}
+.whatsapp-invitation p>span{font-family:var(--font-sans);font-size:1rem;color:var(--text-quiet)}
+.whatsapp-start{flex:none;min-height:56px;padding:0 28px;font-family:var(--font-sans);font-size:1.125rem;gap:16px;box-shadow:0 8px 32px rgb(226 112 58 / 25%)}
+@media(max-width:47.99rem){.whatsapp-option{flex-direction:column;align-items:stretch;padding:22px;gap:18px}.whatsapp-start{width:100%}.whatsapp-invitation p{font-size:1.5rem}}
+</style>
+
+<style>.direct-install-label{display:flex;align-items:center;gap:18px;margin:2rem 0 0;color:var(--cream);font-family:var(--font-display);font-size:1.5rem;font-weight:400;text-align:center}.direct-install-label::before,.direct-install-label::after{content:"";height:1px;flex:1;background:var(--line)}</style>

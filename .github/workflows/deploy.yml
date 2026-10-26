@@ -49,6 +49,7 @@ jobs:
         run: |
           pnpm check
           pnpm build:release
+          pnpm test
 
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main'

@@ -1,6 +1,13 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+
+// The press pages stay out of the sitemap until src/data/press.ts publishes
+// them (the routes themselves render the not-found page until then).
+const pressPublished = /export const pressPublished = true;/.test(
+  readFileSync(new URL('./src/data/press.ts', import.meta.url), 'utf8'),
+);
 
 // Static marketing site for getmine.ai.
 // `site` powers absolute canonical URLs; output is static by default and the
@@ -9,12 +16,17 @@ export default defineConfig({
   site: 'https://getmine.ai',
   // 'file' keeps every published address exactly as it is (Brevo lands on
   // /welcome.html — an external contract). The one trailing-slash gap this
-  // leaves, /beta/ 404ing, is closed by a targeted alias the build writes
-  // (scripts/alias-beta-dir.mjs), not by changing every route's shape.
+  // leaves, /beta/ (and /pkb/) 404ing, is closed by a targeted alias the build
+  // writes (scripts/alias-beta-dir.mjs), not by changing every route's shape.
   build: { format: 'file' },
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith('/download'),
+      // /pkb is reached only through PKB's link (src/pages/pkb.astro).
+      filter: (page) =>
+        !/\/(?:invite|meet-mina)(?:\.html)?\/?$/.test(page) &&
+        !page.endsWith('/download') &&
+        !page.endsWith('/pkb') &&
+        (pressPublished || !/\/press(\/|$)/.test(page)),
     }),
   ],
   // Default dev/preview port (matches the sibling getmine app).

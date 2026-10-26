@@ -20,7 +20,7 @@ const nav = [
       </a>
       <nav class="desktop-nav" aria-label="Primary">
         {nav.map(([label, id]) => (
-          <a href={`/#${id}`} data-nav-link={id}>{label}<span aria-hidden="true"></span></a>
+          <a href={id === 'meet-mina' ? '/meet-mina/index.html' : `/#${id}`} data-nav-link={id}>{label}<span aria-hidden="true"></span></a>
         ))}
       </nav>
     </div>
@@ -44,7 +44,7 @@ const nav = [
 
   <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu inert>
     <nav class="wrap" aria-label="Mobile">
-      {nav.map(([label, id]) => <a href={`/#${id}`} data-menu-link>{label}</a>)}
+      {nav.map(([label, id]) => <a href={id === 'meet-mina' ? '/meet-mina/index.html' : `/#${id}`} data-menu-link>{label}</a>)}
       {!hideCta && <a class="primary-cta" href="/beta">Download GetMine</a>}
     </nav>
   </div>

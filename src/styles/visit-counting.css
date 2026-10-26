@@ -1,0 +1,31 @@
+/* The one status line shown after ?count=off or ?count=on has been handled
+   (src/scripts/siteMetrics.ts). Shared by both layouts, so it leans only on
+   the colours both define. Above the header, below the invite dialog. */
+.visit-counting-status {
+  position: fixed;
+  z-index: 60;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--teal, var(--teal-deck));
+  border-radius: 0.75rem;
+  background: var(--navy);
+  color: var(--cream);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Present but unseen until its text arrives, so the change is announced. */
+.visit-counting-status:empty {
+  padding: 0;
+  border: 0;
+}
+
+.visit-counting-status a {
+  color: var(--teal, var(--teal-deck));
+}

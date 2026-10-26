@@ -1,0 +1,35 @@
+---
+import { whatsappLink } from '../data/whatsapp';
+---
+  <dialog id="entry-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
+    <button class="close" aria-label="Close WhatsApp options" autofocus><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+    <span class="mina-mark small" aria-hidden="true"><i>M</i><b>.</b></span>
+    <h2 id="dialog-title">Text Mina on WhatsApp.</h2>
+    <p class="dialog-copy" id="dialog-copy">Scan with your phone’s camera to open Mina’s chat.</p>
+    <div class="qr-frame"></div>
+    <p class="or" aria-hidden="true">or</p>
+    <a class="dialog-secondary" href={whatsappLink('Hi Mina')} target="_blank" rel="noopener noreferrer">Open WhatsApp on this computer</a>
+    <p class="prototype-note">“Hi Mina” will be ready for you to send.<br>Send it, and I’ll reply.</p>
+  </dialog>
+
+<script is:inline src="/invite-assets/qrcode.js"></script>
+<script is:inline src="/invite-assets/qrcode_UTF8.js"></script>
+<script>
+const dialog = document.getElementById('entry-dialog') as HTMLDialogElement;
+const qrFactory=(window as unknown as {qrcode:(version:number,level:string)=>{addData:(url:string)=>void;make:()=>void;createSvgTag:(options:object)=>string}}).qrcode;
+const qr=qrFactory(0,'M');qr.addData(dialog.querySelector<HTMLAnchorElement>('.dialog-secondary')!.href);qr.make();dialog.querySelector('.qr-frame')!.innerHTML=qr.createSvgTag({cellSize:4,margin:4,scalable:true});
+const direct = matchMedia('(max-width: 700px), (pointer: coarse) and (hover: none)');
+document.querySelectorAll<HTMLAnchorElement>('[data-mina-entry]').forEach(link => link.addEventListener('click',event=>{
+  if(direct.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault(); dialog.showModal();
+}));
+dialog.querySelector('.close')?.addEventListener('click',()=>dialog.close());
+dialog.addEventListener('click',event=>{const r=dialog.getBoundingClientRect();if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();});
+</script>
+<style>
+dialog{width:440px;max-width:calc(100vw - 32px);max-height:calc(100svh - 32px);overflow:auto;padding:32px;border:1px solid rgb(29 191 176 / 25%);border-radius:24px;background:#0d1822;color:#e8faf8;text-align:center;box-shadow:0 24px 80px #0008}
+dialog::backdrop{background:#02070bcc;backdrop-filter:blur(8px)}
+.close{position:absolute;right:16px;top:16px;display:grid;place-items:center;width:36px;height:36px;border:0;background:transparent;color:#b5c8ca;cursor:pointer}
+.mina-mark{display:flex;align-items:center;justify-content:center;margin:0 auto 24px;width:56px;height:56px;border:2px solid #1dbfb0;border-radius:50%;background:#0a292d;box-shadow:0 0 22px #1dbfb066;font-family:var(--font-display);font-size:28px}
+.mina-mark b{color:#1dbfb0}h2{font-family:var(--font-display);font-size:28px;font-weight:400;margin:0 0 12px}.dialog-copy{font-size:15px;line-height:1.5;color:#b5c8ca}.qr-frame{background:white;border-radius:16px;padding:16px;width:236px;max-width:100%;margin:24px auto}.qr-frame img{width:100%;height:auto}.or{font-size:13px;color:#8fa5aa}.dialog-secondary{display:flex;align-items:center;justify-content:center;min-height:52px;border:1px solid #1dbfb066;border-radius:999px;text-decoration:none;font-size:14px;background:#1dbfb00d}.prototype-note{font-size:12px;line-height:1.6;color:#8fa5aa;margin:20px 0 0}
+</style>

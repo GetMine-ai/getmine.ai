@@ -1,3 +1,5 @@
+import { countingIsOff, startSiteMetrics, track } from './siteMetrics';
+
 const WAITLIST_ENDPOINT = String(
   import.meta.env.PUBLIC_WAITLIST_ENDPOINT
     || 'https://f3cde459.sibforms.com/serve/MUIFAPkIttg9_w9drKl1pUH19xvaHSB6th2O_Uk7AMjGv6Yks09ls0EtOJ6n5sYr_dL_TrtArIYmoXK4dIp-183Oxac9u5FLhBTU7DZX1lAwkdefJAlLv7e0yqZMIq_grAsEXXYEqFPnRr8llU_6kHz5oT1mLU6xrIyqIABJ9a6NgG8lPR-YTOe3vNY7_OOFVmmb_PYkuekUN62fXw==',
@@ -318,6 +320,8 @@ function initialiseWalkthrough() {
 }
 
 function recordAnonymousSubmission() {
+  // Turning visit counting off stops this count too, so off means off.
+  if (countingIsOff()) return;
   void fetch(REQUEST_SUBMITTED_ENDPOINT, {
     method: 'POST',
     credentials: 'omit',
@@ -367,19 +371,16 @@ function initialiseInviteFriend() {
   instances.forEach((instance) => {
     const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
     const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
-    const message = instance.querySelector<HTMLTextAreaElement>('[data-invite-message]');
+    const share = instance.querySelector<HTMLAnchorElement>('[data-invite-share]');
     const copyButton = instance.querySelector<HTMLButtonElement>('[data-invite-copy]');
     const announcer = instance.querySelector<HTMLElement>('[data-invite-announcer]');
-    if (!trigger || !panel || !message || !copyButton) return;
-
-    const resizeMessage = () => {
-      message.style.height = 'auto';
-      message.style.height = `${Math.max(message.scrollHeight, 120)}px`;
-    };
+    if (!trigger || !panel || !share || !copyButton) return;
+    const inviteUrl = copyButton.dataset.inviteUrl;
+    if (!inviteUrl) return;
 
     const fallbackCopy = () => {
       const fallback = document.createElement('textarea');
-      fallback.value = message.value;
+      fallback.value = inviteUrl;
       fallback.setAttribute('readonly', '');
       fallback.style.position = 'fixed';
       fallback.style.opacity = '0';
@@ -388,8 +389,7 @@ function initialiseInviteFriend() {
       const legacyDocument = document as unknown as {
         execCommand(commandId: string): boolean;
       };
-      legacyDocument.execCommand('copy');
-      fallback.remove();
+      try { return legacyDocument.execCommand('copy'); } finally { fallback.remove(); copyButton.focus(); }
     };
 
     trigger.addEventListener('click', () => {
@@ -401,13 +401,12 @@ function initialiseInviteFriend() {
         unlockScroll();
         return;
       }
+      track('invite_opened');
       // Portal to <body>: any positioned ancestor (the beta card's wrapper is
       // one) would otherwise trap the fixed overlay beneath the nav.
       if (panel.parentElement !== document.body) document.body.append(panel);
       lockScroll();
-      resizeMessage();
-      message.focus();
-      message.select();
+      share.focus();
     });
 
     // Backdrop and the × both dismiss, returning focus to the trigger.
@@ -434,22 +433,39 @@ function initialiseInviteFriend() {
       }
     });
 
-    message.addEventListener('input', () => {
-      resizeMessage();
-    });
+    const touchDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (touchDevice && navigator.share) {
+      share.textContent = 'Share invitation';
+      share.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try { await navigator.share({ url: inviteUrl }); }
+        catch (error) {
+          if (!(error instanceof DOMException && error.name === 'AbortError') && announcer)
+            announcer.textContent = 'Sharing is unavailable. You can copy the link instead.';
+        }
+      });
+    }
 
     copyButton.addEventListener('click', async () => {
+      let copied = false;
       try {
         if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-        await navigator.clipboard.writeText(message.value);
+        await navigator.clipboard.writeText(inviteUrl);
+        copied = true;
       } catch {
-        fallbackCopy();
+        try { copied = fallbackCopy(); } catch { copied = false; }
       }
 
+      if (!copied) {
+        if (announcer) announcer.textContent = 'Copy unavailable. Share this link: ' + inviteUrl;
+        return;
+      }
+      track('invite_copied');
       copyButton.textContent = 'Copied';
-      if (announcer) announcer.textContent = 'Message copied';
+      if (announcer) announcer.textContent = 'Link copied';
       window.setTimeout(() => {
-        copyButton.textContent = 'Copy message';
+        copyButton.textContent = 'Copy link';
       }, 1800);
     });
   });
@@ -536,6 +552,7 @@ function initialiseAccessForm() {
   });
 }
 
+startSiteMetrics();
 initialiseNavigation();
 initialiseFrictionRotator();
 initialiseWalkthrough();

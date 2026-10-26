@@ -6,7 +6,7 @@
  * release-link assertion refuses to approve a production flip while either
  * URL remains empty.
  *
- * WAVE-6 FILL, COMPLETED 4 SEP 2026 from the published assets.
+ * WAVE-11 FILL, COMPLETED 16 OCT 2026 from the published assets (wave-11 = latest).
  * The moment the wave assets are published, fill:
  *   - sha256: the checksum of each published asset (shasum -a 256 <file>)
  *   - sizeMB: the asset size rounded to the nearest MB (0 hides the size line)
@@ -24,23 +24,45 @@ export interface BuildInfo {
 
 export const builds: { mac: BuildInfo; windows: BuildInfo } = {
   mac: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-6/GetMine-Installer.pkg',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-11/GetMine-Installer.pkg',
     version: 'GetMine-Installer', // see note below: must be a substring of the release identity
-    sizeMB: 172.8,
+    sizeMB: 175.0,
     filename: 'GetMine-Installer.pkg',
     minOs: 'macOS 14 or later',
     signedBy: 'GETMINE LTD',
-    sha256: '9cf73befdc2808713d00e398be5f4973f40b8fcaa61406f7f4cdbf191289695e',
+    sha256: 'a631e3d82da8c5a5aa6d9e6ab2d95b58359a063b69cd5dcc69fabeb2802f6c31',
   },
   windows: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-6/GetMine-Setup.exe',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-11/GetMine-Setup.exe',
     version: 'GetMine-Setup', // see note below: must be a substring of the release identity
-    sizeMB: 76.9,
+    sizeMB: 2.0,
     filename: 'GetMine-Setup.exe',
     minOs: 'Windows 11',
     signedBy: 'GETMINE LTD',
-    sha256: '95b3e4848f8d8845fab93e032a9d93d6efbb661898603dba0e6d9b01309842c5',
+    sha256: '4523ac60d42aabae1dbd1ea41cf3267fcc1d1fac7503e238350d63fb4f461e3c',
   },
+};
+
+/**
+ * PKB's copies of the two installers, which only /pkb offers (PKB install
+ * tagging, ruled 6 Oct 2026). Every wave publishes them beside the originals:
+ * the same signed bytes under PKB names. The installer reads its own file name,
+ * so a person who downloads from PKB's page is recorded as a PKB install.
+ *
+ * Same wave, same checksum, same size: only the name differs. So these follow
+ * from `builds` and the flip edits `builds` alone, while assert:downloads
+ * fetches each copy's own sidecar and refuses a copy whose bytes differ.
+ */
+const pkbCopy = (build: BuildInfo, filename: string): BuildInfo => ({
+  ...build,
+  url: build.url.replace(/[^/]+$/, filename),
+  version: filename.replace(/\.[^.]+$/, ''),
+  filename,
+});
+
+export const pkbBuilds: { mac: BuildInfo; windows: BuildInfo } = {
+  mac: pkbCopy(builds.mac, 'GetMine-Installer-PKB.pkg'),
+  windows: pkbCopy(builds.windows, 'GetMine-Setup-PKB.exe'),
 };
 
 /*

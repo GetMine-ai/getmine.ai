@@ -14,10 +14,7 @@ const {
 } = Astro.props;
 
 const panelId = `invite-friend-${instanceId}`;
-// Lands on the home page, not /beta: the hero carries the CTA, and /beta does
-// not exist on the site that is live today (it 404s until we publish).
-const message =
-  'GetMine brings your health records together in one private vault on your computer, with Mina working across them. Free to download: https://getmine.ai/?src=invite';
+const inviteUrl = 'https://getmine.ai/invite';
 ---
 <div
   class:list={[
@@ -53,20 +50,17 @@ const message =
         <span aria-hidden="true">×</span>
       </button>
       <h2>Invite a friend</h2>
-      <p>Share GetMine with someone who should own their health data too. You can edit the message before copying it.</p>
-
-      <label class="sr-only" for={`${panelId}-message`}>Message to share</label>
-      <textarea
-        id={`${panelId}-message`}
-        rows="4"
-        data-invite-message
-      >{message}</textarea>
-
+      <p>Invite someone who would benefit from owning their health data.</p>
+      <div class="invite-preview">
+        <img src="/invite-assets/link-preview.png" alt="Mina" width="80" height="80" />
+        <div><strong>You’re invited to meet Mina</strong><p>A private invitation from a GetMine member. Text Mina on WhatsApp to get started.</p><small>getmine.ai</small></div>
+      </div>
       <div class="invite-actions">
-        <button class="copy-action" type="button" data-invite-copy>Copy message</button>
+        <a class="share-action" href={`https://wa.me/?text=${encodeURIComponent(inviteUrl)}`} target="_blank" rel="noopener noreferrer" data-invite-share>Share on WhatsApp</a>
+        <button class="copy-action" type="button" data-invite-copy data-invite-url={inviteUrl}>Copy link</button>
       </div>
 
-      <span class="sr-only" aria-live="polite" data-invite-announcer></span>
+      <p role="status" aria-live="polite" data-invite-announcer style="overflow-wrap:anywhere"></p>
     </div>
   </div>
 </div>
@@ -201,28 +195,12 @@ const message =
     line-height: 1.5;
   }
 
-  textarea {
-    display: block;
-    width: 100%;
-    min-height: 7.5rem;
-    margin-top: 1rem;
-    resize: vertical;
-    overflow-y: hidden;
-    padding: 0.875rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    background: var(--navy);
-    color: var(--cream);
-    font: inherit;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-
-  textarea:focus {
-    border-color: var(--teal);
-    outline: none;
-    box-shadow: 0 0 0 3px rgb(29 191 176 / 20%);
-  }
+  .invite-preview { display: flex; gap: 1rem; margin-top: 1.5rem; padding: 1rem; background: var(--navy); border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--cream); }
+  .invite-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+  .invite-preview strong { font-size: 1.125rem; }
+  .invite-preview p { font-size: .9375rem; line-height: 1.5; margin: .4rem 0; }
+  .invite-preview small { opacity: .7; }
+  .share-action { text-decoration: none; background: var(--teal); color: var(--navy); font-weight: 700; border-radius: var(--radius-pill); }
 
   .invite-actions {
     display: flex;
@@ -231,7 +209,8 @@ const message =
     margin-top: 1rem;
   }
 
-  .invite-actions button {
+  .invite-actions button,
+  .invite-actions a {
     display: inline-flex;
     min-height: 2.75rem;
     align-items: center;
@@ -248,22 +227,16 @@ const message =
     cursor: pointer;
   }
 
-  .invite-actions .copy-action {
-    border-color: var(--ember);
-    background: var(--ember);
-    color: var(--navy);
-  }
-
   .invite-actions button:hover {
     border-color: var(--teal);
     color: var(--teal);
   }
 
-  .invite-actions .copy-action:hover {
-    border-color: var(--ember);
-    color: var(--navy);
-    filter: brightness(1.06);
-  }
+  .invite-actions .copy-action:hover { border-color: var(--teal); color: var(--teal); }
+  .invite-actions .share-action:hover { filter: brightness(1.06); }
+
+  .invite-actions .share-action { background: var(--ember); color: var(--navy); border-color: var(--ember); }
+  .invite-actions .copy-action { background: transparent; color: var(--cream); border-color: var(--line); }
 
   @keyframes invite-panel-in {
     from {

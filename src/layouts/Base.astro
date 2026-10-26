@@ -3,8 +3,13 @@ import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/fraunces/wght-italic.css';
 import '../styles/tokens.css';
+import '../styles/visit-counting.css';
+import type { SitePage } from '../scripts/siteMetricsCore';
 
 interface Props {
+  /** The name this page is counted under (src/scripts/siteMetrics.ts). Fixed at
+   *  build time; a page without one is not counted. */
+  page?: SitePage;
   title?: string;
   ogTitle?: string;
   description?: string;
@@ -13,17 +18,22 @@ interface Props {
   ogImage?: string;
   ogType?: string;
   locale?: string;
+  /** Keep the page out of search results: a page meant to be reached only
+   *  through someone else's link (/pkb). */
+  noindex?: boolean;
 }
 
 const {
+  page,
   title = 'GetMine.ai | Your health. Your data. Your rules.',
   ogTitle = title,
-  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health agent, helping you organise and use your health information.',
+  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health companion, helping you organise and use your health information.',
   ogDescription = 'A desktop-native personal health vault for macOS and Windows. Bring records, emails and notes into one vault you control.',
   canonical = 'https://getmine.ai/',
   ogImage = 'https://getmine.ai/og-image.png',
   ogType = 'website',
   locale = 'en_GB',
+  noindex = false,
 } = Astro.props;
 ---
 <!doctype html>
@@ -36,6 +46,7 @@ const {
     <meta name="author" content="GetMine.ai" />
     <meta name="theme-color" content="#060c14" />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="GetMine.ai" />
     <meta property="og:title" content={ogTitle} />
@@ -55,7 +66,7 @@ const {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   </head>
-  <body>
+  <body data-site-page={page}>
     <slot />
     <script src="../scripts/main.ts"></script>
   </body>

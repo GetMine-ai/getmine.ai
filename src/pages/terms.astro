@@ -3,6 +3,7 @@ import LegalPage from '../layouts/LegalPage.astro';
 import { termsPage } from '../data/regulatory';
 ---
 <LegalPage
+  page="terms"
   title="Terms | GetMine.ai"
   description="Plain-English terms for using GetMine during the open beta."
   canonical="https://getmine.ai/terms"
@@ -23,7 +24,7 @@ import { termsPage } from '../data/regulatory';
 
   {termsPage.sections.map((section) => (
     <section class="page-section">
-      <h2>{section.heading}</h2>
+      <h2 id={'id' in section ? section.id : undefined}>{section.heading}</h2>
       <p>{section.body}</p>
     </section>
   ))}

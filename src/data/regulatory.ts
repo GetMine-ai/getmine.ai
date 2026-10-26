@@ -13,110 +13,79 @@
 export const privacyPolicy = {
   title: 'Privacy policy',
   organisation: 'GetMine Ltd',
-  version: 'Version 1.0',
+  version: 'Version 2.0',
   published: '27 July 2026',
   reviewStatus: '',
-  scope: 'This one policy covers the GetMine desktop app and the getmine.ai website.',
+  scope: 'This policy covers the GetMine app and the getmine.ai website.',
   summary:
-    'The short version: your health records live on your computer. The only personal data we hold about you is what it takes to run the beta: your email address and your status on the open beta.',
+    'In short: your health records stay on your computer. We store none of them, and we train no AI model on them. We hold only what we need to run the beta.',
   beta: {
     heading: 'The beta, plainly',
     paragraphs: [
-      'GetMine is early software for adults (18+). Mina organises your health information; she is not a doctor and does not diagnose. Check anything important with a clinician, and keep your own copies of anything you can’t afford to lose.',
+      'GetMine is early software for adults (18 and over). Mina helps you organise your health information. She is not a doctor and does not diagnose, so check anything important with a clinician. Keep your own copies of anything you can’t afford to lose.',
     ],
   },
   vault: {
     heading: 'Your Health Vault: yours, on your computer',
     paragraphs: [
-      'Everything you add or connect (electronic health records, documents, emails you choose to scan, photos, notes) lives in your Health Vault on your own computer. We hold no central copy, we cannot see it, and nothing in the product reports its contents to us.',
-      'We can’t lose or leak what we don’t have. Your vault is encrypted and only you can open it: keeping your computer protected, and being careful with any export you choose to make, is in your hands.',
-      'Deleting GetMine never deletes your health information. The app and Mina go.',
+      'Everything you add or connect, such as health records, documents, emails, photos and notes, is kept in your Health Vault on your own computer. We have no copy and we can’t see it. The app only tells us counts, like how many records you have, never what they say.',
+      'Your vault is encrypted, so only you can open it, with your password or the twelve recovery words you get when you create it. Keep those words somewhere safe. We can’t lose or leak what we don’t have, so keeping your computer protected, and being careful with any export you choose to make, is in your hands.',
+      'If you delete GetMine, your health records stay on your computer’s hard disk. Only the GetMine app and Mina go.',
     ],
   },
   mina: {
-    heading: 'When Mina answers a question',
+    heading: 'When Mina helps you',
     paragraphs: [
-      'Mina is powered by our AI LLM provider. To answer a question, or to file a document, email or photo you’ve added, she sends the provider only the slice of your records relevant to that task. Never your whole vault, never your logins. And only after you’ve agreed on the first-open screen: no consent, no Mina.',
-      'Requests either pass through GetMine’s server, which keeps none of the content and only counts them against the AI allowance included with the beta, or go straight from your computer to the provider under your own key, never touching a GetMine server.',
+      'Mina uses an AI service, Anthropic. To answer a question, or to file something you’ve added, she sends only the part of your records the task needs. Never your whole vault, and never your passwords.',
+      'Before Mina can help, you give your consent once, in the app. Her requests then pass through our server, which keeps none of what you sent and only counts them against your credit.',
     ],
   },
   sources: {
     heading: 'Sources you connect',
     bullets: [
-      'Electronic health records (in the UK, your NHS record) reach your vault through our health-records access partner, after you log in with them and authorise it.',
-      'Email scanning is read-only. GetMine can never send, change or delete your email, and your mailbox is read on your computer, not by us. You can revoke the access you granted with your email provider at any time.',
-      'The logins you grant are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
-      'Disconnect any source at any time, in the app.',
+      'Your health records (in the UK, your NHS record) come from our partner Patients Know Best, once you’ve registered with them.',
+      'Email scanning is read-only: GetMine only looks for your health emails, and can never send, change or delete anything. Your mailbox is read on your computer, not by us.',
+      'You can disconnect your email at any time, in the app. To sync your NHS record, you’ll usually need to sign in to Patients Know Best first.',
     ],
   },
   holdings: {
     heading: 'What we hold',
-    introduction: 'GetMine holds exactly this, and nothing else:',
+    /** The website-counting sentence ends this paragraph; privacy.astro adds the
+     *  turn-off link after it (src/data/visitCounting.ts). */
     summaryParagraph:
-      'GetMine holds exactly this, and nothing else: your email address and your beta status; the code in your invite link, if you sign up through one; your consent record, as proof we asked; and your AI usage counts, for the allowance included with the beta. Only if you opt in: which parts of the app you use (never health data), and any feedback you send. Everything is deleted within 6 months of the beta ending, except the consent record, which we keep for 6 years. No health information appears anywhere in this list.',
-    columns: ['What', 'Why', 'Kept until'],
-    rows: [
-      ['Your email address', 'beta emails', 'you leave, or the beta ends'],
-      ['Your beta status', 'running the beta', '6 months after it ends'],
-      [
-        'The code in your invite link, if you sign up through one',
-        'managing access in order',
-        '6 months after the beta ends',
-      ],
-      ['Your consent record', 'proving we asked', '6 years'],
-      ['AI usage counts', 'your included allowance', 'the beta ends'],
-      [
-        'App usage (which parts of the app you use, never health data)',
-        'improving the beta; only if you opt in',
-        'the beta ends',
-      ],
-      [
-        'Feedback you send',
-        'improving the product; quoted without your name only if you opt in',
-        'the beta ends',
-      ],
-    ],
+      'We hold only what we need to run the beta: your account details, such as your email address and your consent; where your GetMine installer came from, to administer referrals; how much you use Mina, and any credit you buy; how the app is used, never your records, questions or answers; and your feedback, if you send it. None of this is health information, so please keep health details out of your feedback. On our website, we count how many people visit and what they read, as daily totals only: no cookies, and nothing that identifies you.',
     paragraphs: [
-      'No health information appears in this table. When you apply on the website, your email goes straight to our email delivery provider, which holds it while it waits for your confirmation. Our own site stores nothing. Once you confirm, your address joins our beta access list: the first row of this table.',
-      'Our lawful bases for this table: running the beta you asked to join (contract) and improving the product (legitimate interests). The AI processing of your health information happens on your instruction: there, we act as a processor of your content.',
-    ],
-  },
-  exclusions: {
-    heading: 'What we don’t do',
-    bullets: [
-      'We don’t sell personal data, and we never will.',
-      'We don’t run advertising or personal tracking on the product or website.',
-      'We don’t look at your vault. We built it so we can’t.',
-      'We don’t send your data anywhere this page hasn’t told you about.',
+      'We keep this while you’re in the beta and delete it when you leave. For legal reasons, two things stay longer: the record of your consent, for 6 years, and a record of payments that doesn’t name you, for our accounts. Card details go to our payment provider, Stripe, never to us.',
+      'A few third-party providers help us run the beta: Stripe for payments, an email provider for our emails, and hosting providers for our website and server. They only hold the details above, never your health records. Where a provider is based outside the UK, we use the UK’s approved safeguards. We hold this to run the beta you joined, to improve GetMine, and to keep the accounts the law requires.',
     ],
   },
   rights: {
     heading: 'Your rights',
     paragraphs: [
-      'For the data in the table above: ask what we hold, correct it, or have it deleted. Write to privacy@getmine.ai, or use “leave the beta” when it ships in the app. Your vault needs no rights from us: you hold the data.',
-      'If you’re unhappy with how we’ve handled something, you can complain to the Information Commissioner’s Office (ico.org.uk). We’d appreciate the chance to fix it first.',
+      'You can ask to see, correct or delete what we hold, limit how we use it, object to it, or take a copy elsewhere. For this, or any question about this policy, email privacy@getmine.ai, or use Leave the beta in the app, which also withdraws your consent. Your vault is already yours.',
+      'You can also complain to the Information Commissioner’s Office (ico.org.uk).',
     ],
   },
   controller:
-    'GetMine Ltd, registered in England and Wales, company number 17070331, is responsible for the personal data listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '4 August 2026',
+    'Who we are: GetMine Ltd, registered in England and Wales, company number 17070331. We are responsible for what is listed under “What we hold”. Contact: privacy@getmine.ai.',
+  lastUpdated: '12 October 2026',
 } as const;
 
 
 export const trustPage = {
   title: 'Your vault stays with you.',
-  eyebrow: 'Trust & security',
+  eyebrow: 'Trust & Security',
   version: 'Version 1.1',
-  published: '4 August 2026',
+  published: '11 October 2026',
   summary:
-    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. What leaves is decided by your question, relayed but never kept by us.',
+    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. Only what is needed to answer your question, or to organise what you bring into the vault, is shared, relayed but never kept by us. We store no health records on our servers, and we train no AI model on them.',
   lead:
     'GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and, just as important, what we do not yet claim.',
   sections: [
     {
       heading: 'Secure by design',
       paragraphs: [
-        'Your vault lives on your local device, and the day-to-day work of organising and recalling your information happens locally, on hardware you own. We hold no central copy of your records, and nothing leaves your device on its own.',
+        'Your vault lives on your local device, and the day-to-day work of storing and searching your records happens locally, on hardware you own. We hold no central copy of your records.',
         'That architecture is the first layer of security: there is no central store of vaults to breach. What we do not hold cannot be lost, leaked or demanded from us.',
       ],
     },
@@ -128,21 +97,21 @@ export const trustPage = {
       ],
     },
     {
-      heading: 'Your question decides what is shared',
+      heading: 'Only what Mina needs is shared',
       paragraphs: [
-        'When Mina answers, only the slice of your records that the question needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing leaves at rest, and nothing leaves without a question that requires it.',
+        'When Mina helps you, only the slice of your records the task needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing is shared until you’ve given your consent, which we ask for when you start adding your records.',
       ],
     },
     {
       heading: 'You set the terms',
       paragraphs: [
-        'Sharing happens by choice, per source and per permission, and what you have chosen is always visible in the app. You can disconnect a source or withdraw a consent whenever you choose, and doing so stops any further use immediately. An answer already given cannot be unsaid, so what changes is what happens next, which is the honest shape of any consent.',
+        'You choose which sources to connect, and you can see them in the app. You can disconnect your email at any time, in the app. To sync your NHS record, you’ll usually need to sign in to Patients Know Best first. To withdraw your consent, leave the beta. Nothing more is sent after that, but an answer Mina has already given cannot be taken back.',
       ],
     },
     {
       heading: 'The logins you grant',
       paragraphs: [
-        'Credentials for the sources you connect are stored encrypted on your machine, separate from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
+        'The logins you grant are kept locked on your computer, apart from your health records. A copy of your vault, wherever it ends up, contains no usable login to anything.',
       ],
     },
     {
@@ -176,7 +145,7 @@ export const trustPage = {
  */
 export const termsPage = {
   summary:
-    'the beta is free, Mina is not a doctor, and your vault is yours, on your computer, and it stays there whatever you decide about us.',
+    'the beta is free and comes with credit for Mina, you can top up with more credit if you want it, Mina is not a doctor, and your vault is yours, on your computer, and it stays there whatever you decide about us.',
   title: 'Plain terms for the open beta',
   eyebrow: 'Terms',
   organisation: 'GetMine Ltd',
@@ -197,11 +166,16 @@ export const termsPage = {
     },
     {
       heading: 'Your vault is yours',
-      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose.',
+      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose. We store no health records on our servers, and we train no AI model on them.',
     },
     {
       heading: 'The AI that’s included',
-      body: 'The beta includes a GetMine AI allowance: Mina works without any key or account of your own. Heavy users may later be asked to add their own API key; that’s a choice made in Settings. What Mina sends, and to whom, is described precisely in the privacy policy, and only happens after you’ve agreed on the first-open screen.',
+      body: 'The beta includes free credit for Mina. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve given your consent, which we ask for when you start adding your records.',
+    },
+    {
+      id: 'refunds',
+      heading: 'Refunds',
+      body: 'If a payment went wrong, or you change your mind, write to hello@getmine.ai within 14 days and we’ll refund the credit you haven’t used. Refunds go back to the card you paid with.',
     },
     {
       heading: 'Use it responsibly',
@@ -224,5 +198,5 @@ export const termsPage = {
       body: 'Write to hello@getmine.ai. These terms are governed by the law of England and Wales.',
     },
   ],
-  lastUpdated: '4 August 2026',
+  lastUpdated: '11 October 2026',
 } as const;
