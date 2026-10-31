@@ -7,7 +7,7 @@ import { visitCounting as visitCountingCopy } from '../data/visitCounting';
 // paragraph (regulatory.ts); its turn-off link is the one piece of interface
 // wording, and lives in visitCounting.ts.
 ---
-<LegalPage page="privacy" title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app and getmine.ai website." canonical="https://getmine.ai/privacy">
+<LegalPage page="privacy" title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app, getmine.ai website and Mina on WhatsApp." canonical="https://getmine.ai/privacy">
   <p class="page-eyebrow">Privacy</p>
   <h1 class="page-headline">{policy.title}</h1>
 
@@ -20,6 +20,12 @@ import { visitCounting as visitCountingCopy } from '../data/visitCounting';
       {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     </section>
   ))}
+
+  <section class="page-section" id="whatsapp">
+    <h2>{policy.whatsapp.heading}</h2>
+    {policy.whatsapp.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <p>{policy.whatsapp.policyIntro}<a href={policy.whatsapp.policyUrl}>{policy.whatsapp.policyLabel}</a>.</p>
+  </section>
 
   <section class="page-section">
     <h2>{policy.sources.heading}</h2>

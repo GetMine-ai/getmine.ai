@@ -1,4 +1,7 @@
 /**
+ * WhatsApp wording approved 26–30 Oct 2026, implemented on develop 31 Oct.
+ * The corresponding regulatory-pack refresh remains a separate pending task.
+ *
  * THE regulatory content module — one repository feeding every interface (Sabine's
  * ruling, 29 Jul 2026).
  *
@@ -13,12 +16,12 @@
 export const privacyPolicy = {
   title: 'Privacy policy',
   organisation: 'GetMine Ltd',
-  version: 'Version 2.0',
+  version: 'Version 2.1',
   published: '27 July 2026',
   reviewStatus: '',
-  scope: 'This policy covers the GetMine app and the getmine.ai website.',
+  scope: 'This policy covers the GetMine app, the getmine.ai website and Mina on WhatsApp.',
   summary:
-    'In short: your health records stay on your computer. We store none of them, and we train no AI model on them. We hold only what we need to run the beta.',
+    'In short: your encrypted Health Vault stays on your computer. We keep no central copy of your vault, and we train no AI model on your health records. If you choose to use Mina on WhatsApp, the messages and files you exchange also pass through WhatsApp, as explained below. We hold only what we need to run the beta.',
   beta: {
     heading: 'The beta, plainly',
     paragraphs: [
@@ -37,8 +40,19 @@ export const privacyPolicy = {
     heading: 'When Mina helps you',
     paragraphs: [
       'Mina uses an AI service, Anthropic. To answer a question, or to file something you’ve added, she sends only the part of your records the task needs. Never your whole vault, and never your passwords.',
-      'Before Mina can help, you give your consent once, in the app. Her requests then pass through our server, which keeps none of what you sent and only counts them against your credit.',
+      'Before Mina can help, you give your consent once, in the app. Her requests then pass through our server, which handles their contents temporarily in memory for processing and counts them against your credit.',
     ],
+  },
+  whatsapp: {
+    heading: 'Using Mina on WhatsApp',
+    paragraphs: [
+      'When you use Mina on WhatsApp, GetMine acts as a relay, passing messages and files between WhatsApp and your computer. Their contents are handled temporarily in server memory for delivery and are not retained as records on our servers.',
+      'Using WhatsApp is optional. Messages and files exchanged with Mina pass through Meta’s WhatsApp Business Platform. If a question or Mina’s reply includes health information, that information passes through WhatsApp too.',
+      'Disconnecting WhatsApp from GetMine stops future exchanges but does not erase messages already delivered to your chat or saved in backups. We recommend reviewing your WhatsApp backup settings and deleting sensitive messages and files when you no longer need them.',
+    ],
+    policyIntro: 'WhatsApp’s own processing and retention are described in its ',
+    policyLabel: 'Privacy Policy',
+    policyUrl: 'https://www.whatsapp.com/legal/privacy-policy-uk',
   },
   sources: {
     heading: 'Sources you connect',
@@ -55,8 +69,9 @@ export const privacyPolicy = {
     summaryParagraph:
       'We hold only what we need to run the beta: your account details, such as your email address and your consent; where your GetMine installer came from, to administer referrals; how much you use Mina, and any credit you buy; how the app is used, never your records, questions or answers; and your feedback, if you send it. None of this is health information, so please keep health details out of your feedback. On our website, we count how many people visit and what they read, as daily totals only: no cookies, and nothing that identifies you.',
     paragraphs: [
+      'If you set up GetMine through WhatsApp, we collect the same setup details through that conversation, together with your WhatsApp number.',
       'We keep this while you’re in the beta and delete it when you leave. For legal reasons, two things stay longer: the record of your consent, for 6 years, and a record of payments that doesn’t name you, for our accounts. Card details go to our payment provider, Stripe, never to us.',
-      'A few third-party providers help us run the beta: Stripe for payments, an email provider for our emails, and hosting providers for our website and server. They only hold the details above, never your health records. Where a provider is based outside the UK, we use the UK’s approved safeguards. We hold this to run the beta you joined, to improve GetMine, and to keep the accounts the law requires.',
+      'A few third-party providers help us run the beta: Stripe for payments, an email provider for our emails, hosting providers for our website and server, and Meta for WhatsApp exchanges. The “When Mina helps you” and “Using Mina on WhatsApp” sections explain when information sent to providers may contain health information. Where a provider is based outside the UK, we use the UK’s approved safeguards. We hold this to run the beta you joined, to improve GetMine, and to keep the accounts the law requires.',
     ],
   },
   rights: {
@@ -68,17 +83,17 @@ export const privacyPolicy = {
   },
   controller:
     'Who we are: GetMine Ltd, registered in England and Wales, company number 17070331. We are responsible for what is listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '12 October 2026',
+  lastUpdated: '31 October 2026',
 } as const;
 
 
 export const trustPage = {
   title: 'Your vault stays with you.',
   eyebrow: 'Trust & Security',
-  version: 'Version 1.1',
-  published: '11 October 2026',
+  version: 'Version 1.2',
+  published: '31 October 2026',
   summary:
-    'The short version: your vault lives on your computer, encrypted, and we hold no central copy of your records. Only what is needed to answer your question, or to organise what you bring into the vault, is shared, relayed but never kept by us. We store no health records on our servers, and we train no AI model on them.',
+    'The short version: your vault lives on your computer, encrypted. We hold no central copy of your records and do not train AI models on them. Information is relayed and handled temporarily in memory for processing and delivery.',
   lead:
     'GetMine is built so your health information can work for you without giving up control. This page is how we approach security today, what we are building toward, and, just as important, what we do not yet claim.',
   sections: [
@@ -99,7 +114,13 @@ export const trustPage = {
     {
       heading: 'Only what Mina needs is shared',
       paragraphs: [
-        'When Mina helps you, only the slice of your records the task needs is sent to the AI provider, relayed through GetMine’s server, which keeps none of the content. Never your whole vault, and never your logins. Nothing is shared until you’ve given your consent, which we ask for when you start adding your records.',
+        'When Mina answers a question or organises information you add, only the part of your records the task needs is sent to the AI provider, relayed through GetMine’s server. Never your whole vault. Nothing leaves at rest, and nothing leaves without a question or task that requires it and your consent.',
+      ],
+    },
+    {
+      heading: 'Mina on WhatsApp',
+      paragraphs: [
+        'WhatsApp is optional. GetMine temporarily relays messages and files between WhatsApp and your computer. Your messages, shared files and Mina’s replies become part of your WhatsApp conversation, subject to WhatsApp’s privacy and retention policies. You can disconnect WhatsApp in the app. Our Privacy Policy explains the details.',
       ],
     },
     {
@@ -158,7 +179,7 @@ export const termsPage = {
     },
     {
       heading: 'Who it’s for',
-      body: 'Adults, 18 or over. The app will ask you to confirm this.',
+      body: 'Adults, 18 or over. We ask you to confirm this when you get started.',
     },
     {
       heading: 'Not a medical service',
@@ -166,11 +187,15 @@ export const termsPage = {
     },
     {
       heading: 'Your vault is yours',
-      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose. We store no health records on our servers, and we train no AI model on them.',
+      body: 'Your records live on your computer, in an encrypted vault only you can open. We never hold a central copy. Deleting GetMine never deletes your health information: the app and Mina go. Keep your own copies of anything you can’t afford to lose. We train no AI model on your health records. Our Privacy Policy explains temporary processing and delivery.',
     },
     {
       heading: 'The AI that’s included',
       body: 'The beta includes free credit for Mina. Top-ups are in Settings, Billing: Stripe takes the payment, and we never see your card. What Mina sends, and to whom, is in the privacy policy, and happens only after you’ve given your consent, which we ask for when you start adding your records.',
+    },
+    {
+      heading: 'Mina on WhatsApp',
+      body: 'Using Mina on WhatsApp is optional. To answer from your vault, Mina needs GetMine running on your computer and connected to the internet. You can disconnect WhatsApp and continue using GetMine on your computer. Our Privacy Policy explains how messages and files are handled.',
     },
     {
       id: 'refunds',
@@ -198,5 +223,5 @@ export const termsPage = {
       body: 'Write to hello@getmine.ai. These terms are governed by the law of England and Wales.',
     },
   ],
-  lastUpdated: '11 October 2026',
+  lastUpdated: '31 October 2026',
 } as const;
