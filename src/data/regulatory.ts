@@ -56,10 +56,10 @@ export const privacyPolicy = {
   },
   sources: {
     heading: 'Sources you connect',
+    googlePolicy: { label: 'Google’s rules', url: 'https://developers.google.com/terms/api-services-user-data-policy' },
     bullets: [
-      'Your health records (in the UK, your NHS record) come from our partner Patients Know Best, once you’ve registered with them.',
-      'Email scanning is read-only: GetMine only looks for your health emails, and can never send, change or delete anything. Your mailbox is read on your computer, not by us.',
-      'You can disconnect your email at any time, in the app. To sync your NHS record, you’ll usually need to sign in to Patients Know Best first.',
+      'Sync your UK NHS record through our partner Patients Know Best once you’ve registered with them.',
+      'Choose when to scan, which emails and attachments to save, and disconnect anytime. GetMine cannot send, change or delete your emails. For Gmail, we follow Google’s rules, including its Limited Use requirements.',
     ],
   },
   holdings: {
@@ -77,13 +77,13 @@ export const privacyPolicy = {
   rights: {
     heading: 'Your rights',
     paragraphs: [
-      'You can ask to see, correct or delete what we hold, limit how we use it, object to it, or take a copy elsewhere. For this, or any question about this policy, email privacy@getmine.ai, or use Leave the beta in the app, which also withdraws your consent. Your vault is already yours.',
+      'You can withdraw your consent by leaving the beta in the app. Your vault stays with you. You can ask for a copy of the personal information we hold, ask us to correct or delete it, or exercise your other data protection rights.',
       'You can also complain to the Information Commissioner’s Office (ico.org.uk).',
     ],
   },
   controller:
     'Who we are: GetMine Ltd, registered in England and Wales, company number 17070331. We are responsible for what is listed under “What we hold”. Contact: privacy@getmine.ai.',
-  lastUpdated: '31 October 2026',
+  lastUpdated: '19 November 2026',
 } as const;
 
 
