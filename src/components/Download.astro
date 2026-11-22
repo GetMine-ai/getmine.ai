@@ -179,7 +179,7 @@ const platforms = [
                   <>
                     <h3>{platform.title}</h3>
                     {viaStore ? (
-                      <p>From the Microsoft Store, in the UK</p>
+                      <p>On the Microsoft Store · UK</p>
                     ) : (
                       <p>
                         {platform.build.filename}
@@ -236,11 +236,9 @@ const platforms = [
                             <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"></path>
                           </svg>
                         </span>
-                        <strong class="receipt-title">Over to the Microsoft Store</strong>
+                        <strong class="receipt-title">Over to the Store</strong>
                       </div>
-                      <p class="receipt-line">
-                        Choose Get, and GetMine installs by itself. Then find it in your Start menu.
-                      </p>
+                      <p class="receipt-line">Choose Get. It installs itself.</p>
                     </div>
                   )}
 
@@ -419,7 +417,7 @@ const platforms = [
       if (!action) return false;
       actions.forEach((other) => { if (other !== action) delete other.dataset.started; });
       action.dataset.started = route;
-      root.dataset.started = link.dataset.downloadPlatform ?? 'true';
+      root.dataset.started = route === 'store' ? 'store' : link.dataset.downloadPlatform ?? 'true';
       return true;
     };
 
@@ -1534,9 +1532,15 @@ const platforms = [
 
   /* Once one download has started, the other card steps back. */
   [data-started='mac'] [data-platform-panel='windows'],
-  [data-started='windows'] [data-platform-panel='mac'] {
+  [data-started='windows'] [data-platform-panel='mac'],
+  [data-started='store'] [data-platform-panel='mac'] {
     opacity: 0.4;
     transition: opacity 200ms var(--ease-gm);
+  }
+
+  /* Mina's minute is a download's; the Store's receipt says what comes next. */
+  [data-started='store'] .waiting {
+    display: none;
   }
 
   /* Mina uses the minute, where the timeline was. */
