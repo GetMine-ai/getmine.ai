@@ -24,9 +24,23 @@ interface Props {
    * link, and PKB's files, to the computer they install on.
    */
   pageUrl?: string;
+  /**
+   * GetMine's Microsoft Store listing, tagged with this page's campaign. When
+   * given, the Windows card leads with the Store, where nothing warns about an
+   * unrecognised publisher, and keeps the installer as a smaller link beneath it
+   * for anyone outside the UK, where the listing is not offered, or who would
+   * rather have the file. /pkb passes none: its installer's name is how a PKB
+   * install is recognised, and a Store install cannot be.
+   */
+  windowsStoreUrl?: string;
 }
 
-const { builds, offerMina = false, pageUrl = 'https://getmine.ai/beta' } = Astro.props;
+const {
+  builds,
+  offerMina = false,
+  pageUrl = 'https://getmine.ai/beta',
+  windowsStoreUrl,
+} = Astro.props;
 const pageLink = pageUrl.replace(/^https:\/\//, '');
 
 const platforms = [
@@ -133,6 +147,7 @@ const platforms = [
       <div class="platform-panels" aria-label="Download GetMine">
         {platforms.map((platform) => {
           const available = Boolean(platform.build.url);
+          const viaStore = platform.key === 'windows' && Boolean(windowsStoreUrl);
           return (
             <section
               id={`download-${platform.key}`}
@@ -163,10 +178,14 @@ const platforms = [
                 {available ? (
                   <>
                     <h3>{platform.title}</h3>
-                    <p>
-                      {platform.build.filename}
-                      {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
-                    </p>
+                    {viaStore ? (
+                      <p>From the Microsoft Store, in the UK</p>
+                    ) : (
+                      <p>
+                        {platform.build.filename}
+                        {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
+                      </p>
+                    )}
                   </>
                 ) : (
                   <>
@@ -179,16 +198,51 @@ const platforms = [
               {available && (
                 <div class="download-action" data-download-action>
                   <div class="download-start" data-download-start>
-                    <a
-                      class="download-button"
-                      href={platform.build.url}
-                      download={platform.build.filename}
-                      data-download-link
-                      data-download-platform={platform.key}
-                    >
-                      Download for {platform.tabLabel}
-                    </a>
+                    {viaStore ? (
+                      <a
+                        class="download-button download-button--store"
+                        href={windowsStoreUrl}
+                        target="_blank"
+                        rel="noopener"
+                        data-store-link
+                        data-download-platform={platform.key}
+                      >
+                        Get it from Microsoft <span class="store-arrow" aria-hidden="true">↗</span>
+                      </a>
+                    ) : (
+                      <a
+                        class="download-button"
+                        href={platform.build.url}
+                        download={platform.build.filename}
+                        data-download-link
+                        data-download-platform={platform.key}
+                      >
+                        Download for {platform.tabLabel}
+                      </a>
+                    )}
                   </div>
+
+                  {viaStore && (
+                    <div
+                      class="download-confirmation"
+                      data-store-confirmation
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <div class="receipt-head">
+                        <span class="receipt-disc" aria-hidden="true">
+                          <svg viewBox="0 0 24 24">
+                            <path d="M5.5 8.5h13l-1 11h-11z"></path>
+                            <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"></path>
+                          </svg>
+                        </span>
+                        <strong class="receipt-title">Over to the Microsoft Store</strong>
+                      </div>
+                      <p class="receipt-line">
+                        Choose Get, and GetMine installs by itself. Then find it in your Start menu.
+                      </p>
+                    </div>
+                  )}
 
                   <div
                     class="download-confirmation"
@@ -219,6 +273,28 @@ const platforms = [
                   >
                     Download didn’t start? Use the direct link.
                   </a>
+                  {viaStore && (
+                    <a
+                      class="download-fallback store-fallback"
+                      href={windowsStoreUrl}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Store didn’t open? Open it again.
+                    </a>
+                  )}
+                  {viaStore && (
+                    <p class="store-alternative">
+                      Outside the UK, or rather have the file?{' '}
+                      <a
+                        href={platform.build.url}
+                        download={platform.build.filename}
+                        data-download-link
+                        data-download-platform={platform.key}
+                      >Download the installer</a>
+                      {platform.build.sizeMB > 0 && ` · ${platform.build.sizeMB} MB`}
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -229,7 +305,7 @@ const platforms = [
                   </p>
                   {platform.build.sha256 && (
                     <details class="verify-fold">
-                      <summary>Verify your download</summary>
+                      <summary>{viaStore ? 'Verify the installer' : 'Verify your download'}</summary>
                       <p>
                         Your computer checks the signature before anything installs.
                         The careful can also compare the file's fingerprint:
@@ -305,7 +381,10 @@ const platforms = [
   // (src/scripts/siteMetrics.ts): a press of a download button and a press of
   // the direct link under the receipt, each with the platform of the card it
   // sits on. A download press also says where the visit came from, if this
-  // page knows. Anonymous and first-party, with no identity and no cookie;
+  // page knows. Where the Windows card leads with the Microsoft Store, a press
+  // of the Store button and of the installer link beneath it are both Windows
+  // download presses; Partner Center counts the Store's side by its campaign.
+  // Anonymous and first-party, with no identity and no cookie;
   // fire-and-forget, so a failure can never affect the page. The page load
   // itself is counted by main.ts.
   import { track, visitSource } from '../scripts/siteMetrics';
@@ -330,25 +409,36 @@ const platforms = [
     const laterMessages = root.querySelectorAll<HTMLElement>('[data-mina-message="2"]');
     laterMessages.forEach((message) => { message.hidden = true; });
 
+    // One download at a time on the page: the platform pressed last owns the
+    // receipt, the dimming and Mina's second message; the other card returns
+    // to its button (Codex, 5 Sep — two receipts after two clicks). `route` is
+    // 'true' for a file the browser brings in, 'store' for the Store's page.
+    const begin = (link: HTMLAnchorElement, route: 'true' | 'store') => {
+      track('download_click', { platform: link.dataset.downloadPlatform, ...visitSource() });
+      const action = link.closest<HTMLElement>('[data-download-action]');
+      if (!action) return false;
+      actions.forEach((other) => { if (other !== action) delete other.dataset.started; });
+      action.dataset.started = route;
+      root.dataset.started = link.dataset.downloadPlatform ?? 'true';
+      return true;
+    };
+
+    // Mina's minute is for a file the browser brings in. The Store shows its
+    // own progress, so its receipt carries the next step and Mina stays out of it.
+    let minuteBegun = false;
     root.querySelectorAll<HTMLAnchorElement>('[data-download-link]').forEach((link) => {
       link.addEventListener('click', () => {
-        track('download_click', { platform: link.dataset.downloadPlatform, ...visitSource() });
-        const action = link.closest<HTMLElement>('[data-download-action]');
-        if (!action) return;
-        // One download at a time on the page: the platform pressed last owns the
-        // receipt, the dimming and Mina's second message; the other card returns
-        // to its button (Codex, 5 Sep — two receipts after two clicks).
-        actions.forEach((other) => { if (other !== action) delete other.dataset.started; });
-        action.dataset.started = 'true';
-        const first = !root.dataset.started;
-        root.dataset.started = link.dataset.downloadPlatform ?? 'true';
-        if (first) {
-          if (waiting) waiting.hidden = false;
-          window.setTimeout(() => {
-            laterMessages.forEach((message) => { message.hidden = false; });
-          }, SECOND_MESSAGE_AFTER_MS);
-        }
+        if (!begin(link, 'true') || minuteBegun) return;
+        minuteBegun = true;
+        if (waiting) waiting.hidden = false;
+        window.setTimeout(() => {
+          laterMessages.forEach((message) => { message.hidden = false; });
+        }, SECOND_MESSAGE_AFTER_MS);
       });
+    });
+
+    root.querySelectorAll<HTMLAnchorElement>('[data-store-link]').forEach((link) => {
+      link.addEventListener('click', () => { begin(link, 'store'); });
     });
 
     root.querySelectorAll<HTMLAnchorElement>('[data-download-fallback]').forEach((link) => {
@@ -1378,6 +1468,70 @@ const platforms = [
     display: inline-block;
   }
 
+  /*
+   * The Store route (/beta's Windows card): the Store's receipt takes the
+   * button's place, as a download's does, and the installer waits beneath for
+   * anyone the Store cannot serve. Pressing the installer hands the card to the
+   * download's own receipt, so the Store's lines step aside.
+   */
+  .download-button--store {
+    gap: 0.5rem;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .store-arrow {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: transform 200ms var(--ease-gm);
+  }
+
+  .download-button--store:hover .store-arrow,
+  .download-button--store:focus-visible .store-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .download-action[data-started='store'] .download-start {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='store'] [data-store-confirmation] {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .download-action[data-started='true'] [data-store-confirmation] {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .download-action[data-started='store'] .store-fallback {
+    display: inline-block;
+  }
+
+  .download-action[data-started='true'] .store-fallback {
+    display: none;
+  }
+
+  .store-alternative {
+    grid-area: 3 / 1;
+    margin: 0.875rem 0 0;
+    color: var(--text-quiet);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .store-alternative a {
+    color: var(--teal);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .download-action[data-started='true'] .store-alternative {
+    display: none;
+  }
+
   /* Once one download has started, the other card steps back. */
   [data-started='mac'] [data-platform-panel='windows'],
   [data-started='windows'] [data-platform-panel='mac'] {
@@ -1469,7 +1623,8 @@ const platforms = [
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .download-action[data-started='true'] .download-confirmation {
+    .download-action[data-started='true'] .download-confirmation,
+    .download-action[data-started='store'] [data-store-confirmation] {
       animation: download-ring 700ms var(--ease-gm) both;
     }
 

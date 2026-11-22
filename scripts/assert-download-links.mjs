@@ -7,6 +7,9 @@
  *             each URL resolves, is served as an attachment, carries the
  *             configured version, and its published `.sha256` sidecar matches
  *             the checksum configured in src/data/builds.ts.
+ *             Where a page leads Windows to the Microsoft Store, its tagged
+ *             listing link must answer with GetMine's listing and keep its
+ *             campaign ID.
  *   rendered  inspection of the BUILT site: dist/beta.html and dist/pkb.html
  *             must exist and must contain each configured checksum verbatim.
  *             This stage can only run after `astro build`, so build:release
@@ -14,15 +17,23 @@
  *             astro build, then assert:rendered).
  */
 import { readFile } from 'node:fs/promises';
-import { builds, pkbBuilds } from '../src/data/builds.ts';
+import { builds, pkbBuilds, storeLink, windowsStore } from '../src/data/builds.ts';
 
 const stage = process.argv[2] ?? 'links';
 // Each page, the files it offers, and the files it must never offer: a PKB file
 // on /beta would count a stranger as PKB's, and a standard file on /pkb would
-// lose PKB an install that came through its link.
+// lose PKB an install that came through its link. `store` is the tagged Store
+// link the Windows card leads with; /pkb has none, because a Store install
+// cannot be recognised as PKB's.
 const pages = [
-  { page: 'beta', label: '', offered: builds, foreign: pkbBuilds },
-  { page: 'pkb', label: 'pkb ', offered: pkbBuilds, foreign: builds },
+  {
+    page: 'beta',
+    label: '',
+    offered: builds,
+    foreign: pkbBuilds,
+    store: storeLink(windowsStore.campaigns.beta),
+  },
+  { page: 'pkb', label: 'pkb ', offered: pkbBuilds, foreign: builds, store: null },
 ];
 const failures = [];
 
@@ -94,9 +105,34 @@ if (stage === 'links') {
       }
     }
   }
+
+  // The Store listing must answer as GetMine's, and its redirects must keep the
+  // campaign ID, or Partner Center cannot count the page's route. Microsoft's
+  // listing refuses HEAD, so this reads the page.
+  for (const { page, store } of pages) {
+    if (!store) continue;
+    const route = `${page} store`;
+    try {
+      const response = await fetch(store, {
+        redirect: 'follow',
+        signal: AbortSignal.timeout(15_000),
+      });
+      const body = await response.text();
+      const campaign = new URL(store).searchParams.get('cid');
+      if (response.status !== 200) {
+        failures.push(`${route}: listing returned HTTP ${response.status}`);
+      } else if (!/<title>[^<]*\bGetMine\b/i.test(body)) {
+        failures.push(`${route}: ${store} is not GetMine's listing`);
+      } else if (new URL(response.url).searchParams.get('cid') !== campaign) {
+        failures.push(`${route}: the listing dropped the campaign ID ${campaign} on its way to ${response.url}`);
+      }
+    } catch (error) {
+      failures.push(`${route}: ${describe(error)}`);
+    }
+  }
 } else if (stage === 'rendered') {
   // Runs against the BUILT site: astro build must have completed first.
-  for (const { page, label, offered, foreign } of pages) {
+  for (const { page, label, offered, foreign, store } of pages) {
     const file = `dist/${page}.html`;
     const platforms = Object.entries(offered);
     let html;
@@ -139,10 +175,26 @@ if (stage === 'links') {
 
     // The platform cards are the download actions themselves. Keep the release
     // page to one click per operating system rather than restoring the former
-    // selector-then-download interaction.
-    const downloadActions = html.match(/<a\b[^>]*\bdata-download-link\b[^>]*>/g) ?? [];
-    if (downloadActions.length !== 2) {
-      failures.push(`${file} has ${downloadActions.length} platform download actions, expected 2`);
+    // selector-then-download interaction. Each card's one button is its
+    // download, or, where Windows leads with the Store, the Store's page.
+    const primaryActions = html.match(/<a\b[^>]*\bclass="download-button\b[^>]*>/g) ?? [];
+    if (primaryActions.length !== 2) {
+      failures.push(`${file} has ${primaryActions.length} platform download actions, expected 2`);
+    }
+    const storeActions = html.match(/<a\b[^>]*\bdata-store-link\b[^>]*>/g) ?? [];
+    if (store) {
+      // The Store leads, tagged with this page's campaign, and the installer is
+      // still offered beneath it: the listing is the UK's only.
+      if (storeActions.length !== 1 || !storeActions[0].includes(`href="${store}"`)) {
+        failures.push(`${file}: the Windows card does not lead with the Store listing at ${store}`);
+      }
+      const installer = offered.windows;
+      const installerLinks = html.match(/<a\b[^>]*\bdata-download-link\b[^>]*>/g) ?? [];
+      if (!installerLinks.some((link) => link.includes(`href="${installer.url}"`))) {
+        failures.push(`${file}: the installer link beneath the Store button is absent`);
+      }
+    } else if (storeActions.length > 0 || html.includes(windowsStore.listing)) {
+      failures.push(`${file} leads to the Microsoft Store, where an install cannot be recognised as this page's`);
     }
     if (html.includes('data-platform-tab')) {
       failures.push(`${file} contains the retired platform selector`);
@@ -230,5 +282,5 @@ if (failures.length > 0) {
 console.log(
   stage === 'rendered'
     ? 'Rendered download assertion passed on /beta and /pkb: direct platform actions, the receipt, Mina’s minute and checksums are present.'
-    : 'Download release assertion passed for macOS and Windows on /beta and /pkb (links and sidecar checksums).',
+    : 'Download release assertion passed for macOS and Windows on /beta and /pkb (links, sidecar checksums and the Store listing).',
 );
