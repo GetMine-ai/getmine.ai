@@ -1,4 +1,5 @@
 ---
+import { linkify } from '../scripts/linkify';
 import LegalPage from '../layouts/LegalPage.astro';
 // Document 09 of the regulatory pack. THE PACK IS CANONICAL and this page
 // renders src/data/regulatory.ts, which mirrors it. Never write copy here.
@@ -15,7 +16,7 @@ import { trustPage } from '../data/regulatory';
     {trustPage.sections.map((section) => (
       <div class="page-section">
         <h2>{section.heading}</h2>
-        {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        {section.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
         {'bullets' in section && (
           <ul>
             {section.bullets.map((bullet) => {
@@ -29,11 +30,11 @@ import { trustPage } from '../data/regulatory';
 
     <div class="page-section">
       <h2>{trustPage.questions.heading}</h2>
-      {trustPage.questions.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      {trustPage.questions.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
       <p>The <a href="/privacy">privacy policy</a> is the governing statement; where the two could be read differently, the privacy policy prevails.</p>
     </div>
 
-    <p class="page-lead" style="font-size:.85em;opacity:.75">Last updated: {trustPage.published} &middot; GetMine Ltd &middot; security@getmine.ai</p>
+    <p class="page-lead" style="font-size:.85em;opacity:.75">Last updated: {trustPage.published} &middot; GetMine Ltd &middot; <a href="mailto:security@getmine.ai">security@getmine.ai</a></p>
 </LegalPage>
 
 <style>

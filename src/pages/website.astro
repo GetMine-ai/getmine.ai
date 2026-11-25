@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/site/Hero.astro';
+import YourVault from '../components/site/YourVault.astro';
+import MinaOnTheMove from '../components/site/MinaOnTheMove.astro';
+import Sovereign from '../components/site/Sovereign.astro';
+import AboutUs from '../components/site/AboutUs.astro';
+import OpenBeta from '../components/site/OpenBeta.astro';
+import Partners from '../components/Partners.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppEntry from '../components/WhatsAppEntry.astro';
+---
+<Base page="home" canonical="https://getmine.ai/website/">
+  <a class="website-skip" href="#website-content">Skip to content</a>
+  <Nav />
+  <main id="website-content" tabindex="-1">
+  <Hero />
+  <YourVault />
+  <MinaOnTheMove />
+  <Sovereign />
+  <AboutUs />
+  <OpenBeta />
+  <Partners />
+  </main>
+  <Footer />
+  <WhatsAppEntry />
+</Base>
+
+<style>
+.website-skip { position: fixed; z-index: 100; top: 1rem; left: 1rem; padding: .75rem 1rem; border-radius: .5rem; background: var(--cream); color: var(--navy); transform: translateY(-200%); }
+.website-skip:focus { transform: none; }
+</style>

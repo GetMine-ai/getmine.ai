@@ -65,6 +65,29 @@ export const pkbBuilds: { mac: BuildInfo; windows: BuildInfo } = {
   windows: pkbCopy(builds.windows, 'GetMine-Setup-PKB.exe'),
 };
 
+/**
+ * GetMine on the Microsoft Store (the app repository's docs/MICROSOFT_STORE.md
+ * §5), which /beta's Windows card leads with: a Store install meets no
+ * SmartScreen warning. The listing is offered in the United Kingdom only, so the
+ * card keeps the installer beneath it.
+ *
+ * Every link to the listing carries a campaign ID (`cid`), one per route.
+ * Partner Center's acquisitions report counts Store page views and installs for
+ * each campaign, as totals only: the app never learns the campaign, so a Store
+ * install records its source from the setup's file name, and never as PKB's.
+ * Keep campaign IDs short and plain: Microsoft warns that another developer may
+ * see one.
+ */
+export const windowsStore = {
+  listing: 'https://apps.microsoft.com/detail/XP8CD805VSXPMT',
+  campaigns: {
+    beta: 'website',
+  },
+} as const;
+
+export const storeLink = (campaign: string): string =>
+  `${windowsStore.listing}?cid=${encodeURIComponent(campaign)}`;
+
 /*
  * Why `version` is not the wave tag (measured 1 Sep 2026, not assumed):
  * scripts/assert-download-links.mjs requires `version` to appear in

@@ -1,4 +1,5 @@
 ---
+import { linkify } from '../scripts/linkify';
 import LegalPage from '../layouts/LegalPage.astro';
 import { privacyPolicy as policy } from '../data/regulatory';
 import { visitCounting as visitCountingCopy } from '../data/visitCounting';
@@ -7,7 +8,7 @@ import { visitCounting as visitCountingCopy } from '../data/visitCounting';
 // paragraph (regulatory.ts); its turn-off link is the one piece of interface
 // wording, and lives in visitCounting.ts.
 ---
-<LegalPage page="privacy" title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app and getmine.ai website." canonical="https://getmine.ai/privacy">
+<LegalPage page="privacy" title="Privacy policy | GetMine.ai" description="The GetMine privacy policy for the desktop app, getmine.ai website and Mina on WhatsApp." canonical="https://getmine.ai/privacy">
   <p class="page-eyebrow">Privacy</p>
   <h1 class="page-headline">{policy.title}</h1>
 
@@ -17,9 +18,15 @@ import { visitCounting as visitCountingCopy } from '../data/visitCounting';
   {[policy.beta, policy.vault, policy.mina].map((section) => (
     <section class="page-section">
       <h2>{section.heading}</h2>
-      {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      {section.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
     </section>
   ))}
+
+  <section class="page-section" id="whatsapp">
+    <h2>{policy.whatsapp.heading}</h2>
+    {policy.whatsapp.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
+    <p>{policy.whatsapp.policyIntro}<a href={policy.whatsapp.policyUrl}>{policy.whatsapp.policyLabel}</a>.</p>
+  </section>
 
   <section class="page-section">
     <h2>{policy.sources.heading}</h2>
@@ -32,15 +39,15 @@ import { visitCounting as visitCountingCopy } from '../data/visitCounting';
   <section class="page-section" id="visit-counting">
     <h2>{policy.holdings.heading}</h2>
     <p>{policy.holdings.summaryParagraph} <a class="nowrap" href="/privacy?count=off#visit-counting">{visitCountingCopy.action}</a>.</p>
-    {policy.holdings.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    {policy.holdings.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
   </section>
 
   <section class="page-section">
     <h2>{policy.rights.heading}</h2>
-    {policy.rights.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    {policy.rights.paragraphs.map((paragraph) => <p set:html={linkify(paragraph)} />)}
   </section>
 
-  <aside class="controller-notice">{policy.controller}</aside>
+  <aside class="controller-notice" set:html={linkify(policy.controller)} />
   <p class="policy-updated">
     Last updated: {policy.lastUpdated} · {policy.organisation} ·
     <a href="mailto:privacy@getmine.ai">privacy@getmine.ai</a>

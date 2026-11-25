@@ -39,8 +39,10 @@ function initialiseNavigation() {
 
   menuLinks.forEach((link) => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key === 'Escape' && button?.getAttribute('aria-expanded') === 'true') { closeMenu(); button.focus(); }
   });
+
+  window.matchMedia('(min-width: 86rem)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
   const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 16);
   updateHeader();
@@ -59,29 +61,38 @@ function initialiseNavigation() {
   const HEADING_GAP = 28;
 
   const landingOffset = (section: HTMLElement) => {
-    const heading = section.querySelector<HTMLElement>('.section-heading') || section;
-    const headerHeight = header?.offsetHeight || 0;
+    const heading = section.tagName === 'MAIN' ? section
+      : section.querySelector<HTMLElement>('.section-heading, .sec > .eyebrow') || section;
+    // Exclude the mobile menu while its closing animation is still running.
+    const headerHeight = header?.querySelector<HTMLElement>('.nav-wrap')?.offsetHeight || 0;
     const headingTop = heading.getBoundingClientRect().top + window.scrollY;
     return Math.max(0, Math.round(headingTop - headerHeight - HEADING_GAP));
   };
 
   const scrollToSection = (section: HTMLElement, smooth: boolean) => {
-    window.scrollTo({ top: landingOffset(section), behavior: smooth ? 'smooth' : 'auto' });
+    window.scrollTo({ top: landingOffset(section), behavior: smooth ? 'smooth' : 'instant' });
   };
 
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const focusSection = (section: HTMLElement) => {
+    const target = section.tagName === 'MAIN' ? section : section.querySelector<HTMLElement>('h1, h2') || section;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  };
+  const pathKey = (path: string) => path.replace(/\/$/, '') || '/';
   Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')).forEach((link) => {
     link.addEventListener('click', (event) => {
-      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey) return;
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const url = new URL(link.href, window.location.href);
-      if (url.pathname !== window.location.pathname || !url.hash) return;
+      if (url.origin !== window.location.origin || pathKey(url.pathname) !== pathKey(window.location.pathname) || !url.hash) return;
       const section = document.getElementById(url.hash.slice(1));
       if (!section) return;
       event.preventDefault();
+      focusSection(section);
       scrollToSection(section, !reducedMotion());
-      // Keep the hash (and the back button) without a second, uncorrected jump.
-      window.history.pushState(null, '', url.hash);
+      // Repeated clicks must not create dead Back-button steps.
+      if (window.location.hash !== url.hash) window.history.pushState(null, '', url.hash);
     });
   });
 
@@ -90,9 +101,25 @@ function initialiseNavigation() {
     const landed = document.getElementById(window.location.hash.slice(1));
     if (landed) {
       window.requestAnimationFrame(() => scrollToSection(landed, false));
-      window.addEventListener('load', () => scrollToSection(landed, false), { once: true });
+      // A slow image load must not pull back someone who has started reading.
+      let interacted = false;
+      const noteInteraction = () => { interacted = true; };
+      for (const name of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+        window.addEventListener(name, noteInteraction, { once: true, passive: true });
+      }
+      window.addEventListener('load', () => {
+        if (!interacted) scrollToSection(landed, false);
+        for (const name of ['wheel', 'touchstart', 'pointerdown', 'keydown']) window.removeEventListener(name, noteInteraction);
+      }, { once: true });
     }
   }
+
+  // History navigation must use the same framing as a menu click, rather
+  // than the browser's native fragment position beneath the fixed header.
+  window.addEventListener('popstate', () => {
+    const section = document.getElementById(window.location.hash.slice(1));
+    if (section) window.requestAnimationFrame(() => { focusSection(section); scrollToSection(section, false); });
+  });
 
   if (navLinks.length) {
     const sections = navLinks
@@ -102,7 +129,8 @@ function initialiseNavigation() {
     let frame: number | undefined;
     const updateActiveSection = () => {
       frame = undefined;
-      const headerHeight = header?.offsetHeight || 0;
+      // Exclude the mobile menu while its closing animation is still running.
+      const headerHeight = header?.querySelector<HTMLElement>('.nav-wrap')?.offsetHeight || 0;
       const readingLine = window.scrollY + headerHeight + window.innerHeight * 0.28;
       const active = sections.reduce<HTMLElement | undefined>((current, section) => {
         return section.offsetTop <= readingLine ? section : current;
@@ -371,19 +399,16 @@ function initialiseInviteFriend() {
   instances.forEach((instance) => {
     const trigger = instance.querySelector<HTMLButtonElement>('[data-invite-trigger]');
     const panel = instance.querySelector<HTMLElement>('[data-invite-panel]');
-    const message = instance.querySelector<HTMLTextAreaElement>('[data-invite-message]');
+    const share = instance.querySelector<HTMLAnchorElement>('[data-invite-share]');
     const copyButton = instance.querySelector<HTMLButtonElement>('[data-invite-copy]');
     const announcer = instance.querySelector<HTMLElement>('[data-invite-announcer]');
-    if (!trigger || !panel || !message || !copyButton) return;
-
-    const resizeMessage = () => {
-      message.style.height = 'auto';
-      message.style.height = `${Math.max(message.scrollHeight, 120)}px`;
-    };
+    if (!trigger || !panel || !share || !copyButton) return;
+    const inviteUrl = copyButton.dataset.inviteUrl;
+    if (!inviteUrl) return;
 
     const fallbackCopy = () => {
       const fallback = document.createElement('textarea');
-      fallback.value = message.value;
+      fallback.value = inviteUrl;
       fallback.setAttribute('readonly', '');
       fallback.style.position = 'fixed';
       fallback.style.opacity = '0';
@@ -392,8 +417,7 @@ function initialiseInviteFriend() {
       const legacyDocument = document as unknown as {
         execCommand(commandId: string): boolean;
       };
-      legacyDocument.execCommand('copy');
-      fallback.remove();
+      try { return legacyDocument.execCommand('copy'); } finally { fallback.remove(); copyButton.focus(); }
     };
 
     trigger.addEventListener('click', () => {
@@ -410,9 +434,7 @@ function initialiseInviteFriend() {
       // one) would otherwise trap the fixed overlay beneath the nav.
       if (panel.parentElement !== document.body) document.body.append(panel);
       lockScroll();
-      resizeMessage();
-      message.focus();
-      message.select();
+      share.focus();
     });
 
     // Backdrop and the × both dismiss, returning focus to the trigger.
@@ -439,23 +461,39 @@ function initialiseInviteFriend() {
       }
     });
 
-    message.addEventListener('input', () => {
-      resizeMessage();
-    });
+    const touchDevice = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (touchDevice && navigator.share) {
+      share.textContent = 'Share invitation';
+      share.addEventListener('click', async (event) => {
+        event.preventDefault();
+        try { await navigator.share({ url: inviteUrl }); }
+        catch (error) {
+          if (!(error instanceof DOMException && error.name === 'AbortError') && announcer)
+            announcer.textContent = 'Sharing is unavailable. You can copy the link instead.';
+        }
+      });
+    }
 
     copyButton.addEventListener('click', async () => {
-      track('invite_copied');
+      let copied = false;
       try {
         if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-        await navigator.clipboard.writeText(message.value);
+        await navigator.clipboard.writeText(inviteUrl);
+        copied = true;
       } catch {
-        fallbackCopy();
+        try { copied = fallbackCopy(); } catch { copied = false; }
       }
 
+      if (!copied) {
+        if (announcer) announcer.textContent = 'Copy unavailable. Share this link: ' + inviteUrl;
+        return;
+      }
+      track('invite_copied');
       copyButton.textContent = 'Copied';
-      if (announcer) announcer.textContent = 'Message copied';
+      if (announcer) announcer.textContent = 'Link copied';
       window.setTimeout(() => {
-        copyButton.textContent = 'Copy message';
+        copyButton.textContent = 'Copy link';
       }, 1800);
     });
   });

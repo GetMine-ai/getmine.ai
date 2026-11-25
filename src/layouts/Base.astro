@@ -27,7 +27,7 @@ const {
   page,
   title = 'GetMine.ai | Your health. Your data. Your rules.',
   ogTitle = title,
-  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health agent, helping you organise and use your health information.',
+  description = 'GetMine is a local-first personal health vault for macOS and Windows, with Mina, your personal health companion, helping you organise and use your health information.',
   ogDescription = 'A desktop-native personal health vault for macOS and Windows. Bring records, emails and notes into one vault you control.',
   canonical = 'https://getmine.ai/',
   ogImage = 'https://getmine.ai/og-image.png',
@@ -41,6 +41,8 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/device-actions.js"></script>
+    <link rel="stylesheet" href="/device-actions.css" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="GetMine.ai" />

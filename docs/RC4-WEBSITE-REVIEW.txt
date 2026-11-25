@@ -1,0 +1,106 @@
+GETMINE WEBSITE — RC4 REVIEW FOLLOW-UP
+25 November 2026
+
+Branch: codex/website-rc4-release-25nov
+Repository: GetMine-ai/getmine.ai
+Disposition: website review fixes completed locally; branch CI to be verified after push.
+No merge to main or production deployment is authorized or performed.
+
+DECISIONS CONFIRMED BY SABINE
+- Retain WhatsApp 447746959359. This existing QA chat IS the intended destination
+  for this release. Mike owns launch routing. A QR links to the WhatsApp chat.
+- Get curious plays its approved entrance once, then remains visible. No pause
+  control and no looping. Reduced-motion users see the still wording.
+- Preserve the approved invitation text, including “Hi Mina, I was invited.”
+- Preserve approved regulatory content and version. No policy rewrite here.
+
+INDEPENDENT REVIEW DISPOSITION
+A: QA number is intentional, not a release blocker. Tests enforce that approved
+   number across all built HTML rather than accepting arbitrary source values.
+B: OPEN RELEASE CONFIGURATION. The download manifest still contains Wave 11.
+   Mike must provide approved RC4 assets/checksums/sizes for standard and PKB.
+   A new main-only gate requires WEBSITE_RELEASE_TAG and matching asset URLs;
+   it rejects Wave 11. A branch build cannot accidentally publish the website.
+1: FIXED. Device detection replaces viewport-width detection. Narrow desktop
+   and Windows touch devices retain Download. iPhone/Android/iPad use WhatsApp
+   directly. PKB desktop download cards remain available at 500px.
+2: FIXED. Built-page WhatsApp recipient audit; independent approved release
+   tag check; download response version check no longer includes its own
+   configured filename in the evidence being tested.
+3: FIXED. Skip link lands at the main content/hero and focuses main. Menu
+   navigation focuses the destination heading.
+4: FIXED. Clicking the current section does not add duplicate history entries.
+5: FIXED IN CODE. Hero, vault and shingles images reserve their intrinsic sizes.
+   Founder images have dimensions too. Real-phone slow-loading smoke test remains.
+6: FIXED. Closing the QR dialog opened from the menu returns focus to the menu
+   button, not the hidden link. Escape and close-button paths checked.
+7: GitHub branch workflow will verify Store access from its hosted runner.
+   Local Store reachability alone is not claimed as hosted-runner evidence.
+8: FIXED. Removed hidden generator/C2PA metadata from the three flagged files,
+   without changing PNG pixel chunks or visible SVG content.
+9: FIXED. Phone headline rules now win the cascade. Text fits the 320px viewport;
+   browser inspection checked text bounds, not just document overflow.
+10: FIXED. Unsupported-device download heading is visually hidden, not removed
+    from the accessibility tree.
+11: FIXED. Invitation title includes GetMine; canonical social URL and Twitter
+    summary metadata added. Existing square social image is retained.
+
+SMALL FINDINGS ALSO FIXED
+- Sitemap agrees with /website/ canonical; trailing-slash aliases added for
+  privacy, terms, trust, press, welcome, download and the press article.
+- Invitation mark and Get curious animations finish rather than loop.
+- Shared favicon; accessible QR label; SVG sizing rule; real screen-reader text
+  for Get curious; carousel group semantics.
+- Slow-page-load correction no longer pulls back a visitor who has interacted.
+- Landscape menu can scroll to its final action.
+- /website and /website/ treated equally by same-page anchor navigation.
+- Legacy meet-mina uses its generated link rather than rebuilding the destination.
+- Workflow concurrency is per branch so review pushes cannot cancel queued main.
+
+INTENTIONALLY NOT EXPANDED IN THIS FIX
+- Legacy public assets/duplicate font files remain to preserve existing URLs.
+  CSS consolidation and asset cleanup are maintenance work, not release blockers.
+- PKB direct download stays PKB-specific. Navigating away through the general
+  logo/menu still enters the general website, as before; persistent partner
+  attribution across the whole site was not introduced.
+- Invitation analytics/new section vocabulary need coordination with the server.
+  This remains a measurement gap; no new tracking or invented event IDs added.
+- The existing approved About us halo is retained; the decision above concerns
+  the invitation's Get curious and accompanying entrance effects.
+
+VALIDATION
+- Production build and aliases: pass; rendered /beta and /pkb assertions: pass.
+- 22 automated tests pass, including device, release gate and built-page checks.
+- Astro check: 0 errors, 0 warnings, 9 hints. git diff --check: pass.
+- Local browser: skip-to-main keyboard focus; menu heading focus; duplicate
+  section clicks then one Back returning to previous section; narrow desktop
+  Download; PKB actions at 500px; QR menu focus return; 844x390 menu scroll;
+  320px headline bounds; no browser console errors observed.
+- Get curious checked after the animation: all letters opacity 1, one iteration,
+  retained final state. Default viewport restored after responsive checks.
+- Earlier audit covered 42 route/viewport combinations and internal links. The
+  targeted checks above address the independent review; no claim that lack of
+  document overflow alone proves absence of clipped text.
+
+BEFORE LIVE RELEASE — MIKE/RELEASE OWNER
+1. Replace Wave 11 manifest entries with approved RC4 assets, SHA-256s and sizes,
+   including PKB files. Set GitHub repository variable WEBSITE_RELEASE_TAG to the
+   exact approved installer release tag. Run build:release and target assertion.
+2. Confirm the Microsoft Store installs the intended Windows version; reachability
+   does not prove its package version. Keep the approved WhatsApp chat number.
+3. Physical iPhone/Android smoke test: WhatsApp handoff, menu landings, Back/Forward
+   and download visibility. Desktop viewport emulation is not real-device proof.
+4. Only after release approval, merge to main. Main is the deployment trigger.
+
+PROVENANCE AND SCOPE
+Footer comes from src/data/footer.ts. Privacy/Terms/Trust use src/data/regulatory.ts;
+Press uses src/data/press.ts. Those content sources were not rewritten by these
+fixes. Branch preserves approved Gmail and WhatsApp policy changes. No personal
+inboxes, contacts, external WhatsApp sends, forms or live settings were accessed.
+
+LOCAL PREVIEW
+http://127.0.0.1:4191/ and http://127.0.0.1:4191/website/
+
+Evidence directory:
+/Users/sabineazancot/Documents/Codex/2026-08-19/what-is-my/outputs/website-redesign-25nov/
+Latest screenshot: rc4-invitation-play-once.jpg

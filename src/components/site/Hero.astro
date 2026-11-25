@@ -1,0 +1,98 @@
+---
+// Ported from the approved canvas board. Markup and sizes follow the mock-up;
+// the phone layout applies below 48rem.
+const html = '<div class="pg"><section class="hero h1v" aria-label="GetMine"><div class="copy"><p class="pill"><span aria-hidden="true"></span>Open beta · Free to download</p>\n<h1 class="tag-h1"><span>Your health.</span> <span class="t2">Your data.</span> <span class="t3">Your rules.</span></h1>\n<p class="intro">All your health information, including medical records, <span class="acc">finally together</span>, stored in an encrypted vault on your computer. Mina, your personal health companion, helps make sense of it and puts it to work.</p>\n<div class="lock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10"></path><rect x="5.5" y="10" width="13" height="11" rx="2"></rect><path d="M12 14.5v2.5"></path></svg><p><strong>For macOS and Windows</strong><span>Your vault stays on your computer. We never hold a central copy.</span></p></div></div><figure class="monitor"><img src="/assets/site/hero-monitor-greeting.jpg" width="888" height="870" alt="The GetMine vault on a desktop computer, with the vault beside it" /></figure></section></div>';
+---
+<div class="site-hero" id="top"><Fragment set:html={html} /></div>
+
+<style is:global>
+.site-hero { background:#060c14; color:#e8faf8; font-family:var(--font-sans); -webkit-font-smoothing:antialiased; }
+.site-hero a { color:inherit; text-decoration:none; }
+.site-hero .pg { height:100%; display:flex; flex-direction:column; padding:28px 64px 0; box-sizing:border-box; }
+.site-hero .hdr { display:flex; justify-content:space-between; align-items:center; gap:24px; min-height:56px; }
+.site-hero .brand { display:flex; flex-direction:column; gap:6px; }
+.site-hero .wm { font:400 26px/1 var(--font-display); letter-spacing:-.025em; white-space:nowrap; }
+.site-hero .wm em { color:#1dbfb0; font-style:italic; }
+.site-hero .tag { margin:0; font:400 17px/1.4 var(--font-display); letter-spacing:-.01em; }
+.site-hero .tag span, .site-hero .tag-h1 span { white-space:nowrap; }
+.site-hero .t2 { color:#1dbfb0; }
+.site-hero .t3 { color:#c7c2b6; }
+.site-hero .hdr-r { display:flex; align-items:center; gap:28px; }
+.site-hero .nav { display:flex; gap:28px; font:600 18px/1 var(--font-display); letter-spacing:-.01em; color:#e8faf8; }
+.site-hero .nav a { display:inline-flex; align-items:center; min-height:44px; }
+.site-hero .burger { display:none; width:44px; height:44px; border-radius:50%; border:1px solid rgba(232,250,248,.24); background:none; color:#e8faf8; place-items:center; padding:0; }
+.site-hero .burger svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; }
+.site-hero .dl { display:inline-flex; align-items:center; justify-content:center; min-height:56px; padding:0 30px; border-radius:999px; background:#1dbfb0; color:#060c14; font:600 18px/1 var(--font-sans); white-space:nowrap; box-sizing:border-box; }
+.site-hero .dl-s { min-height:44px; padding:0 20px; font-size:16px; }
+.site-hero .hbtn { display:flex; gap:10px; }
+.site-hero .wa-s { min-height:44px; padding:0 20px; font-size:16px; }
+.site-hero .wa { display:inline-flex; align-items:center; justify-content:center; min-height:56px; padding:0 28px; border-radius:999px; background:#e87d31; color:#060c14; font:600 18px/1 var(--font-sans); white-space:nowrap; box-sizing:border-box; }
+.site-hero .hero { flex:1; display:grid; grid-template-columns:minmax(0,548px) minmax(0,1fr); column-gap:56px; align-items:center; padding:24px 0 56px; }
+.site-hero .monitor { margin:0; }
+.site-hero .monitor img { display:block; width:100%; height:auto; }
+.site-hero .eyebrow { margin:0 0 20px; font:600 16px/1 var(--font-sans); letter-spacing:.12em; text-transform:uppercase; color:#1dbfb0; }
+.site-hero .tag-h1 { margin:0; font:400 72px/1.02 var(--font-display); letter-spacing:-.03em; }
+.site-hero .tag-h1 span { display:block; }
+.site-hero .rec-h1 { margin:0; font:400 46px/1.12 var(--font-display); letter-spacing:-.022em; text-wrap:balance; }
+.site-hero .acc { color:#1dbfb0; }
+.site-hero .intro { margin:28px 0 0; font:400 20px/1.6 var(--font-sans); color:#d3e3e3; max-width:30em; }
+.site-hero .mina { display:flex; align-items:center; gap:18px; margin:28px 0 0; }
+.site-hero .mina p { margin:0; font:400 24px/1.3 var(--font-display); letter-spacing:-.01em; color:#e8faf8; }
+.site-hero .mark { --mark:72px; flex:none; display:flex; align-items:center; justify-content:center; width:var(--mark); height:var(--mark); box-sizing:border-box; border:2px solid #1dbfb0; border-radius:50%; background:#0b131d; font:300 calc(var(--mark)*.5)/1 var(--font-display); box-shadow:0 0 18px rgba(29,191,176,.32),0 0 44px rgba(29,191,176,.16),0 0 0 7px #060c14,0 0 0 8px rgba(29,191,176,.35); }
+.site-hero .mark i { font-style:italic; font-weight:300; }
+.site-hero .mark b { color:#1dbfb0; font-weight:300; }
+.site-hero .acts { display:flex; flex-wrap:wrap; gap:14px; margin-top:36px; }
+.site-hero .free { margin:16px 0 0; font:400 16px/1.5 var(--font-sans); color:#8fa5aa; }
+.site-hero .vault { margin:0; border-radius:16px; overflow:hidden; border:1px solid rgba(232,250,248,.14); box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 8px rgba(29,191,176,.05); background:#faf7f0; }
+.site-hero .vault img { display:block; width:100%; height:auto; }
+.site-hero .pill { display:inline-flex; align-items:center; gap:12px; margin:0 0 28px; padding:12px 22px; border:1.5px solid rgba(29,191,176,.55); border-radius:999px; font:600 15px/1 var(--font-sans); letter-spacing:.1em; text-transform:uppercase; color:#1dbfb0; }
+.site-hero .pill span { width:9px; height:9px; border-radius:50%; background:#1dbfb0; box-shadow:0 0 10px rgba(29,191,176,.7); }
+.site-hero .lock { display:flex; gap:14px; align-items:flex-start; margin-top:60px; }
+.site-hero .lock svg { flex:none; width:26px; height:26px; margin-top:2px; fill:none; stroke:#1dbfb0; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.site-hero .lock p { margin:0; display:flex; flex-direction:column; gap:6px; font:400 16px/1.6 var(--font-sans); color:#d3e3e3; }
+.site-hero .lock strong { font-weight:600; color:#e8faf8; }
+@media (min-width: 48rem) {
+.site-hero .monitor { margin-right:-64px; }
+}
+@media (max-width: 63.99rem) {
+.site-hero .hbtn { display:none; }
+.site-hero .monitor { margin:28px -20px 0; }
+.site-hero .pill { font-size:13px; padding:10px 16px; margin-bottom:22px; }
+.site-hero .lock { margin-top:46px; }
+.site-hero .lock p { font-size:15px; }
+.site-hero .pg { padding:20px 20px 0; }
+.site-hero .hdr { align-items:flex-start; }
+.site-hero .wm { font-size:22px; }
+.site-hero .tag { font-size:15px; }
+.site-hero .nav, .site-hero .dl-s { display:none; }
+.site-hero .burger { display:grid; }
+.site-hero .hero { display:flex; flex-direction:column; align-items:stretch; padding:40px 0 40px; }
+.site-hero .eyebrow { font-size:14px; margin-bottom:16px; }
+.site-hero .tag-h1 { font-size:48px; }
+.site-hero .rec-h1 { font-size:32px; }
+.site-hero .intro { font-size:18px; line-height:1.55; margin-top:20px; }
+.site-hero .mina { margin-top:22px; gap:16px; }
+.site-hero .mina p { font-size:20px; }
+.site-hero .mark { --mark:64px; }
+.site-hero .acts { flex-direction:column; margin-top:28px; gap:12px; }
+.site-hero .dl, .site-hero .wa { width:100%; }
+.site-hero .free { text-align:center; }
+.site-hero .vault { margin-top:36px; border-radius:12px; }
+}
+
+.site-hero { background:#060c14; color:#e8faf8; }
+.site-hero .pg { max-width:90rem; margin:0 auto; padding:5.25rem 64px 0; box-sizing:border-box; }
+.site-hero a { text-decoration:none; }
+.site-hero .hero { min-height:min(calc(100svh - 5.25rem), 900px); }
+@media (max-width: 80rem) { .site-hero .pg { padding-inline:40px; } .site-hero .tag-h1 { font-size:60px; } .site-hero .hero { column-gap:32px; } .site-hero .monitor { margin-right:-40px; } }
+.site-hero, .site-mina { overflow-x:clip; }
+@media (max-width: 63.99rem) { .site-hero .pg { padding:5.25rem 40px 0; } .site-hero .hero { min-height:0; } .site-hero .copy { max-width:40rem; } .site-hero .monitor { max-width:44rem; margin:40px auto 0; } }
+@media (max-width: 47.99rem) { .site-hero .pg { padding:5rem 20px 0; } .site-hero .monitor { margin:28px -20px 0; } }
+
+/* Last in the cascade: small screens must not inherit the tablet's 60px. */
+@media (max-width:63.99rem) { .site-hero .tag-h1 { font-size:48px; } }
+@media (max-width:47.99rem) {
+  .site-hero .tag-h1 { font-size:clamp(36px,11.5vw,48px); }
+  .site-hero .tag-h1 span { white-space:normal; overflow-wrap:break-word; }
+}
+</style>

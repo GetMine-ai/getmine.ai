@@ -1,10 +1,10 @@
 ---
-import { pressPublished } from '../data/press';
+import { footerLinks } from '../data/footer';
 ---
 <footer>
   <div class="wrap footer-main">
     <div>
-      <a class="wordmark" href="/#top" aria-label="GetMine.ai home">
+      <a class="wordmark" href="/" aria-label="GetMine.ai home">
         <span>Get</span><em>Mine.</em><span>ai</span>
       </a>
       <p class="tagline">
@@ -15,11 +15,7 @@ import { pressPublished } from '../data/press';
     </div>
 
     <nav aria-label="Footer">
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-      <a href="/trust">Trust &amp; Security</a>
-      {pressPublished && <a href="/press">Press</a>}
-      <a href="mailto:hello@getmine.ai">Contact</a>
+      {footerLinks.map(({ href, label }) => <a href={href}>{label}</a>)}
     </nav>
   </div>
 

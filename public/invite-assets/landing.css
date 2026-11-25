@@ -1,0 +1,200 @@
+/* GetMine landing — Direction A "Mina's card"
+   One stylesheet for the landing page and the desktop QR dialog.
+   Replaces style.css + the Astro <style> block for this route. */
+
+@font-face{font-family:Fraunces;src:url('./fraunces.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:Fraunces;src:url('./fraunces-italic.woff2') format('woff2');font-style:italic;font-weight:100 900;font-display:swap}
+@font-face{font-family:'DM Sans';src:url('./dm-sans.woff2') format('woff2');font-style:normal;font-weight:100 1000;font-display:swap}
+
+/* ---------- tokens ---------- */
+:root{
+  color-scheme:dark;
+  /* colour */
+  --night:#060c14; --surface:#0b131d; --raised:#0d1822;
+  --ink:#e8faf8; --story:#d3e3e3; --muted:#b5c8ca; --quiet:#8fa5aa; --sand:#c7c2b6;
+  --teal:#1dbfb0; --teal-line:rgba(29,191,176,.45); --teal-wash:rgba(29,191,176,.08);
+  --hair:rgba(181,200,202,.14); --outline:rgba(232,250,248,.24);
+  --orange:#e87d31; --orange-hover:#f4914c;
+  /* type families: two, no more */
+  --serif:Fraunces,Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+  /* type scale (desktop) */
+  --fs-wordmark:26px; --fs-tagline:17px;
+  --fs-name:clamp(40px, 3.6vw, 52px);        /* h1: 46px @1280, 52px @1440 */
+  --fs-status:clamp(26px, 2.2vw, 32px);      /* companion line: 28px @1280, 32px @1440 */
+  --fs-lead:22px;                            /* first paragraph */
+  --fs-body:20px; --lh-body:1.6;
+  --fs-button:18px; --fs-helper:16px; --fs-small:14px;
+  /* layout */
+  --mark:clamp(96px, 8vw, 116px);           /* = height of name + companion line */
+  --gutter:clamp(40px, 4.2vw, 56px);         /* breathing room around Mina's mark */
+  --card:900px;                              /* Mina's card, mark included */
+  --page-x:64px; --page-y:36px;
+}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:var(--night);color:var(--ink);font:400 var(--fs-body)/var(--lh-body) var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+a,button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:8px}
+.skip{position:absolute;top:-100px;left:24px;z-index:10;background:var(--ink);color:var(--night);padding:10px 18px;border-radius:999px;font-size:16px}
+.skip:focus{top:12px}
+
+.page{max-width:1280px;min-height:100svh;margin:0 auto;padding:var(--page-y) var(--page-x) 28px;display:flex;flex-direction:column}
+
+/* ---------- header ---------- */
+.landing-header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.landing-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.wordmark{font:400 var(--fs-wordmark)/1 var(--serif);letter-spacing:-.025em;white-space:nowrap}
+.wordmark em{color:var(--teal);font-style:italic}
+.brand-promise{margin:0;font:400 var(--fs-tagline)/1.4 var(--serif);letter-spacing:-.01em;color:var(--ink)}
+.brand-promise span{white-space:nowrap}
+.brand-promise span:nth-child(2){color:var(--teal)}
+.brand-promise span:nth-child(3){color:var(--sand)}
+
+/* modest, obvious, no arrow: neutral outline pill, lighter than the wordmark */
+.website-link{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;min-height:44px;padding:0 20px;border:1px solid var(--outline);border-radius:999px;font:500 16px/1 var(--sans);color:var(--ink);transition:border-color .2s ease,background .2s ease}
+.website-link:hover{border-color:var(--teal);background:var(--teal-wash)}
+.website-link:focus-visible{border-radius:999px}
+
+/* ---------- Mina's card: the one composition ---------- */
+main.invite{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp(24px, 4vh, 48px) 0 clamp(64px, 12vh, 136px)}
+.card{width:min(100%, var(--card));display:grid;grid-template-columns:var(--mark) minmax(0,1fr);column-gap:var(--gutter);row-gap:0}
+
+/* row 1 — the introduction: avatar, name line, status line (like her chat header) */
+.introduction{display:contents}
+.mina-mark{grid-column:1;grid-row:1;align-self:center}
+.introduction-copy{grid-column:2;grid-row:1;align-self:center;min-width:0}
+/* status label: it is Mina who is in open beta */
+.eyebrow{margin:0 0 14px;font:600 16px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+h1{margin:0;font:400 var(--fs-name)/1.08 var(--serif);letter-spacing:-.022em;text-wrap:balance}
+.mina-name{color:var(--teal);white-space:nowrap}
+.companion-message{margin:12px 0 0;font:400 var(--fs-status)/1.25 var(--serif);letter-spacing:-.015em;color:var(--ink)}
+
+/* rows 2–3 hang from the same left edge as her name */
+.story{grid-column:2;margin:44px 0 0;color:var(--story)}
+.story p{margin:0;max-width:32em;text-wrap:pretty}   /* ≈ width of the headline */
+/* first paragraph: what she does, in ink, a step up */
+.story p:first-child{max-width:none;font-size:var(--fs-lead);line-height:1.45;color:var(--ink);text-wrap:balance}
+/* second paragraph: how it works, quieter */
+.story p + p{margin-top:18px}
+/* bold run-in: the turn from what she does to how it works */
+.story strong{font-weight:600;color:var(--ink)}
+.story-highlight{color:var(--teal)}
+.actions{grid-column:2;display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:36px}
+.closing-invitation{grid-column:1 / -1;justify-self:center;width:100%;margin:48px 0 0;text-align:center;color:var(--ink);font:400 clamp(48px,6.4vw,86px)/1.15 var(--serif);letter-spacing:-.035em}
+.closing-word{display:inline-block;white-space:nowrap}
+.closing-curious{color:var(--teal);font-style:italic}
+.closing-letter{display:inline-block;animation:curious-letter 13s cubic-bezier(.2,.7,.2,1) 1 both;animation-delay:calc(var(--letter)*140ms)}
+@keyframes curious-letter{0%{opacity:0;transform:translateY(.25em);filter:blur(4px)}12%,100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+.cta-row{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:flex-start;gap:20px;width:100%}
+.cta-destination{display:flex;flex:1 1 280px;min-width:0;flex-direction:column;align-items:center;gap:12px;width:320px;max-width:320px}
+.cta-destination .primary{width:100%}
+.cta-destination .cta-note{text-align:center;text-wrap:balance}
+.primary{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 32px;border-radius:999px;background:var(--orange);border:1.5px solid var(--orange);color:var(--night);font:600 var(--fs-button)/1 var(--sans);white-space:nowrap;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.primary:hover{background:var(--orange-hover);border-color:var(--orange-hover)}
+.primary:active{transform:scale(.98)}
+.primary:focus-visible{border-radius:999px}
+.primary.download{background:var(--teal);border-color:var(--teal)}
+.primary.download:hover{background:#36cebf;border-color:#36cebf}
+.cta-note{margin:0;font:400 var(--fs-helper)/1.5 var(--sans);color:var(--quiet)}
+
+/* ---------- the M dot, unchanged artwork ---------- */
+.mina-mark{position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:var(--mark);height:var(--mark);border:2px solid var(--teal);border-radius:50%;background:var(--surface);font:300 calc(var(--mark)*.5)/1 var(--serif);color:var(--ink);isolation:isolate;box-shadow:0 0 18px rgba(29,191,176,.32),0 0 44px rgba(29,191,176,.16);transition:box-shadow .4s ease}
+.mina-mark i{font-style:italic;font-weight:300;transform:translateX(-2%)}
+.mina-mark b{color:var(--teal);font-weight:300}
+.mina-mark::before{content:"";position:absolute;inset:-28%;z-index:-1;border-radius:50%;background:radial-gradient(circle,rgba(29,191,176,.30) 20%,rgba(29,191,176,.14) 46%,rgba(29,191,176,0) 70%);animation:breathe 6s ease-in-out 1 both;pointer-events:none}
+.mina-mark::after{content:"";position:absolute;inset:-9%;border:1px solid rgba(29,191,176,.42);border-radius:50%;animation:ring 6s ease-in-out 1 both;pointer-events:none}
+.mina-mark.is-listening{box-shadow:0 0 26px rgba(29,191,176,.55),0 0 64px rgba(29,191,176,.28)}
+.mina-mark.is-listening::before,.mina-mark.is-listening::after{animation-duration:2.4s}
+@keyframes breathe{0%,100%{transform:scale(.94);opacity:.6}50%{transform:scale(1.12);opacity:1}}
+@keyframes ring{0%,100%{transform:scale(.98);opacity:.35}50%{transform:scale(1.08);opacity:.8}}
+
+/* ---------- footer ---------- */
+footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px;padding-top:20px;border-top:1px solid var(--hair)}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 28px;font:500 15px/1.5 var(--sans);color:var(--ink)}
+footer nav a{display:inline-flex;align-items:center;min-height:44px}
+footer nav a{transition:color .18s ease}
+footer nav a:hover,footer nav a:focus-visible{color:var(--teal)}
+.copyright{margin:0;font:400 var(--fs-small)/1.5 var(--sans);color:var(--quiet)}
+
+/* ---------- desktop QR dialog ---------- */
+dialog{width:min(520px,calc(100% - 32px));max-height:calc(100svh - 32px);padding:28px 32px 32px;background:var(--raised);border:1px solid rgba(29,191,176,.28);border-radius:24px;color:var(--ink);box-shadow:0 30px 100px rgba(0,0,0,.55)}
+dialog::backdrop{background:rgba(0,5,10,.78);backdrop-filter:blur(8px)}
+dialog[open]{animation:enter .28s cubic-bezier(.2,.7,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.close{position:absolute;right:16px;top:16px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.close:hover{color:var(--ink);background:rgba(181,200,202,.08)}
+.close:focus-visible{border-radius:50%}
+.close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.qr-brand{padding-right:48px}
+.qr-content{width:min(100%,360px);margin:32px auto 0;text-align:center}
+h2{margin:0;font:400 28px/1.2 var(--serif);letter-spacing:-.02em;text-wrap:balance}
+.dialog-copy{margin:10px 0 24px;font:400 16px/1.5 var(--sans);color:var(--muted)}
+.qr-frame{width:236px;max-width:100%;padding:16px;margin:0 auto;background:#fff;border-radius:16px}
+.qr-frame svg,.qr-frame img{display:block;width:100%;height:auto}
+.or{display:flex;align-items:center;gap:16px;margin:20px 0;font:400 var(--fs-small)/1.5 var(--sans);color:var(--quiet)}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--hair)}
+.dialog-secondary{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:999px;border:1.5px solid var(--teal-line);background:var(--teal-wash);font:600 16px/1 var(--sans)}
+.dialog-secondary:hover{border-color:var(--teal);background:rgba(29,191,176,.14)}
+.dialog-secondary:focus-visible{border-radius:999px}
+.prototype-note{margin:12px 0 0;font:400 var(--fs-small)/1.5 var(--sans);color:var(--quiet)}
+
+/* ---------- laptop: keep it compact without shrinking body text ---------- */
+@media (max-height:820px) and (min-width:701px){
+  main.invite{padding-block:20px 64px}
+  .story{margin-top:36px}
+  .actions{margin-top:30px}
+}
+
+/* ---------- tablet ---------- */
+@media (max-width:1024px){
+  :root{--page-x:40px}
+}
+
+/* ---------- phone ---------- */
+@media (max-width:700px){
+  :root{
+    --fs-wordmark:22px; --fs-tagline:15px;
+    --fs-name:32px; --fs-status:23px; --fs-lead:19px;
+    --fs-body:18px; --lh-body:1.55; --fs-button:17px; --fs-helper:15px;
+    --mark:96px; --gutter:20px;
+    --page-x:20px; --page-y:max(20px, env(safe-area-inset-top));
+  }
+  /* header becomes a 2-row grid so the tagline keeps one line under the wordmark */
+  .landing-header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
+  .landing-header .landing-brand{display:contents}
+  .landing-header .wordmark{grid-column:1;grid-row:1;align-self:end}
+  .landing-header .website-link{grid-column:2;grid-row:1;padding:0 16px;font-size:15px}
+  .landing-header .brand-promise{grid-column:1 / -1;grid-row:2}
+  main.invite{align-items:flex-start;padding:32px 0 48px}
+  /* Mina's profile: big M dot beside her name, companion line full width below */
+  .introduction{display:grid;grid-column:1 / -1;grid-template-columns:var(--mark) minmax(0,1fr);column-gap:var(--gutter);align-items:center}
+  .introduction-copy{display:contents}
+  .eyebrow{grid-column:2;grid-row:1;align-self:end;margin-bottom:10px;font-size:14px}
+  .mina-mark{grid-column:1;grid-row:1 / 3}
+  h1{grid-column:2;grid-row:2;align-self:start}
+  .companion-message{grid-column:1 / -1;grid-row:3;margin-top:22px;font-size:min(var(--fs-status),5.5vw)}
+  .story{grid-column:1 / -1;margin-top:28px;max-width:none}
+  .actions{grid-column:1 / -1;flex-direction:column;align-items:stretch;gap:12px;margin-top:32px}
+  .primary{width:100%}
+  .cta-row{flex-direction:column;align-items:stretch;gap:20px;width:100%}
+  .cta-destination{flex-basis:auto;width:100%;max-width:none}
+  .cta-note{text-align:center}
+  .closing-invitation{margin-top:36px}
+  .mina-mark{box-shadow:0 0 12px rgba(29,191,176,.3),0 0 28px rgba(29,191,176,.14)}
+  footer{flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:max(0px, env(safe-area-inset-bottom))}
+  footer nav{justify-content:flex-start}
+}
+@media (max-width:360px){
+  :root{--fs-name:28px; --fs-status:21px; --mark:80px; --gutter:16px}
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}

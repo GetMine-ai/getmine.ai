@@ -10,7 +10,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, 'codex/website-rc4-release-25nov']
   pull_request:
   workflow_dispatch:
 
@@ -21,7 +21,7 @@ permissions:
 
 # Allow one concurrent deployment; don't cancel an in-progress production deploy.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -45,11 +45,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Verify approved installer release before publication
+        if: github.ref == 'refs/heads/main'
+        env:
+          WEBSITE_RELEASE_TAG: ${{ vars.WEBSITE_RELEASE_TAG }}
+        run: node --experimental-strip-types scripts/assert-release-target.mjs
+
       - name: Check and build
         run: |
           pnpm check
-          pnpm test
           pnpm build:release
+          pnpm test
 
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main'
