@@ -39,8 +39,10 @@ function initialiseNavigation() {
 
   menuLinks.forEach((link) => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key === 'Escape' && button?.getAttribute('aria-expanded') === 'true') { closeMenu(); button.focus(); }
   });
+
+  window.matchMedia('(min-width: 86rem)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
   const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 16);
   updateHeader();
@@ -59,14 +61,15 @@ function initialiseNavigation() {
   const HEADING_GAP = 28;
 
   const landingOffset = (section: HTMLElement) => {
-    const heading = section.querySelector<HTMLElement>('.section-heading') || section;
-    const headerHeight = header?.offsetHeight || 0;
+    const heading = section.querySelector<HTMLElement>('.section-heading, .sec > .eyebrow') || section;
+    // Exclude the mobile menu while its closing animation is still running.
+    const headerHeight = header?.querySelector<HTMLElement>('.nav-wrap')?.offsetHeight || 0;
     const headingTop = heading.getBoundingClientRect().top + window.scrollY;
     return Math.max(0, Math.round(headingTop - headerHeight - HEADING_GAP));
   };
 
   const scrollToSection = (section: HTMLElement, smooth: boolean) => {
-    window.scrollTo({ top: landingOffset(section), behavior: smooth ? 'smooth' : 'auto' });
+    window.scrollTo({ top: landingOffset(section), behavior: smooth ? 'smooth' : 'instant' });
   };
 
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -94,6 +97,13 @@ function initialiseNavigation() {
     }
   }
 
+  // History navigation must use the same framing as a menu click, rather
+  // than the browser's native fragment position beneath the fixed header.
+  window.addEventListener('popstate', () => {
+    const section = document.getElementById(window.location.hash.slice(1));
+    if (section) window.requestAnimationFrame(() => scrollToSection(section, false));
+  });
+
   if (navLinks.length) {
     const sections = navLinks
       .map((link) => document.getElementById(link.dataset.navLink || ''))
@@ -102,7 +112,8 @@ function initialiseNavigation() {
     let frame: number | undefined;
     const updateActiveSection = () => {
       frame = undefined;
-      const headerHeight = header?.offsetHeight || 0;
+      // Exclude the mobile menu while its closing animation is still running.
+      const headerHeight = header?.querySelector<HTMLElement>('.nav-wrap')?.offsetHeight || 0;
       const readingLine = window.scrollY + headerHeight + window.innerHeight * 0.28;
       const active = sections.reduce<HTMLElement | undefined>((current, section) => {
         return section.offsetTop <= readingLine ? section : current;

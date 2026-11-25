@@ -1,0 +1,96 @@
+GETMINE WEBSITE — RC4 RELEASE REVIEW
+25 November 2026
+
+Disposition: ready for independent code review; NOT ready to publish unchanged.
+Branch: codex/website-rc4-release-25nov
+Repository: GetMine-ai/getmine.ai
+Checkout: /Users/sabineazancot/Documents/Codex/2026-08-19/what-is-my/work/getmine-website-launch-24nov
+Local preview: http://127.0.0.1:4191/ (invitation), /website/ (full site)
+Nothing pushed, merged or deployed by this review.
+
+WHAT IS INCLUDED
+The approved invitation-first redesign and today's complete copy/layout review:
+desktop WhatsApp and Download actions; mobile WhatsApp-only actions; local QR
+generation; shared footer; full website, download, legal and press navigation;
+compact vault and WhatsApp sections; sovereignty cards and About us wording;
+reduced-motion fallbacks; desktop/mobile layouts and accessible carousel controls.
+
+The latest About us paragraph is:
+“GetMine is one unified record in a secure, encrypted vault on your computer,
+with Mina working across it. That’s our mission.”
+
+FIX FOUND IN THIS FINAL AUDIT
+Browser Back restored a section to a different position than a menu click.
+src/scripts/main.ts now handles popstate using the same measured heading offset
+and instant positioning. Retested desktop Back/Forward across multiple sections:
+all headings landed 28px below the fixed header (within pixel rounding).
+Mobile menu selections also land at that offset and close the menu/unlock scroll.
+
+CHECKS COMPLETED
+- Astro production build and static route aliases: pass.
+- Astro check: 0 errors, 0 warnings, 9 hints.
+- Existing tests: 18 passed, 0 failed.
+- Rendered download assertions: pass for /beta and /pkb.
+- External release assertions: pass for the CURRENT wave-11 URLs, checksum
+  sidecars and Microsoft Store listing. No installer was downloaded or run.
+- Built HTML audit: 19 files, no missing internal routes, fragments, linked
+  scripts/styles/images, or duplicate IDs.
+- 42 route/viewport checks: /, /website/, /beta, /privacy, /terms, /trust, /press
+  at 320, 390, 768, 1024, 1440 and 1920 CSS pixels. No horizontal page overflow.
+- Desktop and mobile menu selections; cross-page /beta -> website section;
+  browser Back/Forward; logo -> invitation; Visit the website -> full site;
+  legal/press footer links and Back to home; mobile menu Escape and focus return.
+- Desktop QR opening, visible generated SVG, correct configured WhatsApp URL,
+  Escape/close dismissal and focus return. No WhatsApp message sent.
+- Desktop download and Windows Store hrefs; expandable checksum details;
+  Invite a friend dialog, Copy link confirmation and close.
+- Phone-width download hiding; mobile WhatsApp href and branch logic inspected.
+- Mobile carousel selection and Home-key return; no clipped source assets found.
+- No browser console errors observed in the audited local tab.
+- git diff --check: pass.
+
+CONTENT PROVENANCE
+Footer source: src/data/footer.ts.
+Privacy -> /privacy; Terms -> /terms; Trust & Security -> /trust.
+All three render src/data/regulatory.ts, not replacement text from the design pack.
+Press -> /press, with articles generated from src/data/press.ts.
+Contact -> mailto:hello@getmine.ai; never opened an email client.
+The regulatory and press modules are unchanged from the checkout's starting HEAD.
+Fetched origin/main da5d8a1 and origin/develop 3786106 during the audit.
+Main and this branch both contain the approved Gmail Limited Use/privacy-rights
+update under different commit IDs. This branch also inherits the approved
+WhatsApp policy update from develop; preserve it when preparing the main PR.
+Do not resolve differences by replacing the newer combined content with main's
+older WhatsApp wording. This is source/provenance verification, not legal review.
+
+RELEASE BLOCKERS — RESOLVE BEFORE MAIN
+1. src/data/whatsapp.ts still intentionally uses QA number 447746959359.
+   Confirm the production destination, update the shared source, rebuild, and
+   verify every entry/QR encodes the production chat and intended message.
+   A QR links to WhatsApp, not to a QA website.
+2. src/data/builds.ts still offers wave-11 installers, not RC4. Supply the final
+   approved RC4 assets, SHA-256 values and sizes. Check standard and PKB copies.
+   Confirm the Store contains the intended Windows release; a reachable listing
+   alone does not establish that its installed version is RC4.
+3. Obtain independent pre-push/code review and green CI for the final commit.
+   Re-run build:release after changing release destinations. A merge to main
+   triggers the live GitHub Pages workflow. No main push/merge is authorized here.
+
+FOLLOW-UP / LIMITATIONS
+- New full-site sections do not yet map to the existing server's closed analytics
+  section vocabulary. Do not invent event IDs: coordinate any analytics change
+  with the server. The invitation currently has no page-view instrumentation.
+  This is a measurement gap, not a broken navigation path.
+- Viewport checks used the in-app desktop browser. They are NOT physical iPhone,
+  Android, Safari or Windows browser certification. Mobile/touch behavior is
+  implemented through width plus coarse-pointer/no-hover media queries; physical
+  WhatsApp handoff remains a release smoke test, with the user sending the message.
+- No forms submitted, personal inboxes accessed, contacts read, payments made,
+  production writes performed, or end-to-end app onboarding repeated.
+- The preview remains available for review. Build output is ignored by Git;
+  source, assets and scripts are committed on the release branch.
+
+EVIDENCE
+/Users/sabineazancot/Documents/Codex/2026-08-19/what-is-my/outputs/website-redesign-25nov/
+rc4-responsive.json, rc4-history.json, rc4-about-desktop.jpg,
+rc4-about-mobile.jpg, rc4-invitation-mobile.jpg, rc4 build/check/test/link logs.

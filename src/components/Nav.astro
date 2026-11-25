@@ -3,31 +3,34 @@ interface Props {
   hideCta?: boolean;
 }
 
+import { whatsappLink } from '../data/whatsapp';
+
 const { hideCta = false } = Astro.props;
 const nav = [
-  ['Why it matters', 'why-it-matters'],
-  ['How it works', 'how-it-works'],
-  ['Meet Mina', 'meet-mina'],
-  ['Our promise', 'our-promise'],
+  ['Your vault', 'your-vault'],
+  ['Mina on the move', 'mina-on-the-move'],
+  ['Sovereign by design', 'sovereign-by-design'],
   ['About us', 'about-us'],
 ];
+const mina = whatsappLink('Hi Mina');
 ---
 <header class="site-header" data-site-header>
   <div class="nav-wrap wrap-wide">
     <div class="nav-left">
-      <a class="wordmark" href="/#top" aria-label="GetMine.ai home">
+      <a class="wordmark" href="/" aria-label="GetMine.ai home" title="Back to the invitation">
         <span>Get</span><em>Mine.</em><span>ai</span>
       </a>
       <nav class="desktop-nav" aria-label="Primary">
         {nav.map(([label, id]) => (
-          <a href={id === 'meet-mina' ? '/meet-mina/index.html' : `/#${id}`} data-nav-link={id}>{label}<span aria-hidden="true"></span></a>
+          <a href={`/website/#${id}`} data-nav-link={id}>{label}<span aria-hidden="true"></span></a>
         ))}
       </nav>
     </div>
 
     <div class="nav-actions">
       {!hideCta && (
-        <a class="primary-cta desktop-action header-cta" href="/beta">Download GetMine</a>
+        <a class="site-btn site-btn--dl site-btn--small desktop-action" data-desktop-download href="/beta">Download GetMine</a>
+        <a class="site-btn site-btn--mina site-btn--small desktop-action" data-mina-entry href={mina}>Text Mina on WhatsApp</a>
       )}
       <button
         class="menu-button"
@@ -44,8 +47,9 @@ const nav = [
 
   <div id="mobile-navigation" class="mobile-menu" aria-hidden="true" data-mobile-menu inert>
     <nav class="wrap" aria-label="Mobile">
-      {nav.map(([label, id]) => <a href={id === 'meet-mina' ? '/meet-mina/index.html' : `/#${id}`} data-menu-link>{label}</a>)}
-      {!hideCta && <a class="primary-cta" href="/beta">Download GetMine</a>}
+      {nav.map(([label, id]) => <a href={`/website/#${id}`} data-menu-link>{label}</a>)}
+      {!hideCta && <a class="site-btn site-btn--dl" data-menu-link data-desktop-download href="/beta">Download GetMine</a>}
+      {!hideCta && <a class="site-btn site-btn--mina" data-menu-link data-mina-entry href={mina}>Text Mina on WhatsApp</a>}
     </nav>
   </div>
 </header>
@@ -116,8 +120,10 @@ const nav = [
 
   .desktop-nav {
     display: none;
-    gap: clamp(1rem, 1.65vw, 1.75rem);
+    gap: clamp(1rem, 1.4vw, 1.5rem);
     margin-left: auto;
+    /* Clear room between the menu and the two buttons. */
+    margin-right: 1rem;
   }
 
   .desktop-nav a {
@@ -228,10 +234,13 @@ const nav = [
     flex-direction: column;
     gap: 0.25rem;
     overflow: hidden;
-    padding-block: 1rem;
+    padding-block: 0;
+    transition: padding 260ms var(--ease-gm);
   }
 
-  .mobile-menu a:not(.primary-cta) {
+  .mobile-menu.open nav { padding-block: 1rem; }
+
+  .mobile-menu a:not(.site-btn) {
     border-radius: var(--radius-sm);
     padding: 0.75rem;
     color: var(--cream);
@@ -241,15 +250,39 @@ const nav = [
     text-decoration: none;
   }
 
-  .mobile-menu a:not(.primary-cta):hover {
+  .mobile-menu a:not(.site-btn):hover {
     background: var(--surface);
     color: var(--teal);
   }
 
-  .mobile-menu .primary-cta {
+  .mobile-menu .site-btn {
     width: 100%;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
   }
+
+  /* One button style across the site: Download in teal, Text Mina in orange. */
+  .site-btn {
+    display: inline-flex;
+    min-height: 56px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    padding: 0 32px;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-pill);
+    color: var(--navy);
+    font: 600 18px/1 var(--font-sans);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .site-btn:active { transform: scale(0.98); }
+  .site-btn--dl { border-color: var(--teal); background: var(--teal); }
+  .site-btn--dl:hover { filter: brightness(1.08); }
+  .site-btn--mina { border-color: #e87d31; background: #e87d31; }
+  .site-btn--mina:hover { border-color: #f4914c; background: #f4914c; }
+  .site-btn--small { min-height: 44px; padding: 0 20px; font-size: 16px; }
 
   @media (max-width: 39.9375rem) {
     .desktop-action {
@@ -257,7 +290,13 @@ const nav = [
     }
   }
 
-  @media (min-width: 72rem) {
+  @media (max-width: 55.9375rem) {
+    .site-btn--mina.desktop-action {
+      display: none;
+    }
+  }
+
+  @media (min-width: 86rem) {
     .desktop-nav {
       display: flex;
     }

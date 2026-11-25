@@ -25,7 +25,7 @@ import { pressPublished, releases } from '../data/press';
           <div class="release-body">
             <h2><a href={`/press/${r.slug}`}>{r.headline}</a></h2>
             <p class="release-date"><time datetime={r.date}>{r.dateLabel}</time></p>
-            <p class="release-summary">{r.summary} <a class="nowrap" href={`/press/${r.slug}`}>Read more</a></p>
+            <p class="release-summary">{r.summary}{' '}<a class="nowrap" href={`/press/${r.slug}`}>Read more</a></p>
           </div>
         </li>
       ))}

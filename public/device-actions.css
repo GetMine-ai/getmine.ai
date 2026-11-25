@@ -1,0 +1,9 @@
+/* Match the phone-style WhatsApp handoff throughout the site, including
+   touch devices in landscape. Keep desktop installers off mobile surfaces. */
+@media (max-width: 700px), (pointer: coarse) and (hover: none) {
+  [data-desktop-download],
+  [data-download-module] .platform-panels,
+  [data-download-module] .direct-install-label {
+    display: none !important;
+  }
+}

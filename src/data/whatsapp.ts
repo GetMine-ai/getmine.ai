@@ -1,3 +1,3 @@
-/** Reviewed business-number configuration shared by every entry and QR. */
-export const whatsappNumber = '15556618993';
+/** QA review number shared by every entry and QR. Confirm the live destination before release. */
+export const whatsappNumber = '447746959359';
 export const whatsappLink = (message = 'Hi Mina') => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;

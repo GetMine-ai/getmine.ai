@@ -3,7 +3,7 @@ import { whatsappLink } from '../data/whatsapp';
 ---
   <dialog id="entry-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
     <button class="close" aria-label="Close WhatsApp options" autofocus><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-    <span class="mina-mark small" aria-hidden="true"><i>M</i><b>.</b></span>
+    <div class="qr-brand"><a class="wordmark" href="/" aria-label="GetMine.ai"><span>Get</span><em>Mine.</em><span>ai</span></a><p class="brand-promise"><span>Your health.</span> <b>Your data.</b> <span>Your rules.</span></p></div>
     <h2 id="dialog-title">Text Mina on WhatsApp.</h2>
     <p class="dialog-copy" id="dialog-copy">Scan with your phone’s camera to open Mina’s chat.</p>
     <div class="qr-frame"></div>
@@ -32,4 +32,12 @@ dialog::backdrop{background:#02070bcc;backdrop-filter:blur(8px)}
 .close{position:absolute;right:16px;top:16px;display:grid;place-items:center;width:36px;height:36px;border:0;background:transparent;color:#b5c8ca;cursor:pointer}
 .mina-mark{display:flex;align-items:center;justify-content:center;margin:0 auto 24px;width:56px;height:56px;border:2px solid #1dbfb0;border-radius:50%;background:#0a292d;box-shadow:0 0 22px #1dbfb066;font-family:var(--font-display);font-size:28px}
 .mina-mark b{color:#1dbfb0}h2{font-family:var(--font-display);font-size:28px;font-weight:400;margin:0 0 12px}.dialog-copy{font-size:15px;line-height:1.5;color:#b5c8ca}.qr-frame{background:white;border-radius:16px;padding:16px;width:236px;max-width:100%;margin:24px auto}.qr-frame img{width:100%;height:auto}.or{font-size:13px;color:#8fa5aa}.dialog-secondary{display:flex;align-items:center;justify-content:center;min-height:52px;border:1px solid #1dbfb066;border-radius:999px;text-decoration:none;font-size:14px;background:#1dbfb00d}.prototype-note{font-size:12px;line-height:1.6;color:#8fa5aa;margin:20px 0 0}
+</style>
+
+<style>
+.qr-brand { text-align:left; margin-bottom:28px; padding-right:24px; }
+.qr-brand .wordmark { font: 400 26px/1.1 var(--font-display); text-decoration:none; }
+.qr-brand .wordmark em, .brand-promise b { color:var(--teal); font-weight:inherit; }
+.brand-promise { margin:8px 0 0; font:italic 14px/1.5 var(--font-display); }
+.qr-frame svg { display:block; width:100%; height:auto; }
 </style>

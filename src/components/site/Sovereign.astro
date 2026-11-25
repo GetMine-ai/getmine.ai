@@ -1,0 +1,71 @@
+---
+// Ported from the approved canvas board. Markup and sizes follow the mock-up;
+// the phone layout applies below 48rem.
+import { whatsappLink } from '../../data/whatsapp';
+const html = '<div class="pg"><section class="sec"><p class="eyebrow">Sovereign by design</p>\n<h2 class="one">Self-sovereignty isn’t just a feature.<br /><span class="t">Your vault is yours.</span> <span class="s">Forever.</span></h2><ol class="pg4"><li><p class="c">Your vault lives with you.</p><p class="b">On your computer. Yours forever.</p></li><li><p class="c">Your health. Your choices.</p><p class="b">Your key to a new health ecosystem.</p></li><li><p class="c">Your vault is built to serve you.</p><p class="b">Never to mine you.</p></li><li><p class="c">You set the terms.</p><p class="b">You choose: add, share or delete.</p></li></ol></section></div>'.replaceAll('__WA__', whatsappLink('Hi Mina'));
+---
+<div class="site-promise f4" id="sovereign-by-design"><Fragment set:html={html} /></div>
+
+<style is:global>
+.site-promise { background:#060c14; color:#e8faf8; font-family:var(--font-sans); -webkit-font-smoothing:antialiased; }
+.site-promise .pg { height:100%; box-sizing:border-box; padding:0 64px; border-top:1px solid rgba(181,200,202,.12); }
+.site-promise .sec { padding:96px 0; }
+.site-promise .eyebrow { margin:0 0 18px; font:600 16px/1 var(--font-sans); letter-spacing:.12em; text-transform:uppercase; color:#1dbfb0; }
+.site-promise .tri { margin:0; font:400 60px/1.08 var(--font-display); letter-spacing:-.025em; }
+.site-promise .tri span { display:block; }
+.site-promise .tri .t { color:#1dbfb0; }
+.site-promise .tri .s { color:#c7c2b6; }
+.site-promise .pg4 { list-style:none; margin:56px 0 0; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:28px; }
+.site-promise .pg4 li { padding:30px 32px 32px; border:2px solid rgba(29,191,176,.65); border-radius:18px; background:#101e28; box-shadow:inset 0 1px 0 rgba(232,250,248,.05); }
+.site-promise .n { display:block; margin-bottom:14px; font:500 15px/1 var(--font-sans); letter-spacing:.14em; color:#1dbfb0; }
+.site-promise .pg4 p { margin:0; font:400 30px/1.22 var(--font-display); letter-spacing:-.015em; }
+.site-promise .pg4 .c { color:#e8faf8; }
+.site-promise .pg4 .b { color:#1dbfb0; }
+.site-promise .one { margin:0; font:400 54px/1.1 var(--font-display); letter-spacing:-.025em; white-space:nowrap; }
+.site-promise .one .t { color:#1dbfb0; }
+.site-promise .one .s { color:#c7c2b6; }
+.site-promise .pg4 li { display:flex; flex-direction:column; }
+.site-promise .pg4 p.c { margin:0; font:400 27px/1.22 var(--font-display); color:#e8faf8; }
+.site-promise .pg4 p.b { margin:10px 0 0; font:400 27px/1.22 var(--font-display); color:#1dbfb0; }
+.site-promise .vis { display:flex; align-items:center; justify-content:space-between; gap:40px; margin-top:64px; padding-top:56px; border-top:1px solid rgba(181,200,202,.14); }
+.site-promise .vis p { margin:0; max-width:15em; font:400 52px/1.15 var(--font-display); letter-spacing:-.02em; color:#e8faf8; }
+.site-promise .mk2 { flex:none; display:flex; align-items:center; justify-content:center; width:150px; height:150px; box-sizing:border-box; border:2px solid #1dbfb0; border-radius:50%; background:#0b131d; color:#e8faf8; font:300 76px/1 var(--font-display); box-shadow:0 0 26px rgba(29,191,176,.35),0 0 70px rgba(29,191,176,.18); }
+.site-promise .mk2 i { font-style:italic; }
+.site-promise .mk2 b { color:#1dbfb0; font-weight:300; }
+.site-promise .one { font-size:60px; }
+.site-promise .pg4 li { padding:42px 40px 44px; }
+.site-promise .pg4 p.c, .site-promise .pg4 p.b { font-size:34px; line-height:1.2; }
+.site-promise .vis { justify-content:flex-start; gap:44px; }
+.site-promise .vis p { font-size:58px; max-width:16em; }
+.site-promise .sec { padding-top:96px; }
+.site-promise .eyebrow { margin:0 0 18px; text-align:left; align-self:flex-start; font:600 16px/1 var(--font-sans); letter-spacing:.12em; text-transform:uppercase; color:#1dbfb0; }
+.site-promise .sec > h2:first-of-type, .site-promise .ctr > h2, .site-promise .h2.tri, .site-promise .one { margin:0; text-align:left; align-self:flex-start; font:400 60px/1.1 var(--font-display); letter-spacing:-.025em; }
+@media (max-width: 47.99rem) {
+.site-promise .pg { padding:0 20px; }
+.site-promise .sec { padding:64px 0; }
+.site-promise .eyebrow { font-size:14px; }
+.site-promise .tri { font-size:38px; }
+.site-promise .pg4 { grid-template-columns:1fr; gap:18px; margin-top:36px; }
+.site-promise .pg4 li { padding:20px 22px; }
+.site-promise .pg4 p { font-size:22px; }
+.site-promise .one { white-space:normal; font-size:34px; }
+.site-promise .pg4 p.c, .site-promise .pg4 p.b { font-size:21px; }
+.site-promise .pg4 { grid-template-columns:1fr; }
+.site-promise .vis { flex-direction:column-reverse; align-items:flex-start; gap:22px; margin-top:40px; padding-top:36px; }
+.site-promise .vis p { font-size:30px; }
+.site-promise .mk2 { width:84px; height:84px; font-size:42px; }
+.site-promise .vis { flex-direction:column; }
+.site-promise .one { font-size:36px; }
+.site-promise .pg4 p.c, .site-promise .pg4 p.b { font-size:24px; }
+.site-promise .pg4 li { padding:22px; }
+.site-promise .vis p { font-size:32px; }
+.site-promise .sec { padding-top:64px; }
+.site-promise .eyebrow { font-size:14px; }
+.site-promise .sec > h2:first-of-type, .site-promise .ctr > h2, .site-promise .h2.tri, .site-promise .one { font-size:36px; }
+}
+
+.site-promise { background:#060c14; color:#e8faf8; scroll-margin-top:5.25rem; }
+.site-promise .pg { height:auto; max-width:90rem; margin:0 auto; }
+@media (max-width: 86rem) { .site-promise .one { white-space:normal; } }
+
+</style>

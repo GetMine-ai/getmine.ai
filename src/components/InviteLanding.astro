@@ -1,0 +1,98 @@
+---
+// Direction A — "Mina's card". Same copy, routes, hooks and behaviour as before;
+// layout and type now come from /invite-assets/landing.css (replaces style.css
+// and the old scoped <style> block for this route).
+import { whatsappLink } from '../data/whatsapp';
+import { footerLinks } from '../data/footer';
+interface Props { home?: boolean; }
+const { home = false } = Astro.props;
+const invite = whatsappLink('Hi Mina, I was invited.'); // one source for CTA, QR and desktop link
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#060c14">
+  <meta name="description" content="Meet Mina, your personal health companion. Start your health vault with a conversation.">
+  {!home && <meta name="robots" content="noindex,nofollow">}
+  <link rel="canonical" href={home ? "https://getmine.ai/" : "https://getmine.ai/invite/"}>
+  <title>Meet Mina · Your health. Your data. Your rules.</title>
+  <link rel="icon" type="image/svg+xml" href="/invite-assets/mina.svg">
+  <link rel="preload" href="/invite-assets/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/invite-assets/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/invite-assets/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/invite-assets/landing.css">
+  <link rel="stylesheet" href="/device-actions.css">
+  <meta property="og:title" content="You’re invited to meet Mina">
+  <meta property="og:description" content="Meet Mina, your personal health companion. Text Mina on WhatsApp to get started.">
+  <meta property="og:image" content="https://getmine.ai/invite-assets/link-preview.png">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="getmine.ai">
+</head>
+<body>
+  <a class="skip" href="#meet-mina">Skip to Mina</a>
+  <div class="page">
+    <header class="landing-header">
+      <div class="landing-brand">
+        <a class="wordmark" href="/" aria-label="GetMine.ai"><span>Get</span><em>Mine.</em><span>ai</span></a>
+        <p class="brand-promise"><span>Your health.</span> <span>Your data.</span> <span>Your rules.</span></p>
+      </div>
+      <a class="website-link" href="/website/">Visit the website</a>
+    </header>
+
+    <main id="meet-mina" class="invite">
+      <div class="card">
+        <div class="introduction">
+          <span class="mina-mark" role="img" aria-label="Mina"><i>M</i><b>.</b></span>
+          <div class="introduction-copy">
+            <p class="eyebrow">Open beta</p>
+            <h1>You’re invited to meet <span class="mina-name">Mina</span></h1>
+            <p class="companion-message">Your personal health companion.</p>
+          </div>
+        </div>
+        <div class="story">
+          <p>All your health information, including medical records, <span class="story-highlight">finally together</span>, stored in an encrypted vault on your computer. Mina, your health companion, helps make sense of it and puts it to work.</p>
+        </div>
+        <div class="actions">
+          <div class="cta-row">
+            <div class="cta-destination">
+              <a class="primary" id="text-mina" href={invite}>Text Mina on WhatsApp</a>
+              <p class="cta-note">Opens WhatsApp with “Hi Mina, I was invited.” ready to send.</p>
+            </div>
+            <div class="cta-destination desktop-download" data-desktop-download>
+              <a class="primary download" href="/beta">Download GetMine</a>
+              <p class="cta-note">For macOS and Windows.</p>
+            </div>
+          </div>
+        </div>
+        <p class="closing-invitation" aria-label="Get curious.">
+          <span class="closing-word closing-get" aria-hidden="true">{'Get'.split('').map((letter, index) => <span class="closing-letter" style={`--letter:${index}`}>{letter}</span>)}</span>{' '}
+          <span class="closing-word closing-curious" aria-hidden="true">{'curious.'.split('').map((letter, index) => <span class="closing-letter" style={`--letter:${index + 3}`}>{letter}</span>)}</span>
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <nav aria-label="Footer">{footerLinks.map(({ href, label }) => <a href={href}>{label}</a>)}</nav>
+      <p class="copyright">© 2026 GetMine Ltd</p>
+    </footer>
+  </div>
+
+  <dialog id="entry-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
+    <button class="close" type="button" aria-label="Close WhatsApp options"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    <header class="landing-brand qr-brand">
+      <a class="wordmark" href="/" aria-label="GetMine.ai"><span>Get</span><em>Mine.</em><span>ai</span></a>
+      <p class="brand-promise"><span>Your health.</span> <span>Your data.</span> <span>Your rules.</span></p>
+    </header>
+    <div class="qr-content">
+      <h2 id="dialog-title">Scan to meet Mina on WhatsApp.</h2>
+      <p class="dialog-copy" id="dialog-copy">Use your phone’s camera to open Mina’s chat.</p>
+      <div class="qr-frame" role="img" aria-label="Scan to open Mina’s WhatsApp chat"></div>
+      <p class="or" aria-hidden="true"><span>or</span></p>
+      <a class="dialog-secondary" href={invite} target="_blank" rel="noopener noreferrer">Use WhatsApp on this computer</a>
+      <p class="prototype-note">Send the prepared message to start your conversation.</p>
+    </div>
+  </dialog>
+  <script is:inline src="/invite-assets/qrcode.js"></script><script is:inline src="/invite-assets/qrcode_UTF8.js"></script><script is:inline src="/invite-assets/landing.js"></script>
+</body>
+</html>
