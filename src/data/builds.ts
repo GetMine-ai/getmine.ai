@@ -24,16 +24,16 @@ export interface BuildInfo {
 
 export const builds: { mac: BuildInfo; windows: BuildInfo } = {
   mac: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-12/GetMine-Installer.pkg',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-12.patch-1/GetMine-Installer.pkg',
     version: 'GetMine-Installer', // see note below: must be a substring of the release identity
     sizeMB: 185.0,
     filename: 'GetMine-Installer.pkg',
     minOs: 'macOS 14 or later',
     signedBy: 'GETMINE LTD',
-    sha256: '2974dbaa2a93a9c7a84a491f1536046d1b8263b7f70c2cee62c7c5e46485f0e0',
+    sha256: '36e46b5362dc742292a3f2440b03574fbccdb1794f3307b47cfd442b2ac34a44',
   },
   windows: {
-    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-12/GetMine-Setup.exe',
+    url: 'https://github.com/GetMine-ai/releases/releases/download/wave-12.patch-1/GetMine-Setup.exe',
     version: 'GetMine-Setup', // see note below: must be a substring of the release identity
     sizeMB: 2.0,
     filename: 'GetMine-Setup.exe',
