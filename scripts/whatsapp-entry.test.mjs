@@ -13,7 +13,7 @@ test('Step 1 initial HTML opens the configured WhatsApp chat without JavaScript'
 });
 test('landing script and QR read the same generated number configuration',()=>{
  assert.ok(read('whatsapp-config.js').includes(whatsappLink().split('?')[0].split('/').at(-1)));
- assert.ok(read('meet-mina/script.js').includes('/whatsapp-config.js'));
+ assert.ok(read('meet-mina/script.js').includes("document.getElementById('text-mina').href"));
  const sitemap=read('sitemap-0.xml');
  assert.ok(!sitemap.includes('/invite'));assert.ok(!sitemap.includes('/meet-mina'));
 });

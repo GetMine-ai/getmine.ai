@@ -1,7 +1,7 @@
 ---
 // Ported from the approved canvas board. Markup and sizes follow the mock-up;
 // the phone layout applies below 48rem.
-const html = '<div class="pg"><section class="hero h1v" aria-label="GetMine"><div class="copy"><p class="pill"><span aria-hidden="true"></span>Open beta · Free to download</p>\n<h1 class="tag-h1"><span>Your health.</span> <span class="t2">Your data.</span> <span class="t3">Your rules.</span></h1>\n<p class="intro">All your health information, including medical records, <span class="acc">finally together</span>, stored in an encrypted vault on your computer. Mina, your personal health companion, helps make sense of it and puts it to work.</p>\n<div class="lock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10"></path><rect x="5.5" y="10" width="13" height="11" rx="2"></rect><path d="M12 14.5v2.5"></path></svg><p><strong>For macOS and Windows</strong><span>Your vault stays on your computer. We never hold a central copy.</span></p></div></div><figure class="monitor"><img src="/assets/site/hero-monitor-greeting.jpg" alt="The GetMine vault on a desktop computer, with the vault beside it" /></figure></section></div>';
+const html = '<div class="pg"><section class="hero h1v" aria-label="GetMine"><div class="copy"><p class="pill"><span aria-hidden="true"></span>Open beta · Free to download</p>\n<h1 class="tag-h1"><span>Your health.</span> <span class="t2">Your data.</span> <span class="t3">Your rules.</span></h1>\n<p class="intro">All your health information, including medical records, <span class="acc">finally together</span>, stored in an encrypted vault on your computer. Mina, your personal health companion, helps make sense of it and puts it to work.</p>\n<div class="lock"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10"></path><rect x="5.5" y="10" width="13" height="11" rx="2"></rect><path d="M12 14.5v2.5"></path></svg><p><strong>For macOS and Windows</strong><span>Your vault stays on your computer. We never hold a central copy.</span></p></div></div><figure class="monitor"><img src="/assets/site/hero-monitor-greeting.jpg" width="888" height="870" alt="The GetMine vault on a desktop computer, with the vault beside it" /></figure></section></div>';
 ---
 <div class="site-hero" id="top"><Fragment set:html={html} /></div>
 
@@ -89,4 +89,10 @@ const html = '<div class="pg"><section class="hero h1v" aria-label="GetMine"><di
 @media (max-width: 63.99rem) { .site-hero .pg { padding:5.25rem 40px 0; } .site-hero .hero { min-height:0; } .site-hero .copy { max-width:40rem; } .site-hero .monitor { max-width:44rem; margin:40px auto 0; } }
 @media (max-width: 47.99rem) { .site-hero .pg { padding:5rem 20px 0; } .site-hero .monitor { margin:28px -20px 0; } }
 
+/* Last in the cascade: small screens must not inherit the tablet's 60px. */
+@media (max-width:63.99rem) { .site-hero .tag-h1 { font-size:48px; } }
+@media (max-width:47.99rem) {
+  .site-hero .tag-h1 { font-size:clamp(36px,11.5vw,48px); }
+  .site-hero .tag-h1 span { white-space:normal; overflow-wrap:break-word; }
+}
 </style>

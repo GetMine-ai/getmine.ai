@@ -1,9 +1,11 @@
-/* Match the phone-style WhatsApp handoff throughout the site, including
-   touch devices in landscape. Keep desktop installers off mobile surfaces. */
-@media (max-width: 700px), (pointer: coarse) and (hover: none) {
-  [data-desktop-download],
-  [data-download-module] .platform-panels,
-  [data-download-module] .direct-install-label {
-    display: none !important;
-  }
+/* Layout width does not determine whether a computer can install GetMine. */
+html[data-device-class="mobile"] [data-desktop-download],
+html[data-device-class="mobile"] [data-download-module] .platform-panels {
+  display: none !important;
+}
+/* Keep the download page's main heading available to assistive technology. */
+html[data-device-class="mobile"] [data-download-module] .direct-install-label {
+  position:absolute !important; width:1px !important; height:1px !important;
+  padding:0 !important; margin:-1px !important; overflow:hidden !important;
+  clip-path:inset(50%) !important; white-space:nowrap !important; border:0 !important;
 }

@@ -238,7 +238,12 @@ const mina = whatsappLink('Hi Mina');
     transition: padding 260ms var(--ease-gm);
   }
 
-  .mobile-menu.open nav { padding-block: 1rem; }
+  .mobile-menu.open nav {
+    padding-block:1rem;
+    max-height:calc(100dvh - 5.25rem);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
 
   .mobile-menu a:not(.site-btn) {
     border-radius: var(--radius-sm);

@@ -17,14 +17,19 @@ const invite = whatsappLink('Hi Mina, I was invited.'); // one source for CTA, Q
   <meta name="description" content="Meet Mina, your personal health companion. Start your health vault with a conversation.">
   {!home && <meta name="robots" content="noindex,nofollow">}
   <link rel="canonical" href={home ? "https://getmine.ai/" : "https://getmine.ai/invite/"}>
-  <title>Meet Mina · Your health. Your data. Your rules.</title>
-  <link rel="icon" type="image/svg+xml" href="/invite-assets/mina.svg">
+  <title>GetMine · Meet Mina · Your health. Your data. Your rules.</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preload" href="/invite-assets/fraunces.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/invite-assets/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/invite-assets/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/invite-assets/landing.css">
-  <link rel="stylesheet" href="/device-actions.css">
-  <meta property="og:title" content="You’re invited to meet Mina">
+  <script is:inline src="/device-actions.js"></script>
+    <link rel="stylesheet" href="/device-actions.css">
+  <meta property="og:title" content="GetMine · You’re invited to meet Mina">
+  <meta property="og:url" content={home ? "https://getmine.ai/" : "https://getmine.ai/invite/"}>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GetMine · Meet Mina">
+  <meta name="twitter:image" content="https://getmine.ai/invite-assets/link-preview.png">
   <meta property="og:description" content="Meet Mina, your personal health companion. Text Mina on WhatsApp to get started.">
   <meta property="og:image" content="https://getmine.ai/invite-assets/link-preview.png">
   <meta property="og:type" content="website"><meta property="og:site_name" content="getmine.ai">
@@ -40,7 +45,7 @@ const invite = whatsappLink('Hi Mina, I was invited.'); // one source for CTA, Q
       <a class="website-link" href="/website/">Visit the website</a>
     </header>
 
-    <main id="meet-mina" class="invite">
+    <main id="meet-mina" class="invite" tabindex="-1">
       <div class="card">
         <div class="introduction">
           <span class="mina-mark" role="img" aria-label="Mina"><i>M</i><b>.</b></span>
@@ -65,7 +70,7 @@ const invite = whatsappLink('Hi Mina, I was invited.'); // one source for CTA, Q
             </div>
           </div>
         </div>
-        <p class="closing-invitation" aria-label="Get curious.">
+        <p class="closing-invitation"><span class="sr-only">Get curious.</span>
           <span class="closing-word closing-get" aria-hidden="true">{'Get'.split('').map((letter, index) => <span class="closing-letter" style={`--letter:${index}`}>{letter}</span>)}</span>{' '}
           <span class="closing-word closing-curious" aria-hidden="true">{'curious.'.split('').map((letter, index) => <span class="closing-letter" style={`--letter:${index + 3}`}>{letter}</span>)}</span>
         </p>

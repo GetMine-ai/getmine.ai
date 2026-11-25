@@ -21,6 +21,7 @@ export default defineConfig({
   build: { format: 'file' },
   integrations: [
     sitemap({
+      serialize: item => ({ ...item, url: item.url.replace(/\/website$/, '/website/') }),
       // /pkb is reached only through PKB's link (src/pages/pkb.astro).
       filter: (page) =>
         !/\/(?:invite|meet-mina)(?:\.html)?\/?$/.test(page) &&

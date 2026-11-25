@@ -5,7 +5,7 @@
 // /pkb gets the same alias: it is the one address PKB is given, and a link
 // that gains a slash on its way through PKB's pages must still download.
 import { copyFileSync, mkdirSync, readFileSync } from 'node:fs';
-for (const page of ['beta', 'pkb', 'invite', 'meet-mina', 'website']) {
+for (const page of ['beta', 'pkb', 'invite', 'meet-mina', 'website', 'privacy', 'terms', 'trust', 'press', 'welcome', 'download', 'press/pkb-2026-10-19']) {
   const src = new URL(`../dist/${page}.html`, import.meta.url);
   const dir = new URL(`../dist/${page}/`, import.meta.url);
   const out = new URL(`../dist/${page}/index.html`, import.meta.url);

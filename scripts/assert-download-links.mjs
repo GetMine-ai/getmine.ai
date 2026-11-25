@@ -70,7 +70,7 @@ if (stage === 'links') {
         failures.push(`${platform}: response is not marked as an attachment`);
       }
 
-      const releaseIdentity = `${response.url} ${disposition} ${build.filename}`;
+      const releaseIdentity = `${response.url} ${disposition}`;
       if (!releaseIdentity.includes(build.version)) {
         failures.push(
           `${platform}: configured version ${build.version} is absent from the resolved release identity`,

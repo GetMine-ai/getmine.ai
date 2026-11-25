@@ -3,11 +3,11 @@
 // Opening a link sends nothing: the person sends the message themselves.
 const dialog = document.getElementById('entry-dialog');
 const cta = document.getElementById('text-mina');
-const phoneLike = matchMedia('(max-width: 700px), (pointer: coarse) and (hover: none)');
+const phoneLike = document.documentElement.dataset.deviceClass === 'mobile';
 let opener = null;
 
 cta.addEventListener('click', event => {
-  if (phoneLike.matches || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (phoneLike || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
   opener = document.activeElement;
   dialog.showModal();

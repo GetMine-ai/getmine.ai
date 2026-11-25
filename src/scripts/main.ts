@@ -61,7 +61,8 @@ function initialiseNavigation() {
   const HEADING_GAP = 28;
 
   const landingOffset = (section: HTMLElement) => {
-    const heading = section.querySelector<HTMLElement>('.section-heading, .sec > .eyebrow') || section;
+    const heading = section.tagName === 'MAIN' ? section
+      : section.querySelector<HTMLElement>('.section-heading, .sec > .eyebrow') || section;
     // Exclude the mobile menu while its closing animation is still running.
     const headerHeight = header?.querySelector<HTMLElement>('.nav-wrap')?.offsetHeight || 0;
     const headingTop = heading.getBoundingClientRect().top + window.scrollY;
@@ -74,17 +75,24 @@ function initialiseNavigation() {
 
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const focusSection = (section: HTMLElement) => {
+    const target = section.tagName === 'MAIN' ? section : section.querySelector<HTMLElement>('h1, h2') || section;
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+  };
+  const pathKey = (path: string) => path.replace(/\/$/, '') || '/';
   Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')).forEach((link) => {
     link.addEventListener('click', (event) => {
-      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey) return;
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const url = new URL(link.href, window.location.href);
-      if (url.pathname !== window.location.pathname || !url.hash) return;
+      if (url.origin !== window.location.origin || pathKey(url.pathname) !== pathKey(window.location.pathname) || !url.hash) return;
       const section = document.getElementById(url.hash.slice(1));
       if (!section) return;
       event.preventDefault();
+      focusSection(section);
       scrollToSection(section, !reducedMotion());
-      // Keep the hash (and the back button) without a second, uncorrected jump.
-      window.history.pushState(null, '', url.hash);
+      // Repeated clicks must not create dead Back-button steps.
+      if (window.location.hash !== url.hash) window.history.pushState(null, '', url.hash);
     });
   });
 
@@ -93,7 +101,16 @@ function initialiseNavigation() {
     const landed = document.getElementById(window.location.hash.slice(1));
     if (landed) {
       window.requestAnimationFrame(() => scrollToSection(landed, false));
-      window.addEventListener('load', () => scrollToSection(landed, false), { once: true });
+      // A slow image load must not pull back someone who has started reading.
+      let interacted = false;
+      const noteInteraction = () => { interacted = true; };
+      for (const name of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+        window.addEventListener(name, noteInteraction, { once: true, passive: true });
+      }
+      window.addEventListener('load', () => {
+        if (!interacted) scrollToSection(landed, false);
+        for (const name of ['wheel', 'touchstart', 'pointerdown', 'keydown']) window.removeEventListener(name, noteInteraction);
+      }, { once: true });
     }
   }
 
@@ -101,7 +118,7 @@ function initialiseNavigation() {
   // than the browser's native fragment position beneath the fixed header.
   window.addEventListener('popstate', () => {
     const section = document.getElementById(window.location.hash.slice(1));
-    if (section) window.requestAnimationFrame(() => scrollToSection(section, false));
+    if (section) window.requestAnimationFrame(() => { focusSection(section); scrollToSection(section, false); });
   });
 
   if (navLinks.length) {
